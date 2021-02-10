@@ -1,0 +1,1186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Informe_Instalacion_Servicios</class>
+ <widget class="QMainWindow" name="Informe_Instalacion_Servicios">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>812</width>
+    <height>416</height>
+   </rect>
+  </property>
+  <property name="palette">
+   <palette>
+    <active>
+     <colorrole role="Base">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>46</red>
+        <green>47</green>
+        <blue>48</blue>
+       </color>
+      </brush>
+     </colorrole>
+     <colorrole role="Window">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>255</red>
+        <green>255</green>
+        <blue>255</blue>
+       </color>
+      </brush>
+     </colorrole>
+    </active>
+    <inactive>
+     <colorrole role="Base">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>46</red>
+        <green>47</green>
+        <blue>48</blue>
+       </color>
+      </brush>
+     </colorrole>
+     <colorrole role="Window">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>255</red>
+        <green>255</green>
+        <blue>255</blue>
+       </color>
+      </brush>
+     </colorrole>
+    </inactive>
+    <disabled>
+     <colorrole role="Base">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>255</red>
+        <green>255</green>
+        <blue>255</blue>
+       </color>
+      </brush>
+     </colorrole>
+     <colorrole role="Window">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>255</red>
+        <green>255</green>
+        <blue>255</blue>
+       </color>
+      </brush>
+     </colorrole>
+    </disabled>
+   </palette>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout_13">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <property name="topMargin">
+       <number>20</number>
+      </property>
+      <item>
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_12">
+        <property name="spacing">
+         <number>20</number>
+        </property>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_6">
+          <property name="spacing">
+           <number>30</number>
+          </property>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <property name="spacing">
+             <number>15</number>
+            </property>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_85">
+              <property name="spacing">
+               <number>5</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="lb_ID_FINCA">
+                <property name="styleSheet">
+                 <string notr="true">font: 63 10pt &quot;Segoe UI Semibold&quot;;color: rgb(54, 141, 206);</string>
+                </property>
+                <property name="text">
+                 <string>Id SAT</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="le_id_sat">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>20</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: #EFEFEF; 
+border-radius: 3px;
+color:rgb(50, 50, 50);</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_86">
+              <property name="spacing">
+               <number>5</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="lb_ID_FINCA_2">
+                <property name="styleSheet">
+                 <string notr="true">font: 63 10pt &quot;Segoe UI Semibold&quot;;color: rgb(54, 141, 206);</string>
+                </property>
+                <property name="text">
+                 <string>Num Abonado</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="le_numero_abonado">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>20</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: #EFEFEF; 
+border-radius: 3px;
+color:rgb(50, 50, 50);</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_87">
+              <property name="spacing">
+               <number>5</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="lb_ID_FINCA_3">
+                <property name="styleSheet">
+                 <string notr="true">font: 63 10pt &quot;Segoe UI Semibold&quot;;color: rgb(54, 141, 206);</string>
+                </property>
+                <property name="text">
+                 <string>Calibre</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="le_calibre_real">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>20</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: #EFEFEF; 
+border-radius: 3px;
+color:rgb(50, 50, 50);</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_88">
+              <property name="spacing">
+               <number>5</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="lb_ID_FINCA_4">
+                <property name="styleSheet">
+                 <string notr="true">font: 63 10pt &quot;Segoe UI Semibold&quot;;color: rgb(54, 141, 206);</string>
+                </property>
+                <property name="text">
+                 <string>Fecha informe</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="le_fecha_informe">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>20</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: #EFEFEF; 
+border-radius: 3px;
+color:rgb(50, 50, 50);</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_89">
+              <property name="spacing">
+               <number>5</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="lb_ID_FINCA_5">
+                <property name="styleSheet">
+                 <string notr="true">font: 63 10pt &quot;Segoe UI Semibold&quot;;color: rgb(54, 141, 206);</string>
+                </property>
+                <property name="text">
+                 <string>Fecha Realización</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="le_fecha_realizacion">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>20</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: #EFEFEF; 
+border-radius: 3px;
+color:rgb(50, 50, 50);</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_11">
+              <item>
+               <widget class="QGroupBox" name="gb_suministros">
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(54, 141, 206);
+</string>
+                </property>
+                <property name="title">
+                 <string>Suministros</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_4">
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout">
+                   <item>
+                    <layout class="QVBoxLayout" name="verticalLayout">
+                     <item>
+                      <widget class="QCheckBox" name="cb_contador">
+                       <property name="font">
+                        <font>
+                         <family>Segoe UI</family>
+                         <pointsize>10</pointsize>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QCheckBox {
+	color: rgb(77, 77, 77);
+}
+
+QCheckBox::indicator::checked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/checked.png);
+}
+QCheckBox::indicator::unchecked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/unchecked.png);
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>Contador</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QCheckBox" name="cb_modulor3">
+                       <property name="font">
+                        <font>
+                         <family>Segoe UI</family>
+                         <pointsize>10</pointsize>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QCheckBox {
+	color: rgb(77, 77, 77);
+}
+
+QCheckBox::indicator::checked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/checked.png);
+}
+QCheckBox::indicator::unchecked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/unchecked.png);
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>Módulo R3</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QCheckBox" name="cb_modulor4">
+                       <property name="font">
+                        <font>
+                         <family>Segoe UI</family>
+                         <pointsize>10</pointsize>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QCheckBox {
+	color: rgb(77, 77, 77);
+}
+
+QCheckBox::indicator::checked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/checked.png);
+}
+QCheckBox::indicator::unchecked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/unchecked.png);
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>Módulo R4</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QCheckBox" name="cb_modulow4">
+                       <property name="font">
+                        <font>
+                         <family>Segoe UI</family>
+                         <pointsize>10</pointsize>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QCheckBox {
+	color: rgb(77, 77, 77);
+}
+
+QCheckBox::indicator::checked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/checked.png);
+}
+QCheckBox::indicator::unchecked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/unchecked.png);
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>Módulo W4</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QCheckBox" name="cb_modulolrw">
+                       <property name="font">
+                        <font>
+                         <family>Segoe UI</family>
+                         <pointsize>10</pointsize>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QCheckBox {
+	color: rgb(77, 77, 77);
+}
+
+QCheckBox::indicator::checked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/checked.png);
+}
+QCheckBox::indicator::unchecked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/unchecked.png);
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>Módulo LRW</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="verticalSpacer_2">
+                       <property name="orientation">
+                        <enum>Qt::Vertical</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>20</width>
+                         <height>40</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QVBoxLayout" name="verticalLayout_3">
+                     <item>
+                      <layout class="QVBoxLayout" name="verticalLayout_2">
+                       <item>
+                        <widget class="QCheckBox" name="cb_reed">
+                         <property name="font">
+                          <font>
+                           <family>Segoe UI</family>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QCheckBox {
+	color: rgb(77, 77, 77);
+}
+
+QCheckBox::indicator::checked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/checked.png);
+}
+QCheckBox::indicator::unchecked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/unchecked.png);
+}</string>
+                         </property>
+                         <property name="text">
+                          <string>Reed</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QCheckBox" name="cb_dp">
+                         <property name="font">
+                          <font>
+                           <family>Segoe UI</family>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QCheckBox {
+	color: rgb(77, 77, 77);
+}
+
+QCheckBox::indicator::checked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/checked.png);
+}
+QCheckBox::indicator::unchecked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/unchecked.png);
+}</string>
+                         </property>
+                         <property name="text">
+                          <string>Dp</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QCheckBox" name="cb_pulsar">
+                         <property name="font">
+                          <font>
+                           <family>Segoe UI</family>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QCheckBox {
+	color: rgb(77, 77, 77);
+}
+
+QCheckBox::indicator::checked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/checked.png);
+}
+QCheckBox::indicator::unchecked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/unchecked.png);
+}</string>
+                         </property>
+                         <property name="text">
+                          <string>Pulsar</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                     <item>
+                      <spacer name="verticalSpacer">
+                       <property name="orientation">
+                        <enum>Qt::Vertical</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>20</width>
+                         <height>40</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="gb_servicios">
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <pointsize>10</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">color: rgb(54, 141, 206);
+</string>
+              </property>
+              <property name="title">
+               <string>Servicios</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_9">
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_2">
+                 <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_5">
+                   <item>
+                    <widget class="QCheckBox" name="cb_instalacion">
+                     <property name="font">
+                      <font>
+                       <family>Segoe UI</family>
+                       <pointsize>10</pointsize>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QCheckBox {
+	color: rgb(77, 77, 77);
+}
+
+QCheckBox::indicator::checked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/checked.png);
+}
+QCheckBox::indicator::unchecked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/unchecked.png);
+}</string>
+                     </property>
+                     <property name="text">
+                      <string>Instalación</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QCheckBox" name="cb_baja">
+                     <property name="font">
+                      <font>
+                       <family>Segoe UI</family>
+                       <pointsize>10</pointsize>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QCheckBox {
+	color: rgb(77, 77, 77);
+}
+
+QCheckBox::indicator::checked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/checked.png);
+}
+QCheckBox::indicator::unchecked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/unchecked.png);
+}</string>
+                     </property>
+                     <property name="text">
+                      <string>Baja</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QCheckBox" name="cb_toma_dato">
+                     <property name="font">
+                      <font>
+                       <family>Segoe UI</family>
+                       <pointsize>10</pointsize>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QCheckBox {
+	color: rgb(77, 77, 77);
+}
+
+QCheckBox::indicator::checked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/checked.png);
+}
+QCheckBox::indicator::unchecked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/unchecked.png);
+}</string>
+                     </property>
+                     <property name="text">
+                      <string>Toma Dato</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QCheckBox" name="cb_reparacion">
+                     <property name="font">
+                      <font>
+                       <family>Segoe UI</family>
+                       <pointsize>10</pointsize>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QCheckBox {
+	color: rgb(77, 77, 77);
+}
+
+QCheckBox::indicator::checked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/checked.png);
+}
+QCheckBox::indicator::unchecked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/unchecked.png);
+}</string>
+                     </property>
+                     <property name="text">
+                      <string>Reparación</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QCheckBox" name="cb_incidencia">
+                     <property name="font">
+                      <font>
+                       <family>Segoe UI</family>
+                       <pointsize>10</pointsize>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QCheckBox {
+	color: rgb(77, 77, 77);
+}
+
+QCheckBox::indicator::checked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/checked.png);
+}
+QCheckBox::indicator::unchecked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/unchecked.png);
+}</string>
+                     </property>
+                     <property name="text">
+                      <string>Incidencia</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="verticalSpacer_4">
+                     <property name="orientation">
+                      <enum>Qt::Vertical</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>20</width>
+                       <height>40</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_8">
+                   <item>
+                    <layout class="QVBoxLayout" name="verticalLayout_7">
+                     <item>
+                      <widget class="QCheckBox" name="cb_refugio_propio">
+                       <property name="font">
+                        <font>
+                         <family>Segoe UI</family>
+                         <pointsize>10</pointsize>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QCheckBox {
+	color: rgb(77, 77, 77);
+}
+
+QCheckBox::indicator::checked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/checked.png);
+}
+QCheckBox::indicator::unchecked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/unchecked.png);
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>Rcfg Propio</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QCheckBox" name="cb_refugio_baja">
+                       <property name="font">
+                        <font>
+                         <family>Segoe UI</family>
+                         <pointsize>10</pointsize>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QCheckBox {
+	color: rgb(77, 77, 77);
+}
+
+QCheckBox::indicator::checked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/checked.png);
+}
+QCheckBox::indicator::unchecked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/unchecked.png);
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>Rcfg Baja</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QCheckBox" name="cb_refugio_nuevo">
+                       <property name="font">
+                        <font>
+                         <family>Segoe UI</family>
+                         <pointsize>10</pointsize>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QCheckBox {
+	color: rgb(77, 77, 77);
+}
+
+QCheckBox::indicator::checked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/checked.png);
+}
+QCheckBox::indicator::unchecked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/unchecked.png);
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>Rcfg Nuevo</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QCheckBox" name="cb_toma_dato_radio">
+                       <property name="font">
+                        <font>
+                         <family>Segoe UI</family>
+                         <pointsize>10</pointsize>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QCheckBox {
+	color: rgb(77, 77, 77);
+}
+
+QCheckBox::indicator::checked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/checked.png);
+}
+QCheckBox::indicator::unchecked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/unchecked.png);
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>Toma Dato Radio</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QCheckBox" name="cb_precintados">
+                       <property name="font">
+                        <font>
+                         <family>Segoe UI</family>
+                         <pointsize>10</pointsize>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QCheckBox {
+	color: rgb(77, 77, 77);
+}
+
+QCheckBox::indicator::checked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/checked.png);
+}
+QCheckBox::indicator::unchecked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/unchecked.png);
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>Precintados</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QCheckBox" name="cb_desprecintados">
+                       <property name="font">
+                        <font>
+                         <family>Segoe UI</family>
+                         <pointsize>10</pointsize>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QCheckBox {
+	color: rgb(77, 77, 77);
+}
+
+QCheckBox::indicator::checked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/checked.png);
+}
+QCheckBox::indicator::unchecked{
+    width: 25px;
+	height: 25px;
+	image: url(:/icons/unchecked.png);
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>Desprecintados</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="verticalSpacer_3">
+                       <property name="orientation">
+                        <enum>Qt::Vertical</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>20</width>
+                         <height>40</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="gb_servicios_2">
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <pointsize>10</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">color: rgb(54, 141, 206);
+</string>
+              </property>
+              <property name="title">
+               <string>Observaciones</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_14">
+               <item>
+                <widget class="QPlainTextEdit" name="pt_observaciones">
+                 <property name="styleSheet">
+                  <string notr="true">background-color: #EFEFEF; 
+border-radius: 5px;
+color:rgb(50, 50, 50);</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_10"/>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <property name="spacing">
+           <number>20</number>
+          </property>
+          <property name="topMargin">
+           <number>10</number>
+          </property>
+          <property name="bottomMargin">
+           <number>10</number>
+          </property>
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pb_aceptar">
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Segoe UI</family>
+              <pointsize>10</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">border-radius: 10px;
+color:rgb(120, 120, 120);</string>
+            </property>
+            <property name="text">
+             <string>ACEPTAR</string>
+            </property>
+            <property name="icon">
+             <iconset resource="assets.qrc">
+              <normaloff>:/icons/accept.png</normaloff>:/icons/accept.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>20</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="flat">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pb_cancelar">
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Segoe UI</family>
+              <pointsize>10</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">border-radius: 10px;
+color:rgb(120, 120, 120);</string>
+            </property>
+            <property name="text">
+             <string>CANCELAR</string>
+            </property>
+            <property name="icon">
+             <iconset resource="assets.qrc">
+              <normaloff>:/icons/cancel.png</normaloff>:/icons/cancel.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>20</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="flat">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_4">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>812</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources>
+  <include location="assets.qrc"/>
+ </resources>
+ <connections/>
+</ui>

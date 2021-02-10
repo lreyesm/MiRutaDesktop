@@ -48,8 +48,12 @@ compile_commands.json
 # QtCreator local machine specific files for imported projects
 *creator.user*
 
-
+BD/
 Logos de empresas/
+Trabajo Descargado/
+Trabajo Devuelto/
+Trabajo Exportado/
+Respaldos/
 release/
 debug/
 ZipFilesLibrary/
