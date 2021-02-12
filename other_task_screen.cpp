@@ -4313,24 +4313,24 @@ QJsonObject other_task_screen::set_date_from_status(QJsonObject object, QString 
 
 void other_task_screen::on_le_status_tarea_editingFinished()
 {
-    QString status = tarea_a_actualizar.value(status_tarea).toString();
-    status = status.toUpper();
-    if(status!="IDLE" && status!="IDLE TO_BAT" && status!="IDLE CITA" && status!="DONE"
-            && status!="CLOSED" && status!="INFORMADA" && status!="REQUERIDA"){
-        GlobalFunctions gf(this);
-        GlobalFunctions::showWarning(this,"Campo no válido","No se puede ingresar este estado de tarea porque no es válido");
-        tarea_a_actualizar.insert(status_tarea, o.value(status_tarea).toString().trimmed());
-    }
-    else{
-        tarea_a_actualizar.insert(status_tarea, status);
-        o.insert(status_tarea, status);
-        QString fecha_status = get_date_from_status(o, status);
-        if(!checkIfFieldIsValid(fecha_status)){
-            fecha_status = QDateTime::currentDateTime().toString(formato_fecha_hora);
-            o = set_date_from_status(o, status, fecha_status);
-            populateView(false);
-        }
-    }
+//    QString status = tarea_a_actualizar.value(status_tarea).toString();
+//    status = status.toUpper();
+//    if(status!="IDLE" && status!="IDLE TO_BAT" && status!="IDLE CITA" && status!="DONE"
+//            && status!="CLOSED" && status!="INFORMADA" && status!="REQUERIDA"){
+//        GlobalFunctions gf(this);
+//        GlobalFunctions::showWarning(this,"Campo no válido","No se puede ingresar este estado de tarea porque no es válido");
+//        tarea_a_actualizar.insert(status_tarea, o.value(status_tarea).toString().trimmed());
+//    }
+//    else{
+//        tarea_a_actualizar.insert(status_tarea, status);
+//        o.insert(status_tarea, status);
+//        QString fecha_status = get_date_from_status(o, status);
+//        if(!checkIfFieldIsValid(fecha_status)){
+//            fecha_status = QDateTime::currentDateTime().toString(formato_fecha_hora);
+//            o = set_date_from_status(o, status, fecha_status);
+//            populateView(false);
+//        }
+//    }
 }
 
 void other_task_screen::on_le_telefono2_editingFinished()
