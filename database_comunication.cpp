@@ -1153,9 +1153,9 @@ void database_comunication::serverRequest(serverRequestType type, QStringList ke
         networkRequest.setUrl(serviceUrl);
         networkRequest.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded");
 
-        QNetworkReply *nr = networkManager->post(networkRequest,postData);
-        QObject::connect(this, &database_comunication::cancelDownload
-                         , nr, &QNetworkReply::abort);
+        /*QNetworkReply *nr =*/ networkManager->post(networkRequest,postData);
+//        QObject::connect(this, &database_comunication::cancelDownload
+//                         , nr, &QNetworkReply::abort);
     }
     else {
         networkManager = new QNetworkAccessManager(this);
@@ -1178,9 +1178,9 @@ void database_comunication::serverRequest(serverRequestType type, QStringList ke
         networkRequest.setRawHeader(QString("Content-Length").toLatin1(),
                                     QString::number(postData.length()).toLatin1());
 
-        QNetworkReply *nr = networkManager->post(networkRequest,postData);
-        QObject::connect(this, &database_comunication::cancelDownload
-                         , nr, &QNetworkReply::abort);
+        /*QNetworkReply *nr =*/ networkManager->post(networkRequest,postData);
+//        QObject::connect(this, &database_comunication::cancelDownload
+//                         , nr, &QNetworkReply::abort);
     }
 
 }
