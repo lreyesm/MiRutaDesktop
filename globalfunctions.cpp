@@ -75,6 +75,11 @@ void GlobalFunctions::execJavaScriptCode(QString code) //param code: JavaScript 
     // Since the QScriptEngine is created on the method stack, it will be deleted automatically when the method ends.
 }
 
+void GlobalFunctions::setDelay(int delay_ms){
+    QEventLoop loop;
+    QTimer::singleShot(delay_ms, &loop, &QEventLoop::quit);
+    loop.exec();
+}
 QString GlobalFunctions::readEmpresaSelected(){
     QString empresa = "";
     QFile data_base_empresa_selected(empresa_selected_file); // ficheros .dat se puede utilizar formato txt tambien

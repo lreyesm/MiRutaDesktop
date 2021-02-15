@@ -62,10 +62,10 @@ Tabla::Tabla(QWidget *parent, QString empresa) :
     ef->setOffset(1);
     ui->pb_gestor_inicial_seleccionado->setGraphicsEffect(ef);
 
-//    QGraphicsDropShadowEffect* eff = new QGraphicsDropShadowEffect(this);//dar sombra a borde del widget
-//    eff->setBlurRadius(20);
-//    eff->setOffset(20);
-//    ui->widget_menu->setGraphicsEffect(eff);
+    //    QGraphicsDropShadowEffect* eff = new QGraphicsDropShadowEffect(this);//dar sombra a borde del widget
+    //    eff->setBlurRadius(20);
+    //    eff->setOffset(20);
+    //    ui->widget_menu->setGraphicsEffect(eff);
 
     ui->rb_todas->setChecked(true);
     fillMapaTiposTareas();
@@ -2039,13 +2039,13 @@ void Tabla::on_actionNueva_Tarea_triggered()
     connect(oneTareaScreen, &other_task_screen::updateITACs,this, &Tabla::updateITACsServerInfo);
     oneTareaScreen->toogleEdit(true, true);
     oneTareaScreen->setAttribute(Qt::WA_DeleteOnClose);
-//    QRect rect = QGuiApplication::screens().first()->geometry();
-//    if(rect.width() <= 1366
-//            && rect.height() <= 768){
-        oneTareaScreen->showMaximized();
-//    }else {
-//        oneTareaScreen->show();
-//    }
+    //    QRect rect = QGuiApplication::screens().first()->geometry();
+    //    if(rect.width() <= 1366
+    //            && rect.height() <= 768){
+    oneTareaScreen->showMaximized();
+    //    }else {
+    //        oneTareaScreen->show();
+    //    }
 }
 void Tabla::updateITACsServerInfo(){
     ui->statusbar->showMessage("Actualizando ITACs",3000);
@@ -2099,15 +2099,16 @@ void Tabla::openTareaX(QString numin){
     //    connect(oneTareaScreen, &other_task_screen::closing,oneTareaScreen, &other_task_screen::deleteLater);
 
     oneTareaScreen->setAttribute(Qt::WA_DeleteOnClose);
-//    QRect rect = QGuiApplication::screens().first()->geometry();
-//    if(rect.width() <= 1366
-//            && rect.height() <= 768){
-        oneTareaScreen->showMaximized();
-//    }else {
-//        oneTareaScreen->show();
-//    }
-    oneTareaScreen->populateView();
-    oneTareaScreen->createAutoPDF(false);
+    //    QRect rect = QGuiApplication::screens().first()->geometry();
+    //    if(rect.width() <= 1366
+    //            && rect.height() <= 768){
+    oneTareaScreen->showMaximized();
+    //    }else {
+    //        oneTareaScreen->show();
+    //    }
+    if(oneTareaScreen->populateView()){
+        oneTareaScreen->createAutoPDF(false);
+    }
 }
 void Tabla::abrirTareaX(int index){
     QJsonObject o;
@@ -2139,15 +2140,16 @@ void Tabla::abrirTareaX(int index){
     //    connect(oneTareaScreen, &other_task_screen::closing, oneTareaScreen, &other_task_screen::deleteLater);
 
     oneTareaScreen->setAttribute(Qt::WA_DeleteOnClose);
-//    QRect rect = QGuiApplication::screens().first()->geometry();
-//    if(rect.width() <= 1366
-//            && rect.height() <= 768){
-        oneTareaScreen->showMaximized();
-//    }else {
-//        oneTareaScreen->show();
-//    }
-    oneTareaScreen->populateView();
-    oneTareaScreen->createAutoPDF(false);
+    //    QRect rect = QGuiApplication::screens().first()->geometry();
+    //    if(rect.width() <= 1366
+    //            && rect.height() <= 768){
+    oneTareaScreen->showMaximized();
+    //    }else {
+    //        oneTareaScreen->show();
+    //    }
+    if(oneTareaScreen->populateView()){
+        oneTareaScreen->createAutoPDF(false);
+    }
 }
 void Tabla::getContadoresToCompleter(){
     emit abrirTablaContadores(false);

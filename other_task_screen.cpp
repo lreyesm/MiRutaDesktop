@@ -277,6 +277,35 @@ void other_task_screen::mousePressEvent(QMouseEvent *e) ///al reimplementar esta
     emit mouse_pressed();
     QWidget::mousePressEvent(e);
 }
+
+void other_task_screen::mouseReleaseEvent(QMouseEvent *e) ///al reimplementar esta funcion deja de funcionar el evento pressed
+{
+    Q_UNUSED(e);
+    emit mouse_Release();
+}
+
+void other_task_screen::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    on_pb_maximizar_clicked();
+    QWidget::mouseDoubleClickEvent(event);
+}
+
+void other_task_screen::closeEvent(QCloseEvent *event)
+{
+    closing_window = true;
+    timerChangingGeoCode.stop();
+    disconnect(&timerChangingGeoCode,SIGNAL(timeout()),this,SLOT(setGeoCodeByCodEmplazamiento()));
+    timer.stop();
+    disconnect(&timer,SIGNAL(timeout()),this,SLOT(requestContadoresList()));
+    //OJO no quitar esto puede dar fallos en asignar campos comunes**************************************************
+    o = QJsonObject();
+    tarea_a_actualizar = QJsonObject();
+    clear_all_pictures();
+    //End OJO no quitar esto puede dar fallos en asignar campos comunes**************************************************
+    hidingLoading();
+    emit closing();
+    QWidget::closeEvent(event);
+}
 void other_task_screen::hideMenu(const QString from){
     Q_UNUSED(from);
     ui->l_opciones_pdf->hideChilds();
@@ -378,7 +407,9 @@ void other_task_screen::ordenarLista(QStringList &array, QString order){
 void other_task_screen::getContadoresList(QString serie){
     GlobalFunctions gf(this, empresa);
     QStringList numeros_serie_de_contadores = gf.getContadoresList(true, serie);
-
+    if(closing_window){
+        return;
+    }
     completer_numeros_serie = new QCompleter(numeros_serie_de_contadores, this);
     completer_numeros_serie_devueltos = new QCompleter(numeros_serie_de_contadores, this);
 
@@ -1177,7 +1208,7 @@ void other_task_screen::populateDataView(){
     //       ui->le_RESTO_EM->setText(ui->le_RESTEMPLAZA->text());
     //    }
 }
-void other_task_screen::populateView(bool load_photos)
+bool other_task_screen::populateView(bool load_photos)
 {
 
     populateDataView();//popular los datos de la tarea
@@ -1237,7 +1268,11 @@ void other_task_screen::populateView(bool load_photos)
 
         for(int i = 0, reintentos = 0; i < cant_fotos; i++)
         {
-            connect(&database_com, SIGNAL(alredyAnswered(QByteArray,database_comunication::serverRequestType)),this, SLOT(serverAnswer(QByteArray,database_comunication::serverRequestType)));
+            if(closing_window){
+                return false;
+            }
+            connect(&database_com, SIGNAL(alredyAnswered(QByteArray,database_comunication::serverRequestType)),
+                    this, SLOT(serverAnswer(QByteArray,database_comunication::serverRequestType)));
             //OJO ESPERAR POR RESPUESTA
             QEventLoop q;
             connect(this, &other_task_screen::script_excecution_result,&q,&QEventLoop::exit);
@@ -1298,33 +1333,42 @@ void other_task_screen::populateView(bool load_photos)
             switch (q.exec())
             {
             case database_comunication::script_result::timeout:
-                i--;
-                reintentos++;
-                if(reintentos == RETRIES)
-                {
-                    GlobalFunctions gf(this);
-                    GlobalFunctions::showWarning(this,"Error de comunicación con el servidor","No se pudo completar la solucitud por un error de comunicación con el servidor.");
-                    i = cant_fotos;
+                if(!closing_window){
+                    i--;
+                    reintentos++;
+                    if(reintentos == RETRIES)
+                    {
+                        GlobalFunctions gf(this);
+                        GlobalFunctions::showWarning(this,"Error de comunicación con el servidor","No se pudo completar la solucitud por un error de comunicación con el servidor.");
+                        i = cant_fotos;
+                    }
                 }
                 break;
 
             case database_comunication::script_result::download_task_image_failed:
-                if(currentPhotoLooking > 0 && currentPhotoLooking < 9){
-                    my_labels[currentPhotoLooking-1]->setDefaultPhoto(true);
+                if(!closing_window){
+                    if(currentPhotoLooking > 0 && currentPhotoLooking < 9){
+                        my_labels[currentPhotoLooking-1]->setDefaultPhoto(true);
+                    }
+                    loadLocalPhoto(currentPhotoLooking);
+                    emit hidingLoading();
                 }
-                loadLocalPhoto(currentPhotoLooking);
-                emit hidingLoading();
                 break;
 
             case database_comunication::script_result::download_task_image_picture_doesnt_exists:
-                if(currentPhotoLooking > 0 && currentPhotoLooking < 9){
-                    my_labels[currentPhotoLooking-1]->setDefaultPhoto(true);
+                if(!closing_window){
+                    if(currentPhotoLooking > 0 && currentPhotoLooking < 9){
+                        my_labels[currentPhotoLooking-1]->setDefaultPhoto(true);
+                    }
+                    loadLocalPhoto(currentPhotoLooking);
+                    emit hidingLoading();
                 }
-                loadLocalPhoto(currentPhotoLooking);
-                emit hidingLoading();
                 break;
 
             case database_comunication::script_result::ok:
+                if(closing_window){
+                    return false;
+                }
                 emit hidingLoading();
                 break;
             }
@@ -1332,10 +1376,12 @@ void other_task_screen::populateView(bool load_photos)
 
         emit imagesDownloaded();
 
-        createAlternativePhotos();
+        if(!closing_window){
+            createAlternativePhotos();
 
-        if(descargarAudio()){
-            ui->pb_play_audio->show();
+            if(descargarAudio()){
+                ui->pb_play_audio->show();
+            }
         }
     }
 
@@ -1345,7 +1391,11 @@ void other_task_screen::populateView(bool load_photos)
     //        emit getContadoresFromServer();
     //    }
     //////////////////////////////////////////////////////////////////////////////////////end cargar fotos
-    ui->pb_update_server_info->setEnabled(true);
+    if(!closing_window){
+        ui->pb_update_server_info->setEnabled(true);
+        return true;
+    }
+    return false;
 }
 void other_task_screen::displayLoading(my_label *label){
     if(label->isDefaultPhoto()){
@@ -2873,12 +2923,8 @@ void other_task_screen::getPhotosLocal(){
 }
 void other_task_screen::serverAnswer(QByteArray ba, database_comunication::serverRequestType tipo)
 {
-
     QString respuesta = QString::fromUtf8(ba);
     int result = -1;
-    //    GlobalFunctions gf(this);
-    //        GlobalFunctions::showWarning(this,"Éxito","Entro: tipo -> "+ QString::number(tipo)+"\nRespuesta: "+ respuesta);
-    //    ui->plainTextEdit->setPlainText(respuesta);
     if(tipo == database_comunication::DOWNLOAD_TASK_IMAGE)
     {
         disconnect(&database_com, SIGNAL(alredyAnswered(QByteArray,database_comunication::serverRequestType)),this, SLOT(serverAnswer(QByteArray,database_comunication::serverRequestType)));
@@ -3209,6 +3255,7 @@ void other_task_screen::clear_all_pictures()
     ui->lb_foto_incidencia_3->clear();
     ui->lb_firma_cliente->clear();
 }
+
 void other_task_screen::checkAndFillEmptyField(){
     QString emplaza_dv = ui->le_emplazamiento_devuelto->text().trimmed();
     QString rest_dv = ui->le_RESTO_EM->text().trimmed();
@@ -3228,7 +3275,7 @@ void other_task_screen::checkAndFillEmptyField(){
 void other_task_screen::on_pb_cerrar_tarea_clicked()
 {
     if(true/*QMessageBox::question(this,"Cerrando Tarea","Seguro que desea cerrar esta tarea?",
-                                                                                                                                                                                                                                                                                                                                                                                             QMessageBox::Ok, QMessageBox::No)== QMessageBox::Ok*/){
+                                                                                                                                                                                                                                                                                                                                                                                                                             QMessageBox::Ok, QMessageBox::No)== QMessageBox::Ok*/){
 
         tarea_a_actualizar.insert(status_tarea, "CLOSED");
         QString timestamp = QDateTime::currentDateTime().toString(formato_fecha_hora_new_view);
@@ -3741,12 +3788,10 @@ void other_task_screen::mailSent(QString status)
     if(status == "Message sent")
     {
         //       smtp->disconnect();
-
         show_loading("Mensaje Enviado");
         timer.setInterval(2000);
         connect(&timer,SIGNAL(timeout()),this,SLOT(close_message()));
         timer.start();
-
         //       GlobalFunctions::showMessage(this,"Información","Mensaje Enviado");
         //       ui->statusBar->showMessage("Ok","Mensaje Enviado !");
 
@@ -4313,24 +4358,24 @@ QJsonObject other_task_screen::set_date_from_status(QJsonObject object, QString 
 
 void other_task_screen::on_le_status_tarea_editingFinished()
 {
-//    QString status = tarea_a_actualizar.value(status_tarea).toString();
-//    status = status.toUpper();
-//    if(status!="IDLE" && status!="IDLE TO_BAT" && status!="IDLE CITA" && status!="DONE"
-//            && status!="CLOSED" && status!="INFORMADA" && status!="REQUERIDA"){
-//        GlobalFunctions gf(this);
-//        GlobalFunctions::showWarning(this,"Campo no válido","No se puede ingresar este estado de tarea porque no es válido");
-//        tarea_a_actualizar.insert(status_tarea, o.value(status_tarea).toString().trimmed());
-//    }
-//    else{
-//        tarea_a_actualizar.insert(status_tarea, status);
-//        o.insert(status_tarea, status);
-//        QString fecha_status = get_date_from_status(o, status);
-//        if(!checkIfFieldIsValid(fecha_status)){
-//            fecha_status = QDateTime::currentDateTime().toString(formato_fecha_hora);
-//            o = set_date_from_status(o, status, fecha_status);
-//            populateView(false);
-//        }
-//    }
+    //    QString status = tarea_a_actualizar.value(status_tarea).toString();
+    //    status = status.toUpper();
+    //    if(status!="IDLE" && status!="IDLE TO_BAT" && status!="IDLE CITA" && status!="DONE"
+    //            && status!="CLOSED" && status!="INFORMADA" && status!="REQUERIDA"){
+    //        GlobalFunctions gf(this);
+    //        GlobalFunctions::showWarning(this,"Campo no válido","No se puede ingresar este estado de tarea porque no es válido");
+    //        tarea_a_actualizar.insert(status_tarea, o.value(status_tarea).toString().trimmed());
+    //    }
+    //    else{
+    //        tarea_a_actualizar.insert(status_tarea, status);
+    //        o.insert(status_tarea, status);
+    //        QString fecha_status = get_date_from_status(o, status);
+    //        if(!checkIfFieldIsValid(fecha_status)){
+    //            fecha_status = QDateTime::currentDateTime().toString(formato_fecha_hora);
+    //            o = set_date_from_status(o, status, fecha_status);
+    //            populateView(false);
+    //        }
+    //    }
 }
 
 void other_task_screen::on_le_telefono2_editingFinished()
@@ -4597,6 +4642,9 @@ void other_task_screen::setGeoCodeByCodEmplazamiento()
     QString zona_l = Ruta::getZonaRutaFromCodEmplazamiento(cod_emplazamiento);
 
     QJsonObject jsonObjectRuta = Ruta::getRutaObjectFromCodEmplamiento(cod_emplazamiento);
+    if(closing_window){
+        return;
+    }
     if(!jsonObjectRuta.isEmpty()){
         QString radio_l = jsonObjectRuta.value(radio_portal_rutas).toString();
         QString zona_l = jsonObjectRuta.value(barrio_rutas).toString();
@@ -4610,6 +4658,9 @@ void other_task_screen::setGeoCodeByCodEmplazamiento()
     }
 
     QString geoCode = ITAC::getGeoCodeFromCodeItac(cod_emplazamiento);
+    if(closing_window){
+        return;
+    }
     if(checkIfFieldIsValid(geoCode)){
 
         if(tarea_a_actualizar.value(url_geolocalizacion).toString() != "https://maps.google.com/?q="+geoCode){
@@ -4623,7 +4674,6 @@ void other_task_screen::setGeoCodeByCodEmplazamiento()
         ui->le_geolocalizacion->setText(geoCode);
         ui->le_url_google_maps->setText("https://maps.google.com/?q="+geoCode);
     }
-
 }
 void other_task_screen::on_le_codigo_geolocalizacion_textChanged(const QString &arg1)
 {
@@ -4705,6 +4755,9 @@ void other_task_screen::on_le_numero_serie_contador_devuelto_textEdited(const QS
     }
 }
 void other_task_screen::requestContadoresList(){
+    if(closing_window){
+        return;
+    }
     disconnect(&timer,SIGNAL(timeout()),this,SLOT(requestContadoresList()));
     if(devuelto){
         lastSerieRequested = ui->le_numero_serie_contador_devuelto->text();

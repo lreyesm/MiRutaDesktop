@@ -24,7 +24,7 @@ class other_task_screen : public QDialog
 public:
     explicit other_task_screen(QWidget *parent = nullptr, bool sin_revisar = false, bool mostrar_botones = true, QString empresa = "");
     ~other_task_screen();
-    void populateView(bool load_photos = true);
+    bool populateView(bool load_photos = true);
     bool static checkIfFieldIsValid(QString var);
     static QStringList readModifiedTasks();
     static void writeModifiedTasks(QStringList);
@@ -143,26 +143,9 @@ public slots:
 
 protected slots:
     void mousePressEvent(QMouseEvent *e); ///al reimplementar esta funcion deja de funcionar el evento pressed
-    void mouseReleaseEvent(QMouseEvent *e) ///al reimplementar esta funcion deja de funcionar el evento pressed
-    {
-        Q_UNUSED(e);
-        emit mouse_Release();
-    }
-    void mouseDoubleClickEvent(QMouseEvent *event)
-    {
-        on_pb_maximizar_clicked();
-        QWidget::mouseDoubleClickEvent(event);
-    }
-    void closeEvent(QCloseEvent *event)
-    {
-        hide_loading();
-        o = QJsonObject();
-        tarea_a_actualizar = QJsonObject();
-        clear_all_pictures();
-//        database_com.cancelRequests();        
-        emit closing();
-        QWidget::closeEvent(event);
-    }
+    void mouseReleaseEvent(QMouseEvent *e);
+    void mouseDoubleClickEvent(QMouseEvent *event);
+    void closeEvent(QCloseEvent *event);
 private slots:
     void getData(QJsonObject);
     void on_pb_edit_clicked();
@@ -343,6 +326,7 @@ private:
     QString observacion_seleccionada="";
     QString lastSerieRequested = "";
     bool devuelto = true;
+    bool closing_window = false;
 };
 
 #endif // OTHER_TASK_SCREEN_H

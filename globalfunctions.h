@@ -95,6 +95,8 @@ public:
 
     static void execJavaScriptCode(QString code);
 
+    static void setDelay(int delay_ms);
+
 signals:
     void script_excecution_result(int);
 

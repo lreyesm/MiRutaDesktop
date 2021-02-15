@@ -733,6 +733,15 @@ QLabel:hover:!pressed{
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ir a vista anterior de tabla&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
+               <property name="styleSheet">
+                <string notr="true">QLabel{
+	border-radius: 5px;
+
+}
+QLabel:hover:!pressed{
+	  background-color: #EEEEEE; 
+}</string>
+               </property>
                <property name="text">
                 <string/>
                </property>

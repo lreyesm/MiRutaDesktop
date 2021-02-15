@@ -446,8 +446,8 @@ void MainWindow::iniciateFiles(){
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    on_pb_cruz_clicked();
     QWidget::closeEvent(event);
+    QApplication::closeAllWindows();
 }
 
 void MainWindow::readVariablesInDB(QDataStream &in){
@@ -1143,7 +1143,6 @@ void MainWindow::on_pb_punta_flecha_clicked()
 void MainWindow::on_pb_cruz_clicked()
 {
     this->close();
-    QApplication::closeAllWindows();
 }
 
 void MainWindow::on_pb_cargar_dat_clicked(QString order)
