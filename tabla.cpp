@@ -2622,7 +2622,7 @@ void Tabla::informarTareas(QString order)
                     qDebug() << jsonObject.value(TIPORDEN).toString();
 
                     if(oneTareaScreen != nullptr){
-                        oneTareaScreen->on_pb_close_clicked();
+                        oneTareaScreen->clearTask();
                     }
                     oneTareaScreen->setShowMesageBox(false);
 
@@ -3898,7 +3898,7 @@ void Tabla::on_actionAsignar_campos_comunes_triggered()
                         }
 
                         if(oneTareaScreen != nullptr){
-                            oneTareaScreen->on_pb_close_clicked();
+                            oneTareaScreen->clearTask();
                         }
                         oneTareaScreen->setShowMesageBox(false);
 
@@ -4073,7 +4073,7 @@ void Tabla::on_actionDescargar_Fotos()
 
             oneTareaScreen->populateView(true);
             oneTareaScreen->createAutoPDF(false, true);
-            oneTareaScreen->on_pb_close_clicked();
+            oneTareaScreen->clearTask();
         }
     }
     oneTareaScreen->deleteLater();

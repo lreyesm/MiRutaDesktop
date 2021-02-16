@@ -1940,7 +1940,7 @@ void screen_tabla_tareas::on_pb_insert_task_to_one_operator_clicked()
 
                     o.insert(operario,operatorName);
 
-                    oneTareaScreen->on_pb_close_clicked();
+                    oneTareaScreen->clearTask();
 
                     oneTareaScreen->setShowMesageBox(false);
 

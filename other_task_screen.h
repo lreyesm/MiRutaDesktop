@@ -98,6 +98,7 @@ public:
 
     bool checkDisponibleAudio();
     void loadLocalPhoto(int currentPhoto);
+    void clearTask();
 signals:
     void hidingLoading();
     void mouse_pressed();

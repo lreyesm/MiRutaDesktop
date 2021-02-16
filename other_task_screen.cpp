@@ -19,7 +19,6 @@
 #include <QPrinter>
 #include <QPrintDialog>
 #include "maildialog.h"
-
 #include "obtener_geolocalizacion.h"
 #include "informe_instalacion_servicios.h"
 #include "marca.h"
@@ -290,6 +289,12 @@ void other_task_screen::mouseDoubleClickEvent(QMouseEvent *event)
     QWidget::mouseDoubleClickEvent(event);
 }
 
+
+void other_task_screen::on_pb_close_clicked()
+{
+    this->close();
+}
+
 void other_task_screen::closeEvent(QCloseEvent *event)
 {
     closing_window = true;
@@ -297,14 +302,16 @@ void other_task_screen::closeEvent(QCloseEvent *event)
     disconnect(&timerChangingGeoCode,SIGNAL(timeout()),this,SLOT(setGeoCodeByCodEmplazamiento()));
     timer.stop();
     disconnect(&timer,SIGNAL(timeout()),this,SLOT(requestContadoresList()));
+    hidingLoading();
+    emit closing();
+    QWidget::closeEvent(event);
+}
+void other_task_screen::clearTask(){
     //OJO no quitar esto puede dar fallos en asignar campos comunes**************************************************
     o = QJsonObject();
     tarea_a_actualizar = QJsonObject();
     clear_all_pictures();
     //End OJO no quitar esto puede dar fallos en asignar campos comunes**************************************************
-    hidingLoading();
-    emit closing();
-    QWidget::closeEvent(event);
 }
 void other_task_screen::hideMenu(const QString from){
     Q_UNUSED(from);
@@ -3184,11 +3191,6 @@ void other_task_screen::serverAnswer(QByteArray ba, database_comunication::serve
         }
     }
     emit script_excecution_result(result);
-}
-
-void other_task_screen::on_pb_close_clicked()
-{
-    this->close();
 }
 
 void other_task_screen::on_drag_screen()
