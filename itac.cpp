@@ -926,11 +926,11 @@ bool ITAC::subirITAC(QString codigo){
     }
     delete q;
     subirPhoto();
-    if(geo_modified){
+//    if(geo_modified){
         updateTareas();
         emit changedGeoCode(ui->le_geolocalizacion->text().trimmed());
         emit updateTableTareas();
-    }
+//    }
     return res;
 }
 

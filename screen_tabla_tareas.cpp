@@ -493,10 +493,20 @@ QMap<QString, QString> screen_tabla_tareas::mapExcelImport(QStringList listHeade
     map.insert("POBLACION",poblacion);
     map.insert("POBLACIÓN",poblacion);
 
+    map.insert("ESC",propiedad);
+    map.insert("ORD_RUT",reparacion);
+    map.insert("CONT PADRE",ruta);
+
     map.insert("CALLE",calle);
+    map.insert("DES_VIA",calle);
     map.insert("Nº",numero);
     map.insert("NUM",numero);
+    map.insert("NUM_EDIF",numero);
+    map.insert("NÚMERO",numero);
+    map.insert("NUMERO",numero);
+    map.insert("PORTAL",numero);
     map.insert("BIS",BIS);
+    map.insert("BLOQUE",BIS);
     map.insert("PISO",piso);
     map.insert("MANO",mano);
     map.insert("PUERTA",mano);
@@ -507,6 +517,7 @@ QMap<QString, QString> screen_tabla_tareas::mapExcelImport(QStringList listHeade
     map.insert("PREFIJO",CONTADOR_Prefijo_anno);
 
     map.insert("CONTADOR",numero_serie_contador);
+    map.insert("NUM_CONT",numero_serie_contador);
     map.insert("Nº SERIE",numero_serie_contador);
     map.insert("NºSERIE",numero_serie_contador);
     map.insert("N SERIE",numero_serie_contador);
@@ -544,6 +555,7 @@ QMap<QString, QString> screen_tabla_tareas::mapExcelImport(QStringList listHeade
     map.insert("APELLIDO 2",nombre_cliente);
 
     map.insert("REF",numero_abonado);
+    map.insert("CONTRATO",numero_abonado);
     map.insert("ABONADO",numero_abonado);
     map.insert("NºABONADO",numero_abonado);
     map.insert("Nº ABONADO",numero_abonado);
@@ -576,9 +588,12 @@ QMap<QString, QString> screen_tabla_tareas::mapExcelImport(QStringList listHeade
     map.insert("ZONAS",zona);
     map.insert("SECTOR",zona);
     map.insert("SECTOR P",zona);
+    map.insert("DES_RUT",zona);
+
     map.insert("RUTA",ruta);
 
     map.insert("MARCA",marca_contador);
+    map.insert("MARCA ACT",marca_contador);
     map.insert("MARCA CONTADOR",marca_contador);
     map.insert("MARCA DE CONTADOR",marca_contador);
 
@@ -1000,11 +1015,11 @@ QJsonArray screen_tabla_tareas::parse_to_QjsonArray(QString path)
                     else if(checkIfFieldIsValid(header)){
                         if(header.contains("Latitud", Qt::CaseInsensitive)){
                             QString contenido_en_excel = row_content.at(j);
-                            latitud = contenido_en_excel.trimmed();
+                            latitud = contenido_en_excel.trimmed().replace(",", ".");
                         }
                         if(header.contains("Longitud", Qt::CaseInsensitive)){
                             QString contenido_en_excel = row_content.at(j);
-                            longitud = contenido_en_excel.trimmed();
+                            longitud = contenido_en_excel.trimmed().replace(",", ".");
                         }
                     }
                 }
@@ -1051,6 +1066,14 @@ QJsonArray screen_tabla_tareas::parse_to_QjsonArray(QString path)
                 o.insert(telefono1, tels);
                 o.insert(telefono2, tel2);
 
+                QString portal = o.value(numero).toString().trimmed();
+                if(portal.size() < 3){
+                    while(portal.size() < 3){
+                        portal = "0" + portal;
+                    }
+                    o.insert(numero, portal);
+                }
+
                 o = buscarGeolocalizacion(o);
                 o = buscarCitasEnObservaciones(o);
                 o = buscarTelefonosEnObservaciones(o);
@@ -1063,7 +1086,7 @@ QJsonArray screen_tabla_tareas::parse_to_QjsonArray(QString path)
                     }else{
                         bis.prepend("-");
                     }
-                    QString portal = o.value(numero).toString().trimmed();
+                    QString portal = o.value(numero).toString().trimmed();                   
                     QString ruta_l = o.value(ruta).toString().trimmed();
                     bool ok;
                     int port_int = portal.toInt(&ok);
@@ -1089,7 +1112,7 @@ QJsonArray screen_tabla_tareas::parse_to_QjsonArray(QString path)
                 QString geocode = o.value(codigo_de_localizacion).toString();
                 if(!checkIfFieldIsValid(geocode)){
                     if(checkIfFieldIsValid(latitud) && checkIfFieldIsValid(longitud)){
-                        QString geocode = longitud + "," + latitud;
+                        QString geocode = latitud + "," + longitud;
                         o.insert(codigo_de_localizacion, geocode);
                         o.insert(geolocalizacion, geocode);
                         o.insert(url_geolocalizacion, "https://maps.google.com/?q=" + geocode);
