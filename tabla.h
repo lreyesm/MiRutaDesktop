@@ -430,6 +430,7 @@ private slots:
 
     void add_causas_to_select();
     void add_calibres_to_select(const QString &anomalia);
+    void update_itacs_fields_request();
 private:
     Ui::Tabla *ui;
     QThread thread;
@@ -590,6 +591,7 @@ private:
 
     bool getTareasCustomQuery(QString query, int id_start = 0);
     bool filter_enabled = false;
+    bool updateITACs(QStringList lista_cod_emplazamientos, QJsonObject campos);
 };
 
 #endif // TABLA_H

@@ -2442,7 +2442,9 @@ void other_task_screen::on_pb_update_server_info_clicked()
                     case database_comunication::script_result::ok:
                         result = database_comunication::script_result::task_to_server_ok;
                         if(!geoCodeChanged){
-                            emit task_upload_excecution_result(result);
+                            if(!closing_window){
+                                emit task_upload_excecution_result(result);
+                            }
                         }
                         if(showMesageBox)
                         {
@@ -2477,7 +2479,9 @@ void other_task_screen::on_pb_update_server_info_clicked()
                 case database_comunication::script_result::ok:
                     result = database_comunication::script_result::task_to_server_ok;
                     if(!geoCodeChanged){
-                        emit task_upload_excecution_result(result);
+                        if(!closing_window){
+                            emit task_upload_excecution_result(result);
+                        }
                     }
                     if(showMesageBox)
                     {
@@ -2557,7 +2561,9 @@ void other_task_screen::on_pb_update_server_info_clicked()
         //mostrar cartel en consecuencia si esta todo ok o si hubo error
         if(result != database_comunication::script_result::task_to_server_ok){
             if(!geoCodeChanged){
-                emit task_upload_excecution_result(result);
+                if(!closing_window){
+                    emit task_upload_excecution_result(result);
+                }
             }
         }
     }
@@ -2641,7 +2647,9 @@ void other_task_screen::on_pb_update_server_info_clicked()
 
         QJsonArray jsonArray = readJsonArrayTasks();
         updateTaskInJsonArrayAllLocal(jsonArray, tarea_a_actualizar);
-        emit task_upload_excecution_result(database_comunication::task_to_server_ok);
+        if(!closing_window){
+            emit task_upload_excecution_result(database_comunication::task_to_server_ok);
+        }
         if(!this->isHidden() ){
             GlobalFunctions::showMessage(this,"Información actualizada","Información actualizada en el respaldo local satisfactoriamente.");
         }
@@ -2652,7 +2660,9 @@ void other_task_screen::on_pb_update_server_info_clicked()
         updateTareas();
         updateITACsGeoCode();
         emit updateITACs();
-        emit task_upload_excecution_result(result);
+        if(!closing_window){
+            emit task_upload_excecution_result(result);
+        }
     }
     hide_loading();
 }
@@ -3277,7 +3287,7 @@ void other_task_screen::checkAndFillEmptyField(){
 void other_task_screen::on_pb_cerrar_tarea_clicked()
 {
     if(true/*QMessageBox::question(this,"Cerrando Tarea","Seguro que desea cerrar esta tarea?",
-                                                                                                                                                                                                                                                                                                                                                                                                                             QMessageBox::Ok, QMessageBox::No)== QMessageBox::Ok*/){
+                                                                                                                                                                                                                                                                                                                                                                                                                                     QMessageBox::Ok, QMessageBox::No)== QMessageBox::Ok*/){
 
         tarea_a_actualizar.insert(status_tarea, "CLOSED");
         QString timestamp = QDateTime::currentDateTime().toString(formato_fecha_hora_new_view);
@@ -3931,10 +3941,13 @@ void other_task_screen::update_itacs_fields_request(){
             this, SLOT(serverAnswer(QByteArray,database_comunication::serverRequestType)));
     database_com.serverRequest(database_comunication::serverRequestType::UPDATE_ITAC_FIELDS,keys,values);
 }
-void  other_task_screen::updateITACsGeoCode(){
+bool other_task_screen::updateITACsGeoCode(){
 
     QStringList cods_emplazamiento;
     QString cod_emplazamiento = ui->le_codigo_geolocalizacion->text().trimmed();
+    if(!GlobalFunctions::checkIfFieldIsValid(cod_emplazamiento)){
+        return false;
+    }
 
     GlobalFunctions gf(this, empresa);
     if(gf.checkIfItacExist(cod_emplazamiento)){
@@ -3946,9 +3959,10 @@ void  other_task_screen::updateITACsGeoCode(){
         if(checkIfFieldIsValid(geoCode)){
             QJsonObject campos;
             campos.insert(geolocalizacion_itacs, geoCode);
-            updateITAC(cods_emplazamiento, campos);
+            return updateITAC(cods_emplazamiento, campos);
         }
     }
+    return false;
 }
 bool other_task_screen::updateITAC(QStringList lista_cod_emplazamientos, QJsonObject campos){
 
@@ -4007,6 +4021,9 @@ bool other_task_screen::updateTareas(){
     QString numIn, geoCodeCasa = tarea_a_actualizar.value(geolocalizacion).toString();
     QString geoCodeMano = tarea_a_actualizar.value(codigo_de_localizacion).toString();
     QString cod_emplazamiento_itac = ui->le_codigo_geolocalizacion->text().trimmed();
+    if(!GlobalFunctions::checkIfFieldIsValid(cod_emplazamiento_itac)){
+        return false;
+    }
     QJsonObject numeros_internos;
     QJsonObject campos;
     QJsonObject tarea;
@@ -4212,7 +4229,6 @@ bool other_task_screen::on_pb_tarea_sin_revisar_clicked()
 
     numeros_internos.insert("1", o.value(numero_interno).toString().trimmed());
     campos.insert(ultima_modificacion, "ESCRITORIO "+ administrator_loged);
-    //    campos.insert(date_time_modified, QDateTime::currentDateTime().toString(formato_fecha_hora));//ver si esto es necesario
 
     QStringList keys, values;
     QJsonDocument d;
@@ -4632,7 +4648,9 @@ void other_task_screen::updateITACsFromServer(){
     emit updateITACs();
 }
 void other_task_screen::updateTareasFromServer(){
-    emit task_upload_excecution_result(database_comunication::task_to_server_ok);
+    if(!closing_window){
+        emit task_upload_excecution_result(database_comunication::task_to_server_ok);
+    }
 }
 
 void other_task_screen::setGeoCodeByCodEmplazamiento()

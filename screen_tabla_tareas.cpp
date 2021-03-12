@@ -1118,6 +1118,10 @@ QJsonArray screen_tabla_tareas::parse_to_QjsonArray(QString path)
                         o.insert(url_geolocalizacion, "https://maps.google.com/?q=" + geocode);
                     }
                 }
+                cod_emplazamiento = o.value(codigo_de_geolocalizacion).toString();
+                if(!checkIfFieldIsValid(cod_emplazamiento)){
+                    o.insert(codigo_de_geolocalizacion, o.value(numero_abonado).toString().trimmed());
+                }
 
                 o.remove("");
                 if(!o.isEmpty() /*&& checkValidDirFields(o)*/){

@@ -41,6 +41,7 @@
 #include <dbtareascontroller.h>
 #include "QProgressIndicator.h"
 #include "screen_table_clientes.h"
+#include "structure_itac.h"
 #include "globalfunctions.h"
 
 using namespace QXlsx;
@@ -3974,7 +3975,7 @@ void Tabla::on_actionAsignar_campos_comunes_triggered()
                 }
             }else{
                 QJsonObject o, campos;
-                QStringList numeros_internos_list;
+                QStringList numeros_internos_list, emplazament_codes;
                 for(int i=0; i< selection.count(); i++)
                 {
                     QModelIndex index = selection.at(i);
@@ -3998,6 +3999,26 @@ void Tabla::on_actionAsignar_campos_comunes_triggered()
                     QString status = campos.value(status_tarea).toString();
                     if(status.contains(state_informada)){
                         campos = set_date_from_status(campos, status, QDateTime::currentDateTime().toString(formato_fecha_hora));
+                    }
+                }
+                if(fields_selected.keys().contains(equipo)){
+                    QJsonObject campos_itacs;
+                    QString team_value = fields_selected.value(equipo, "");
+                    campos_itacs.insert(equipo, team_value);
+                    if(updateITACs(emplazament_codes, campos_itacs)){
+                        ui->statusbar->showMessage("Asignados ITACs correctamente");
+                    }else{
+                        ui->statusbar->showMessage("Fallo Asignando ITACs");
+                    }
+                }
+                if(fields_selected.keys().contains(operario)){
+                    QJsonObject campos_itacs;
+                    QString operator_value = fields_selected.value(operario, "");
+                    campos_itacs.insert(operario, operator_value);
+                    if(updateITACs(emplazament_codes, campos_itacs)){
+                        ui->statusbar->showMessage("Asignados ITACs correctamente");
+                    }else{
+                        ui->statusbar->showMessage("Fallo Asignando ITACs");
                     }
                 }
                 campos.insert(date_time_modified,QDateTime::currentDateTime().toString(formato_fecha_hora));
@@ -4141,7 +4162,7 @@ void Tabla::on_actionAsignar_a_un_equipo_triggered(){
             ui->statusbar->showMessage("Espere, Asignando equipo...");
             QJsonArray jsonArray = getCurrentJsonArrayInTable();
             QJsonObject o, campos;
-            QStringList numeros_internos_list;
+            QStringList numeros_internos_list, emplazament_codes;
             for(int i=0; i< selection.count(); i++)
             {
                 QModelIndex index = selection.at(i);
@@ -4150,10 +4171,24 @@ void Tabla::on_actionAsignar_a_un_equipo_triggered(){
                 if(jsonArray.size() > posicion){
                     o = jsonArray[posicion].toObject();
                     numeros_internos_list << o.value(numero_interno).toString();
+                    if(!emplazament_codes.contains(o.value(codigo_de_geolocalizacion).toString())){
+                        emplazament_codes << o.value(codigo_de_geolocalizacion).toString();
+                    }
                 }
             }
-            campos.insert(equipo,equipoName);
-            campos.insert(date_time_modified,QDateTime::currentDateTime().toString(formato_fecha_hora));
+            campos.insert(equipo, equipoName);
+            QString date_now = QDateTime::currentDateTime().toString(formato_fecha_hora);
+            campos.insert(date_time_modified, date_now);
+            if(!emplazament_codes.isEmpty()){
+                QJsonObject campos_itacs;
+                campos_itacs.insert(equipo_itacs, equipoName);
+                campos_itacs.insert(date_time_modified_itacs, date_now);
+                if(updateITACs(emplazament_codes, campos_itacs)){
+                    ui->statusbar->showMessage("Asignados ITACs correctamente");
+                }else{
+                    ui->statusbar->showMessage("Fallo Asignando ITACs");
+                }
+            }
             if(update_fields(numeros_internos_list, campos)){
                 GlobalFunctions::showMessage(this,"Éxito","Información actualizada en el servidor");
                 ui->statusbar->showMessage("Asignado correctamente");
@@ -4197,7 +4232,7 @@ void Tabla::on_actionAsignar_a_un_operario_triggered()
             ui->statusbar->showMessage("Espere, Asignando operario...");
             QJsonArray jsonArray = getCurrentJsonArrayInTable();
             QJsonObject o, campos;
-            QStringList numeros_internos_list;
+            QStringList numeros_internos_list, emplazament_codes;
             for(int i=0; i< selection.count(); i++)
             {
                 QModelIndex index = selection.at(i);
@@ -4206,11 +4241,25 @@ void Tabla::on_actionAsignar_a_un_operario_triggered()
                 if(jsonArray.size() > posicion){
                     o = jsonArray[posicion].toObject();
                     numeros_internos_list << o.value(numero_interno).toString();
+                    if(!emplazament_codes.contains(o.value(codigo_de_geolocalizacion).toString())){
+                        emplazament_codes << o.value(codigo_de_geolocalizacion).toString();
+                    }
                 }
             }
             campos.insert(operario,operatorName);
-            campos.insert(date_time_modified,QDateTime::currentDateTime().toString(formato_fecha_hora));
+            QString date_now = QDateTime::currentDateTime().toString(formato_fecha_hora);
+            campos.insert(date_time_modified, date_now);
 
+            if(!emplazament_codes.isEmpty()){
+                QJsonObject campos_itacs;
+                campos_itacs.insert(operario_itacs, operatorName);
+                campos_itacs.insert(date_time_modified_itacs, date_now);
+                if(updateITACs(emplazament_codes, campos_itacs)){
+                    ui->statusbar->showMessage("Asignados ITACs correctamente");
+                }else{
+                    ui->statusbar->showMessage("Fallo Asignando ITACs");
+                }
+            }
             if(update_fields(numeros_internos_list, campos)){
                 GlobalFunctions::showMessage(this,"Éxito","Información actualizada en el servidor");
                 ui->statusbar->showMessage("Asignado correctamente");
@@ -6866,6 +6915,66 @@ void Tabla::on_le_a_filtrar_returnPressed()
 }
 //End Nuevo -----------------------------------------------------------------------------------------
 
+void Tabla::update_itacs_fields_request(){
+    connect(&database_com, SIGNAL(alredyAnswered(QByteArray,database_comunication::serverRequestType)),
+            this, SLOT(serverAnswer(QByteArray,database_comunication::serverRequestType)));
+    database_com.serverRequest(database_comunication::serverRequestType::UPDATE_ITAC_FIELDS,keys,values);
+}
+
+
+bool Tabla::updateITACs(QStringList lista_cod_emplazamientos, QJsonObject campos){
+
+    QJsonObject cod_emplazamientos;
+
+    for (int i=0; i < lista_cod_emplazamientos.size(); i++) {
+        cod_emplazamientos.insert(QString::number(i), lista_cod_emplazamientos.at(i));
+    }
+    if(cod_emplazamientos.isEmpty()){
+        return true;
+    }
+    campos.insert(date_time_modified_itacs, QDateTime::currentDateTime().toString(formato_fecha_hora));
+
+    QStringList keys, values;
+    QJsonDocument d;
+    d.setObject(cod_emplazamientos);
+    QByteArray ba = d.toJson(QJsonDocument::Compact);
+    QString temp_fields, temp_numins = QString::fromUtf8(ba);
+
+    d.setObject(campos);
+    ba = d.toJson(QJsonDocument::Compact);
+    temp_fields = QString::fromUtf8(ba);
+
+    keys << "json_cod_emplazamientos" << "json_fields" << "empresa";
+    values << temp_numins << temp_fields << empresa.toLower();
+
+    this->keys = keys;
+    this->values = values;
+
+    QEventLoop *q = new QEventLoop();
+
+    connect(this, &Tabla::script_excecution_result,q,&QEventLoop::exit);
+
+    QTimer::singleShot(DELAY, this, &Tabla::update_itacs_fields_request);
+
+    bool res = false;
+    switch(q->exec())
+    {
+    case database_comunication::script_result::timeout:
+        res = false;
+        break;
+
+    case database_comunication::script_result::ok:
+        res = true;
+        break;
+
+    case database_comunication::script_result::update_itacs_fields_to_server_failed:
+        res = false;
+        break;
+    }
+    delete q;
+
+    return res;
+}
 
 bool Tabla::update_fields(QStringList numeros_internos_list, QJsonObject campos){
     QJsonObject numeros_internos;
@@ -7010,6 +7119,24 @@ void Tabla::serverAnswer(QByteArray ba, database_comunication::serverRequestType
         else
         {
             if(ba.contains("success ok update_tarea_fields"))
+            {
+                result = database_comunication::script_result::ok;
+            }
+        }
+    }
+    else if(tipo == database_comunication::UPDATE_ITAC_FIELDS)
+    {
+        qDebug()<<ba;
+        disconnect(&database_com, SIGNAL(alredyAnswered(QByteArray,database_comunication::serverRequestType)),
+                   this, SLOT(serverAnswer(QByteArray,database_comunication::serverRequestType)));
+
+        if(ba.contains("ot success update_itac_fields"))
+        {
+            result = database_comunication::script_result::update_itacs_fields_to_server_failed;
+        }
+        else
+        {
+            if(ba.contains("success ok update_itac_fields"))
             {
                 result = database_comunication::script_result::ok;
             }
