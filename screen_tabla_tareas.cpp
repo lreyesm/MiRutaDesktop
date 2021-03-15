@@ -188,7 +188,7 @@ void screen_tabla_tareas::fixModelForTable(QJsonArray jsonArray)
     fecha = "Fech.Import";
     mapa.insert(fecha,FechImportacion);
 
-    mapa.insert("IdOrdCABB",idOrdenCABB);
+    mapa.insert("Id.Ord",idOrdenCABB);
     mapa.insert("Causa Origen",ANOMALIA);
     mapa.insert("Prefijo",CONTADOR_Prefijo_anno);
     mapa.insert("Marca",marca_contador);
@@ -209,7 +209,7 @@ void screen_tabla_tareas::fixModelForTable(QJsonArray jsonArray)
     mapa.insert("Lectura",lectura_ultima);
     mapa.insert("Observaciones",observaciones);
 
-    mapa_alt.insert("IdOrdCABB",idOrdenCABB);
+    mapa_alt.insert("Id.Ord",idOrdenCABB);
     mapa_alt.insert("Causa Origen",ANOMALIA);
     mapa_alt.insert("Prefijo",CONTADOR_Prefijo_anno);
     mapa_alt.insert("Marca",marca_contador);
@@ -235,7 +235,7 @@ void screen_tabla_tareas::fixModelForTable(QJsonArray jsonArray)
     //    for(int i=0; i< mapa.keys().size(); i++){
     //        listHeaders<<mapa.keys().at(i);
     //    }
-    listHeaders << "IdOrdCABB" << fecha << "Causa Origen" << "Prefijo"<<"Nº Serie"<< "Marca"
+    listHeaders << "Id.Ord" << fecha << "Causa Origen" << "Prefijo"<<"Nº Serie"<< "Marca"
                 <<"Calibre"<< "Actividad"<<"Emplaza." << "Acceso" << "Calle"<< "Portal" << "BIS"
                << "Piso" << "Mano" << "Población"<< "Nombre"  << "Nº Abonado" << "Ruta" << "Lectura" << "Observaciones";
 
@@ -485,6 +485,10 @@ QString screen_tabla_tareas::obtenerPrefijoDeSerie(QString serie){ //ok correcta
 QMap<QString, QString> screen_tabla_tareas::mapExcelImport(QStringList listHeaders){
     QMap<QString, QString> map;
     //campos de excel de entrada
+    map.insert("ID.ORD",idOrdenCABB);
+    map.insert("ID. ORD",idOrdenCABB);
+    map.insert("ID. ORDEN",idOrdenCABB);
+    map.insert("ID ORDEN",idOrdenCABB);
     map.insert("ORDEN",idOrdenCABB);
 
     map.insert("DIRECCION","DIRECCION");
@@ -505,6 +509,10 @@ QMap<QString, QString> screen_tabla_tareas::mapExcelImport(QStringList listHeade
     map.insert("NÚMERO",numero);
     map.insert("NUMERO",numero);
     map.insert("PORTAL",numero);
+    map.insert("NÚMERO PORTAL",numero);
+    map.insert("NUMERO PORTAL",numero);
+    map.insert("NÚMERO DE PORTAL",numero);
+    map.insert("NUMERO DE PORTAL",numero);
     map.insert("BIS",BIS);
     map.insert("BLOQUE",BIS);
     map.insert("PISO",piso);
@@ -517,6 +525,7 @@ QMap<QString, QString> screen_tabla_tareas::mapExcelImport(QStringList listHeade
     map.insert("PREFIJO",CONTADOR_Prefijo_anno);
 
     map.insert("CONTADOR",numero_serie_contador);
+    map.insert("CONTADOR",numero_serie_contador);
     map.insert("NUM_CONT",numero_serie_contador);
     map.insert("Nº SERIE",numero_serie_contador);
     map.insert("NºSERIE",numero_serie_contador);
@@ -524,6 +533,8 @@ QMap<QString, QString> screen_tabla_tareas::mapExcelImport(QStringList listHeade
     map.insert("SERIE",numero_serie_contador);
     map.insert("NUMERO SERIE",numero_serie_contador);
     map.insert("NÚMERO SERIE",numero_serie_contador);
+    map.insert("NUMERO SERIE DEL CONTADOR",numero_serie_contador);
+    map.insert("NÚMERO SERIE DEL CONTADOR",numero_serie_contador);
     map.insert("Nº SERIE CONT. RETIRADO",numero_serie_contador);
 
     map.insert("CALIBRE",calibre_toma);
@@ -1086,7 +1097,7 @@ QJsonArray screen_tabla_tareas::parse_to_QjsonArray(QString path)
                     }else{
                         bis.prepend("-");
                     }
-                    QString portal = o.value(numero).toString().trimmed();                   
+                    QString portal = o.value(numero).toString().trimmed();
                     QString ruta_l = o.value(ruta).toString().trimmed();
                     bool ok;
                     int port_int = portal.toInt(&ok);
