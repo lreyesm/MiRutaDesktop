@@ -6,7 +6,7 @@
 #include <QColor>
 
 
-static QString versionMiRuta = "V3.0.6";
+static QString versionMiRuta = "V3.0.7";
 static QColor color_blue_app = QColor(54,141,206);
 static QString limite_archivos_en_servidor = "256Mb";
 static QString formato_fecha_hora = "yyyy-MM-dd HH:mm:ss";
@@ -48,6 +48,7 @@ static QString administradores_descargadas = "BD/administradores_descargadas.dat
 static QString itacs_descargadas = "BD/itacs_descargadas.dat";
 static QString operarios_descargadas = "BD/operarios_descargadas.dat";
 static QString clientes_descargados = "BD/clientes_descargados.dat";
+static QString info_pagination = "BD/info_pagination.dat";
 
 static QString informacion_local = "BD/informacion_local.dat";
 static QString credentials = "BD/credentials.dat";

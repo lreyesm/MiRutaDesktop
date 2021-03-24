@@ -301,5 +301,6 @@
         <file alias="icons/warning_yellow.png">icons/warning_yellow.png</file>
         <file alias="icons/search_database.png">icons/search_database.png</file>
         <file alias="icons/database_export.png">icons/database_export.png</file>
+        <file alias="icons/database_config.png">icons/database_config.png</file>
     </qresource>
 </RCC>

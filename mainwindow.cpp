@@ -139,7 +139,7 @@ bool MainWindow::checkVersions(QString serverVersion){ //true si la version en s
 void MainWindow::callUpdater(){
     GlobalFunctions gf(this);
     if(gf.showQuestion(this, "Actualización disponible", "Desea actualizar Mi Ruta?",
-                             QMessageBox::Ok, QMessageBox::No) == QMessageBox::Ok){
+                       QMessageBox::Ok, QMessageBox::No) == QMessageBox::Ok){
         QDir dir = QDir::current();
         QFile file(dir.path()+"/Updater.exe");
         qDebug()<<"Abriendo updater" + file.fileName();
@@ -677,6 +677,8 @@ void MainWindow::openTableTareas(){
     descargarTablas();
 
     myTable = new Tabla(nullptr, empresa);
+    ui->pb_login->setEnabled(false);
+    connect(myTable, &Tabla::closing, this, &MainWindow::enableLoginButton);
     myTable->showMaximized();
     myTable->getTareas();
 
@@ -1254,13 +1256,6 @@ void MainWindow::on_pb_login_clicked()
     ui->statusBar->showMessage("Comprobando información...");
     show_loading();
 
-    if(myTable){
-        if(!myTable->isHidden()){
-            myTable->close();
-            delete myTable;
-        }
-    }
-
     if(database_com.checkConnection()){
         other_task_screen::conexion_activa = true;
         QEventLoop q;
@@ -1278,7 +1273,7 @@ void MainWindow::on_pb_login_clicked()
         case database_comunication::script_result::login_failed:
             ui->statusBar->showMessage("Nombre de usuario o contraseña incorrecto para esta empresa",2000);
             ui->pb_login->setEnabled(true);
-        GlobalFunctions::showWarning(this,"Error de autenticación","Nombre de Usuario o contraseña incorrectos.");
+            GlobalFunctions::showWarning(this,"Error de autenticación","Nombre de Usuario o contraseña incorrectos.");
             ui->lb_foto->setScaledContents(false);
             ui->lb_foto->setPixmap((QPixmap(":/icons/User_Big.png")));
             hide_loading();
@@ -1291,7 +1286,7 @@ void MainWindow::on_pb_login_clicked()
             saveCredentials(credential);
             ui->statusBar->showMessage("Bienvenido "+ui->le_username->text());
             other_task_screen::administrator_loged = ui->le_username->text().trimmed();
-//            save_login();
+            //            save_login();
             download_administrator_image();
             break;
         }
@@ -1301,12 +1296,16 @@ void MainWindow::on_pb_login_clicked()
         if(myTable == nullptr){
             other_task_screen::conexion_activa = false;
             myTable = new Tabla(nullptr, empresa);
+            ui->pb_login->setEnabled(false);
+            connect(myTable, &Tabla::closing, this, &MainWindow::enableLoginButton);
             conectarSignalsDeTabla(false);
             ui->pb_login->setEnabled(true);
         }
     }
 }
-
+void MainWindow::enableLoginButton(){
+    ui->pb_login->setEnabled(true);
+}
 void MainWindow::download_administrator_image()
 {
     QString empresa = Empresa::getCurrentFieldEmpresa(ui->l_empresa->text().trimmed());

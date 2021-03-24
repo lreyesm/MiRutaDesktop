@@ -43,6 +43,7 @@
 #include "screen_table_clientes.h"
 #include "structure_itac.h"
 #include "globalfunctions.h"
+#include "databaseoptions.h"
 
 using namespace QXlsx;
 
@@ -127,6 +128,20 @@ Tabla::Tabla(QWidget *parent, QString empresa) :
     connect(this, &Tabla::mouse_pressed, ui->l_current_pagination, &MyLabelSpinner::hideSpinnerList);
 
     connect(this, &Tabla::updateTableInfo,this, &Tabla::updateTareasInTable);
+
+    QFile file(info_pagination); // ficheros .dat se puede utilizar formato txt tambien
+    if(file.exists()){
+        if(file.open(QIODevice::ReadOnly))
+        {
+            QDataStream in(&file);
+            int cant = 0;
+            in>>cant;
+            if(cant > 0){
+                limit_pagination = cant;
+            }
+            file.close();
+        }
+    }
 
     this->setAttribute(Qt::WA_DeleteOnClose);
 }
@@ -7853,3 +7868,26 @@ void Tabla::on_cb_portal_currentIndexChanged(const QString &arg1)
     }
     hide_loading();
 }
+
+void Tabla::on_pb_database_config_clicked()
+{
+    DatabaseOptions *options = new DatabaseOptions(this, limit_pagination);
+    connect(options, &DatabaseOptions::sendTareasPorPagina, this, &Tabla::setTareasPorPagina);
+    options->show();
+}
+
+void Tabla::setTareasPorPagina(int cant){
+    limit_pagination = cant;
+    QFile file(info_pagination); // ficheros .dat se puede utilizar formato txt tambien
+    if(file.open(QIODevice::WriteOnly))
+    {
+        QDataStream out(&file);
+        out<<limit_pagination;
+        file.close();
+    }
+    on_rb_todas_clicked();
+}
+
+
+
+

@@ -40,6 +40,7 @@ SOURCES += \
     cliente.cpp \
     combobox.cpp \
     counter.cpp \
+    databaseoptions.cpp \
     daterangeselection.cpp \
     datetimewidget.cpp \
     dbtareascontroller.cpp \
@@ -167,6 +168,7 @@ HEADERS += \
     cliente.h \
     combobox.h \
     counter.h \
+    databaseoptions.h \
     daterangeselection.h \
     datetimewidget.h \
     dbtareascontroller.h \
@@ -313,6 +315,7 @@ FORMS += \
     clase.ui \
     cliente.ui \
     counter.ui \
+    databaseoptions.ui \
     daterangeselection.ui \
     datetimewidget.ui \
     emplazamiento.ui \

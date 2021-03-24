@@ -1033,6 +1033,40 @@ QPushButton:hover:!pressed{
               </layout>
              </item>
              <item>
+              <widget class="MyLabelAnimated" name="pb_database_config">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>35</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>35</width>
+                 <height>35</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QLabel{
+	border-radius: 5px;
+
+}
+QLabel:hover:!pressed{
+	  background-color: #EEEEEE; 
+}</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="pixmap">
+                <pixmap resource="assets.qrc">:/icons/database_config.png</pixmap>
+               </property>
+               <property name="scaledContents">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
               <spacer name="horizontalSpacer_22">
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>

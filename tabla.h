@@ -431,6 +431,9 @@ private slots:
     void add_causas_to_select();
     void add_calibres_to_select(const QString &anomalia);
     void update_itacs_fields_request();
+    void on_pb_database_config_clicked();
+
+    void setTareasPorPagina(int cant);
 private:
     Ui::Tabla *ui;
     QThread thread;
