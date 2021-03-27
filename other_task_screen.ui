@@ -1865,7 +1865,7 @@ color:rgb(50, 50, 50);</string>
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>-688</y>
+           <y>0</y>
            <width>1314</width>
            <height>1494</height>
           </rect>
@@ -9161,11 +9161,54 @@ QPushButton:hover:!pressed{
 }</string>
            </property>
            <property name="text">
-            <string>Agregar cita</string>
+            <string>Cita</string>
            </property>
            <property name="icon">
             <iconset resource="assets.qrc">
              <normaloff>:/icons/calendar.png</normaloff>:/icons/calendar.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>50</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pb_enviar_mensaje">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Segoe UI</family>
+             <pointsize>10</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{
+	border-radius: 6px;
+	color:rgb(120, 120, 120);
+}
+QPushButton:hover:!pressed{
+	  background-color: #EEEEEE; 
+}</string>
+           </property>
+           <property name="text">
+            <string>Whatsapp</string>
+           </property>
+           <property name="icon">
+            <iconset resource="assets.qrc">
+             <normaloff>:/icons/whatsapp.png</normaloff>:/icons/whatsapp.png</iconset>
            </property>
            <property name="iconSize">
             <size>

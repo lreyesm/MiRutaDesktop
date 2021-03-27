@@ -283,6 +283,8 @@ private slots:
 
     void on_le_numero_interno_textEdited(const QString &arg1);
 
+    void on_pb_enviar_mensaje_clicked();
+
 private:
     Ui::other_task_screen *ui;
     QTimer timerChangingGeoCode;

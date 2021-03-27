@@ -51,6 +51,7 @@
 #include "processesclass.h"
 #include "globalfunctions.h"
 #include "mylabelshine.h"
+#include "sendwhatsappmessage.h"
 
 QString other_task_screen::administrator_loged="";
 QString other_task_screen::last_operario="";
@@ -4818,4 +4819,18 @@ void other_task_screen::on_le_numero_interno_textEdited(const QString &arg1)
     else{
         ui->pb_update_server_info->setEnabled(true);
     }
+}
+
+void other_task_screen::on_pb_enviar_mensaje_clicked()
+{
+    QString phone1 = ui->le_telefono1->text();
+    QString phone2 = ui->le_telefono2->text();
+    if(!GlobalFunctions::checkIfFieldIsValid(phone1) && !GlobalFunctions::checkIfFieldIsValid(phone2)){
+        GlobalFunctions::showWarning(this, "Sin Teléfonos", "No hay teléfonos disponibles en esta tarea");
+        return;
+    }
+    SendWhatsappMessage *sendWhatsappMessage = new SendWhatsappMessage(this, phone1, phone2);
+    sendWhatsappMessage->setAttribute(Qt::WA_DeleteOnClose);
+    sendWhatsappMessage->show();
+
 }

@@ -144,6 +144,7 @@ SOURCES += \
     select_file_to_download.cpp \
     selection_priority.cpp \
     selectionorder.cpp \
+    sendwhatsappmessage.cpp \
     smtp.cpp \
     tabla.cpp \
     operator_selection_screen.cpp \
@@ -274,6 +275,7 @@ HEADERS += \
     select_file_to_download.h \
     selection_priority.h \
     selectionorder.h \
+    sendwhatsappmessage.h \
     smtp.h \
     structure_administrador.h \
     structure_calibre.h \
@@ -389,6 +391,7 @@ FORMS += \
     select_file_to_download.ui \
     selection_priority.ui \
     selectionorder.ui \
+    sendwhatsappmessage.ui \
     tabla.ui \
     operator_selection_screen.ui \
     navegador.ui \

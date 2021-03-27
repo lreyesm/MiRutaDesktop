@@ -303,5 +303,8 @@
         <file>icons/search_database.png</file>
         <file>icons/database_export.png</file>
         <file>icons/database_config.png</file>
+        <file>icons/whatsapp.png</file>
+        <file>icons/send.png</file>
+        <file>files/country_code.txt</file>
     </qresource>
 </RCC>
