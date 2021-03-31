@@ -260,6 +260,9 @@ QLabel:hover:!pressed{
            <height>60</height>
           </rect>
          </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tablas disponibles&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="styleSheet">
           <string notr="true">QLabel{
 	border-radius: 5px;
@@ -916,6 +919,9 @@ QLabel:hover:!pressed{
                    <height>28</height>
                   </size>
                  </property>
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Página anterior de la tabla de tareas&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
                  <property name="styleSheet">
                   <string notr="true">QPushButton{
 	border-radius: 5px;
@@ -1003,6 +1009,9 @@ QLabel:hover:!pressed{
                    <height>28</height>
                   </size>
                  </property>
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Página siguiente de la tabla de tareas&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
                  <property name="styleSheet">
                   <string notr="true">QPushButton{
 	border-radius: 5px;
@@ -1045,6 +1054,9 @@ QPushButton:hover:!pressed{
                  <width>35</width>
                  <height>35</height>
                 </size>
+               </property>
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configuración de base de datos&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="styleSheet">
                 <string notr="true">QLabel{
@@ -1094,6 +1106,9 @@ QLabel:hover:!pressed{
                <width>35</width>
                <height>35</height>
               </size>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opciones de filtrado de tabla de tareas&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="styleSheet">
               <string notr="true">QLabel{
@@ -1156,6 +1171,9 @@ QLabel:hover:!pressed{
                   <width>35</width>
                   <height>35</height>
                  </size>
+                </property>
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cerrar filtro seleccionado&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QLabel{
@@ -2778,6 +2796,9 @@ font: 10pt &quot;Segoe UI Semilight&quot;;</string>
                      <height>22</height>
                     </size>
                    </property>
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Añadir opción de filtrado de causa origen&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
                    <property name="styleSheet">
                     <string notr="true">QPushButton{
 	color: rgb(77, 77, 77);
@@ -4192,6 +4213,9 @@ QLabel:hover:!pressed{
                <pointsize>12</pointsize>
               </font>
              </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Logo del gestor seleccionado&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
              <property name="styleSheet">
               <string notr="true">color:rgb(50, 50, 50);</string>
              </property>
@@ -4266,6 +4290,9 @@ QPushButton:hover:!pressed{
                <family>Segoe UI</family>
                <pointsize>12</pointsize>
               </font>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Presiona para cambiar de gestor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="styleSheet">
               <string notr="true">QLabel{

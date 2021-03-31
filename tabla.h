@@ -434,6 +434,8 @@ private slots:
     void on_pb_database_config_clicked();
 
     void setTareasPorPagina(int cant);
+    void on_pushButton_clicked();
+
 private:
     Ui::Tabla *ui;
     QThread thread;
@@ -595,6 +597,12 @@ private:
     bool getTareasCustomQuery(QString query, int id_start = 0);
     bool filter_enabled = false;
     bool updateITACs(QStringList lista_cod_emplazamientos, QJsonObject campos);
+    QJsonArray importarExtraExcel();
+    void migrateExceltoExcel();
+
+    QJsonObject getJsonObjectInJsonArray(QJsonArray jsonArray, QString field, QString value);
+    QMap<QString, QString> mapExcelExtraImport(QStringList listHeaders);
+    void export_jsonArray_to_excel(QJsonArray jsonArray, QMap<QString, QString> mapa_exportacion, QStringList listHeaders);
 };
 
 #endif // TABLA_H

@@ -223,10 +223,13 @@ QPushButton:hover:!pressed{
    <property name="styleSheet">
     <string notr="true">QPlainTextEdit{
 	border-radius: 8px;
-	color:rgb(120, 120, 120);
+	color:rgb(77, 77, 77);
 	background-color: #EEEEEE; 
 }
 </string>
+   </property>
+   <property name="plainText">
+    <string>http://mraguas.com</string>
    </property>
   </widget>
   <widget class="QWidget" name="layoutWidget">
@@ -347,36 +350,27 @@ QLabel:hover:!pressed{
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <zorder>label_background</zorder>
-  <zorder>cb_phone_1</zorder>
-  <zorder>cb_phone_2</zorder>
-  <zorder>pb_close</zorder>
-  <zorder>lb_logo</zorder>
-  <zorder>layoutWidget_2</zorder>
-  <zorder>pt_message</zorder>
-  <zorder>layoutWidget</zorder>
-  <zorder>l_spinner_country</zorder>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>MyLabelSpinner</class>
-   <extends>QLabel</extends>
-   <header location="global">mylabelspinner.h</header>
-  </customwidget>
-  <customwidget>
-   <class>my_label</class>
-   <extends>QLabel</extends>
-   <header location="global">my_label.h</header>
-  </customwidget>
   <customwidget>
    <class>MyLabelAnimated</class>
    <extends>QLabel</extends>
    <header location="global">mylabelanimated.h</header>
   </customwidget>
   <customwidget>
+   <class>MyLabelSpinner</class>
+   <extends>QLabel</extends>
+   <header location="global">mylabelspinner.h</header>
+  </customwidget>
+  <customwidget>
    <class>MyLabelShine</class>
    <extends>QLabel</extends>
    <header location="global">mylabelshine.h</header>
+  </customwidget>
+  <customwidget>
+   <class>my_label</class>
+   <extends>QLabel</extends>
+   <header location="global">my_label.h</header>
   </customwidget>
  </customwidgets>
  <resources>
