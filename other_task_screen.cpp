@@ -4825,12 +4825,14 @@ void other_task_screen::on_pb_enviar_mensaje_clicked()
 {
     QString phone1 = ui->le_telefono1->text();
     QString phone2 = ui->le_telefono2->text();
+    QString dir = GlobalFunctions::getDirOfTask(tarea_a_actualizar);
+    QString gestor = ui->cb_gestor->currentText();
+    QString abonado = ui->le_numero_abonado->text();
     if(!GlobalFunctions::checkIfFieldIsValid(phone1) && !GlobalFunctions::checkIfFieldIsValid(phone2)){
         GlobalFunctions::showWarning(this, "Sin Teléfonos", "No hay teléfonos disponibles en esta tarea");
         return;
     }
-    SendWhatsappMessage *sendWhatsappMessage = new SendWhatsappMessage(this, phone1, phone2);
+    SendWhatsappMessage *sendWhatsappMessage = new SendWhatsappMessage(this, gestor, dir, abonado, phone1, phone2);
     sendWhatsappMessage->setAttribute(Qt::WA_DeleteOnClose);
     sendWhatsappMessage->show();
-
 }

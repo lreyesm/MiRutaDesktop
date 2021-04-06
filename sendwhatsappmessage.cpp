@@ -4,7 +4,7 @@
 #include <QJsonArray>
 #include "database_comunication.h"
 
-SendWhatsappMessage::SendWhatsappMessage(QWidget *parent, QString phone1, QString phone2) :
+SendWhatsappMessage::SendWhatsappMessage(QWidget *parent, QString gestor, QString dir, QString abonado, QString phone1, QString phone2) :
     QWidget(parent),
     ui(new Ui::SendWhatsappMessage)
 {
@@ -41,6 +41,13 @@ SendWhatsappMessage::SendWhatsappMessage(QWidget *parent, QString phone1, QStrin
     connect(ui->l_spinner_country, &MyLabelSpinner::itemSelected, this, &SendWhatsappMessage::setCountryCode);
 
     this->move(parent->width()/2-this->width()/2, parent->height()/2-this->height()/2);
+    QString messageText = "GESTOR: " + gestor;
+    messageText += "\n\nAviso de próximo cambio de contador en:";
+    messageText += "\n\nDIRECCIÓN: " + dir;
+    messageText += "\nABONADO: " + abonado;
+    messageText += "\n\n";
+
+    ui->pt_message->setPlainText(messageText);
 }
 
 SendWhatsappMessage::~SendWhatsappMessage()

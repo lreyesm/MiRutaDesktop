@@ -75,6 +75,34 @@ void GlobalFunctions::execJavaScriptCode(QString code) //param code: JavaScript 
     // Since the QScriptEngine is created on the method stack, it will be deleted automatically when the method ends.
 }
 
+QString GlobalFunctions::getDirOfTask(QJsonObject jsonObject){
+    QString dir = "";
+    QString field = jsonObject.value(poblacion).toString();
+    if(checkIfFieldIsValid(field)){
+        dir += field +", ";
+    }
+    field = jsonObject.value(calle).toString();
+    if(checkIfFieldIsValid(field)){
+        dir += field +", ";
+    }
+    field = jsonObject.value(numero).toString();
+    if(checkIfFieldIsValid(field)){
+        dir += field +" ";
+    }
+    field = jsonObject.value(BIS).toString();
+    if(checkIfFieldIsValid(field)){
+        dir += field+" ";
+    }
+    field = jsonObject.value(piso).toString();
+    if(checkIfFieldIsValid(field)){
+        dir += field+" ";
+    }
+    field = jsonObject.value(mano).toString();
+    if(checkIfFieldIsValid(field)){
+        dir += field;
+    }
+    return dir.trimmed();
+}
 void GlobalFunctions::setDelay(int delay_ms){
     QEventLoop loop;
     QTimer::singleShot(delay_ms, &loop, &QEventLoop::quit);

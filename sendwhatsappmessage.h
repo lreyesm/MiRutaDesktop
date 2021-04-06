@@ -12,7 +12,9 @@ class SendWhatsappMessage : public QWidget
     Q_OBJECT
 
 public:
-    explicit SendWhatsappMessage(QWidget *parent = nullptr, QString phone1 = "", QString phone2 = "");
+    explicit SendWhatsappMessage(QWidget *parent = nullptr, QString gestor = "",
+                                 QString dir = "", QString abonado = "",
+                                 QString phone1 = "", QString phone2 = "");
     ~SendWhatsappMessage();
 
     void setPhones(QString phone1, QString phone2);
