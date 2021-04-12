@@ -19,6 +19,7 @@
 #include <QDebug>
 #include "observationseletionscreen.h"
 #include "globalfunctions.h"
+#include "informe_instalacion_servicios.h"
 
 Fields_to_Assign::Fields_to_Assign(QWidget *parent, QString empresa) :
     QDialog(parent),
@@ -288,6 +289,9 @@ void Fields_to_Assign::on_buttonBox_accepted()
     if(!ui->le_BIS->text().isEmpty()){
         fields.insert(BIS, ui->le_BIS->text());
     }
+    if(!ui->le_resultado->text().isEmpty()){
+        fields.insert(resultado, ui->le_resultado->text());
+    }
     if(!ui->le_observaciones_devueltas->items().isEmpty()){
         QStringList list = ui->le_observaciones_devueltas->items();
         if(!list.isEmpty()){
@@ -400,4 +404,47 @@ void Fields_to_Assign::on_pb_add_observacion_clicked()
 void Fields_to_Assign::on_pb_erase_observacion_clicked()
 {
     ui->le_observaciones_devueltas->removeSelected();
+}
+
+void Fields_to_Assign::getData(QJsonObject fields_received)
+{
+    QStringList keys = fields_received.keys();
+    for(int i=0; i < keys.size(); i++){
+        QString key = keys.at(i);
+        QString value = fields_received.value(key).toString().trimmed();
+        if(GlobalFunctions::checkIfFieldIsValid(value)
+                && key != numero_abonado && key != ID_SAT){
+            fields.insert(key, value);
+        }
+    }
+}
+
+void Fields_to_Assign::on_pb_validacion_clicked()
+{
+    Informe_Instalacion_Servicios *informe = new Informe_Instalacion_Servicios(this, empresa);
+    QJsonObject jsonObject;
+    QStringList keys = fields.keys();
+    for(int i=0; i < keys.size(); i++){
+        QString key = keys.at(i);
+        QString value = fields.value(key).trimmed();
+        if(GlobalFunctions::checkIfFieldIsValid(value)
+                && key != numero_abonado && key != ID_SAT){
+            jsonObject.insert(key, value);
+        }
+    }
+    informe->setData(jsonObject);
+    informe->showWidgetData(false);
+
+    QEventLoop loop;
+    connect(informe, &Informe_Instalacion_Servicios::sendData, this,&Fields_to_Assign::getData);
+    connect(informe, &Informe_Instalacion_Servicios::finalizado_informe, &loop,&QEventLoop::exit);
+    connect(this, &Fields_to_Assign::closing, informe, &Informe_Instalacion_Servicios::close);
+    informe->show();
+    switch (loop.exec())
+    {
+    case QDialog::Accepted:
+        break;
+    case QDialog::Rejected:
+        break;
+    }
 }

@@ -299,10 +299,10 @@ void other_task_screen::on_pb_close_clicked()
 void other_task_screen::closeEvent(QCloseEvent *event)
 {
     closing_window = true;
-    timerChangingGeoCode.stop();
     disconnect(&timerChangingGeoCode,SIGNAL(timeout()),this,SLOT(setGeoCodeByCodEmplazamiento()));
-    timer.stop();
     disconnect(&timer,SIGNAL(timeout()),this,SLOT(requestContadoresList()));
+    timerChangingGeoCode.stop();
+    timer.stop();
     hidingLoading();
     emit closing();
     QWidget::closeEvent(event);
@@ -4659,6 +4659,9 @@ void other_task_screen::setGeoCodeByCodEmplazamiento()
     timerChangingGeoCode.stop();
     disconnect(&timerChangingGeoCode,SIGNAL(timeout()),this,SLOT(setGeoCodeByCodEmplazamiento()));
 
+    if(closing_window){
+        return;
+    }
     QString cod_emplazamiento = ui->le_codigo_geolocalizacion->text();
     QString zona_l = Ruta::getZonaRutaFromCodEmplazamiento(cod_emplazamiento);
 

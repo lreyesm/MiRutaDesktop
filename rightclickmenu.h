@@ -41,6 +41,8 @@ private slots:
 
     void on_pb_resumen_clicked();
 
+    void on_pb_send_message_clicked();
+
 private:
     Ui::RightClickMenu *ui;
 };

@@ -436,6 +436,7 @@ private slots:
     void setTareasPorPagina(int cant);
     void on_pushButton_clicked();
 
+    void on_actionSendMessage_triggered();
 private:
     Ui::Tabla *ui;
     QThread thread;
@@ -603,6 +604,8 @@ private:
     QJsonObject getJsonObjectInJsonArray(QJsonArray jsonArray, QString field, QString value);
     QMap<QString, QString> mapExcelExtraImport(QStringList listHeaders);
     void export_jsonArray_to_excel(QJsonArray jsonArray, QMap<QString, QString> mapa_exportacion, QStringList listHeaders);
+    void fixPortals();
+    void updateTask(QJsonObject jsonObject);
 };
 
 #endif // TABLA_H

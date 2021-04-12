@@ -110,3 +110,9 @@ void RightClickMenu::on_pb_resumen_clicked()
     this->close();
     emit clickPressed(RESUMEN_TAREAS);
 }
+
+void RightClickMenu::on_pb_send_message_clicked()
+{
+    this->close();
+    emit clickPressed(ENVIAR_MENSAJE);
+}

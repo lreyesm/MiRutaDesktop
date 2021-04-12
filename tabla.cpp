@@ -44,6 +44,7 @@
 #include "structure_itac.h"
 #include "globalfunctions.h"
 #include "databaseoptions.h"
+#include "sendwhatsappmessage.h"
 
 using namespace QXlsx;
 
@@ -269,7 +270,73 @@ void Tabla::export_jsonArray_to_excel(QJsonArray jsonArray, QMap<QString,QString
 
 void Tabla::on_pushButton_clicked()
 {
-    migrateExceltoExcel();
+    fixPortals();
+}
+
+void Tabla::fixPortals(){
+    QJsonArray jsonArrayExcel = importarExtraExcel();
+    QJsonArray jsonArrayInTable = getCurrentJsonArrayInTable();
+
+    show_loading("Subiendo ...");
+    int total = jsonArrayExcel.size();
+    for (int i=0; i < jsonArrayExcel.size(); i++) {
+        QJsonObject jsonObjectExcel = jsonArrayExcel.at(i).toObject();
+        QString abonado = jsonObjectExcel.value(numero_abonado).toString().trimmed();
+        QJsonObject jsonObjectInTable = getJsonObjectInJsonArray(jsonArrayInTable, numero_abonado, abonado);
+        if(!jsonObjectInTable.isEmpty()){
+            QString portal = jsonObjectExcel.value(numero).toString();
+            if(checkIfFieldIsValid(portal)){
+                jsonObjectInTable.insert(numero, portal);
+            }
+            QString nombre = jsonObjectExcel.value(nombre_cliente).toString();
+            jsonObjectInTable.insert(nombre_cliente, nombre);
+            setLoadingText("Subiendo  ( " + QString::number(i) + " / " + QString::number(total) + " ) ...");
+            updateTask(jsonObjectInTable);
+        }
+    }
+    hide_loading();
+}
+
+void Tabla::updateTask(QJsonObject jsonObject){
+
+    other_task_screen *oneTareaScreen = new other_task_screen(nullptr, false, true, empresa);
+
+    if(oneTareaScreen != nullptr){
+        oneTareaScreen->clearTask();
+    }
+    oneTareaScreen->setShowMesageBox(false);
+
+    connect(this, SIGNAL(sendData(QJsonObject)), oneTareaScreen, SLOT(getData(QJsonObject)));
+    emit sendData(jsonObject);
+    disconnect(this, SIGNAL(sendData(QJsonObject)), oneTareaScreen, SLOT(getData(QJsonObject)));
+
+    oneTareaScreen->populateView(false);
+
+    QEventLoop q;
+
+    connect(oneTareaScreen, &other_task_screen::task_upload_excecution_result, &q, &QEventLoop::exit);
+
+    oneTareaScreen->setShowMesageBox(false);
+
+    QTimer::singleShot(100, oneTareaScreen, SLOT(on_pb_update_server_info_clicked()));
+
+    GlobalFunctions gf(this);
+    switch(q.exec())
+    {
+    case database_comunication::script_result::timeout:
+        GlobalFunctions::showWarning(this,"Error de comunicación con el servidor","No se pudo completar la solucitud por un error de comunicación con el servidor.");
+        break;
+    case database_comunication::script_result::task_to_server_ok:
+        break;
+    case database_comunication::script_result::update_task_to_server_failed:
+        GlobalFunctions::showWarning(this,"Error de comunicación con el servidor","No se pudo completar la solucitud por un error de comunicación con el servidor.");
+        break;
+    case database_comunication::script_result::create_task_to_server_failed:
+        GlobalFunctions::showWarning(this,"Error de comunicación con el servidor","No se pudo completar la solucitud por un error de comunicación con el servidor.");
+        break;
+    }
+    disconnect(oneTareaScreen, &other_task_screen::task_upload_excecution_result, &q, &QEventLoop::exit);
+    oneTareaScreen->deleteLater();
 }
 
 QJsonObject Tabla::getJsonObjectInJsonArray(QJsonArray jsonArray, QString field, QString value){
@@ -1051,6 +1118,8 @@ QMap <QString,QString> Tabla::fillMapForFixModel(QStringList &listHeaders){
     mapa.insert("PISO",piso);
     mapa.insert("MANO",mano);
     mapa.insert("MUNICIPIO",poblacion);
+    mapa.insert("TELEFONO 1",telefono1);
+    mapa.insert("TELEFONO 2",telefono2);
     mapa.insert("NOMBRE",nombre_cliente);
     mapa.insert("ABONADO",numero_abonado);
     mapa.insert("CODLEC",ruta);
@@ -1093,11 +1162,10 @@ QMap <QString,QString> Tabla::fillMapForFixModel(QStringList &listHeaders){
     mapa.insert("C.EMPLAZAMIENTO",codigo_de_geolocalizacion);
     mapa.insert("Geolocalización",url_geolocalizacion);
 
-
     listHeaders <<"Id.Ord" << fecha << "CAUSA ORIGEN" << "C.ACCIÓN ORD." << "AREALIZAR"<< "INTERVENCI" <<"PROP."
                << "AÑO o PREFIJO"<<"SERIE" << "MARCA" << "CALIBRE"<< "RUEDAS" << "FECINST"
                << "ACTIVI" << "EMPLAZA" << "ACCESO"<< "CALLE"  << "NUME" << "BIS"
-               << "PISO"<<"MANO" << "MUNICIPIO" << "NOMBRE" << "ABONADO" << "CODLEC"
+               << "PISO"<<"MANO" << "MUNICIPIO" << "TELEFONO 1" << "TELEFONO 2" << "NOMBRE" << "ABONADO" << "CODLEC"
                << "FECEMISIO" << "DATOS ESPECIFICOS"<< "SECTOR P"<< "PRIORIDAD"<< "RS"  << "F_EJEC" << "LECT_INS" << "EMPLAZADV"
                << "RESTO_EM"  << "LECT_LEV" << "OBSERVADV"<< "Estado"  << "MARCADV" << "CALIBREDV"
                << "RUEDASDV"<<"LONGDV" << "seriedv" << "PREFIJO DV"<< "CAUSA DESTINO" << "intervencidv"
@@ -1385,7 +1453,7 @@ void Tabla::setTableView(bool delegate)
         sizes << 0.5/*ordCabb*/ << 1.2 /*Fech Import*/<< 1/*CausaOrigen*/<< 1/*c.AccionOrdenada*/<< 1.5/*ARealizar*/<< 2/*Intervenc*/
               <<  0.5/*PROPIEDAD*/ <<  1/*AÑO o PREFIJO*/ <<  1/*SERIE*/ << 1.8/* MARCA*/ <<  0.5/* CALIBRE*/ << 0.5/*ruedas*/ << 1.2/* FECINST*/
                <<  1.2/*ACTIVI */ <<  1.5/*EMPLAZA */ <<  1.5/*ACCESO */ <<  2/*CALLE */ <<  0.5/*NUME */ <<  0.5/* BIS*/ <<  0.5/* PISO*/
-                <<  0.5/*MANO */ <<  1.2/*MUNICIPIO */ <<  2.5/*NOMBRE */ << 1/*ABONADO */ <<  0.75/*CODLEC */ <<  1.2/*FECEMISIO */
+                <<  0.5/*MANO */ << 1.2/*MUNICIPIO */ << 1/*TELEFONO1 */ << 1/*TELEFONO2 */ << 2.5/*NOMBRE */ << 1/*ABONADO */ << 0.75/*CODLEC */ << 1.2/*FECEMISIO */
                  <<  3/*DATOS ESPECIFICOS */ <<  2/*SECTOR P */ <<  1/*prioridad */ <<  0.5/*RS */ <<  1.5/* F_EJEC*/ <<  0.75/* LECT_INS*/<<  2/*EMPLAZADV*/
                   <<  1/*RESTO_EM*/ <<  1/*LECT_LEV*/ <<  2/*OBSERVADV*/<<  0.5/*Estado*/ << 2/*MARCADV*/<<  0.75/*CALIBREDV*/ <<  0.75/*RUEDASDV*/
                    <<  0.5/*LONGDV*/<<  1.2/*seriedv*/ <<  0.75/*PREFIJO DV*/<<  1/*CAUSA DESTINO*/ <<  1/*intervencidv*/ << 1.2 /*FECH_CIERRE*/
@@ -4411,19 +4479,8 @@ void Tabla::on_actionAsignar_campos_comunes_triggered()
 
                         oneTareaScreen->populateView(false);
 
-                        //            QEventLoop q;
-
                         QEventLoop *q = new QEventLoop();
 
-#if (USE_TIMEOUT == 1)
-                        try{
-                            QTimer::singleShot(TIMEOUT, this, SLOT(conection_timeout()));
-                        }catch(QException e){
-                            e.raise();
-                            qDebug()<<"Excepcion del timer lanzada";
-                        }
-
-#endif
                         connect(oneTareaScreen, &other_task_screen::task_upload_excecution_result,q,&QEventLoop::exit);
 
                         oneTareaScreen->setShowMesageBox(false);
@@ -4635,6 +4692,46 @@ void Tabla::on_actionResumen_Tareas_triggered(){
         resumen->move(thisPos.x() + this->width()/2 -resumen->width()/2,
                       thisPos.y() + this->height()/2 -resumen->height()/2);
         resumen->show();
+    }
+}
+
+void Tabla::on_actionSendMessage_triggered(){
+    QModelIndexList selection = ui->tableView->selectionModel()->selectedRows();
+
+    if(selection.isEmpty()){
+        GlobalFunctions::showMessage(this,"Sin Selección","Debe seleccionar una tarea");
+        return;
+    }
+    int total = selection.count();
+    if(total > 1){
+        GlobalFunctions::showMessage(this,"Selección múltiple","Debe seleccionar solo una tarea");
+        return;
+    }
+    if(!selection.empty())
+    {
+        QJsonArray jsonArray = getCurrentJsonArrayInTable();
+        QJsonArray jsonArrayTareasForResumen;
+        for(int i=0; i< selection.count(); i++)
+        {
+            QModelIndex index = selection.at(i);
+            int posicion = index.row();
+
+            if(jsonArray.size() > posicion){
+                QJsonObject tarea = jsonArray.at(posicion).toObject();
+                QString phone1 = tarea.value(telefono1).toString();
+                QString phone2 = tarea.value(telefono2).toString();
+                QString dir = GlobalFunctions::getDirOfTask(tarea);
+                QString gestor = tarea.value(GESTOR).toString();
+                QString abonado = tarea.value(numero_abonado).toString();
+                if(!GlobalFunctions::checkIfFieldIsValid(phone1) && !GlobalFunctions::checkIfFieldIsValid(phone2)){
+                    GlobalFunctions::showWarning(this, "Sin Teléfonos", "No hay teléfonos disponibles en esta tarea");
+                    return;
+                }
+                SendWhatsappMessage *sendWhatsappMessage = new SendWhatsappMessage(this, gestor, dir, abonado, phone1, phone2);
+                sendWhatsappMessage->setAttribute(Qt::WA_DeleteOnClose);
+                sendWhatsappMessage->show();
+            }
+        }
     }
 }
 void Tabla::on_actionAsignar_a_un_equipo_triggered(){
@@ -5306,6 +5403,9 @@ void Tabla::getMenuClickedItem(int selected)
     else if(selected == RESUMEN_TAREAS){
         on_actionResumen_Tareas_triggered();
     }
+    else if(selected == ENVIAR_MENSAJE){
+        on_actionSendMessage_triggered();
+    }
     else if(selected == ASIGNAR_A_EQUIPO){
         on_actionAsignar_a_un_equipo_triggered();
     }
@@ -5581,6 +5681,10 @@ void Tabla::export_tasks_in_table_to_excel()
     mapa_exportacion.insert("LONGITUD CONTADOR INSTALADO",largo_devuelto);
     mapa_exportacion.insert("CÓDIGO DE EMPLAZAMIENTO",codigo_de_geolocalizacion);
     mapa_exportacion.insert("LINK GEOLOCALIZACIÓN",url_geolocalizacion);
+    mapa_exportacion.insert("FOTO ANTES DE INSTALACIÓN",foto_antes_instalacion);
+    mapa_exportacion.insert("FOTO NÚMERO SERIE",foto_numero_serie);
+    mapa_exportacion.insert("FOTO LECTURA",foto_lectura);
+    mapa_exportacion.insert("FOTO DESPUÉS DE INSTALACIÓN",foto_despues_instalacion);
     //    mapa_exportacion.insert("VER PDF de Trabajo","ordenarPDF");
 
     mapa_exportacion_alternativo.insert("Población",poblacion);
@@ -5619,6 +5723,10 @@ void Tabla::export_tasks_in_table_to_excel()
     mapa_exportacion_alternativo.insert("LONGITUD CONTADOR INSTALADO",largo_devuelto);
     mapa_exportacion_alternativo.insert("CÓDIGO DE EMPLAZAMIENTO",codigo_de_geolocalizacion);
     mapa_exportacion_alternativo.insert("LINK GEOLOCALIZACIÓN",url_geolocalizacion);
+    mapa_exportacion_alternativo.insert("FOTO ANTES DE INSTALACIÓN",foto_antes_instalacion);
+    mapa_exportacion_alternativo.insert("FOTO NÚMERO SERIE",foto_numero_serie);
+    mapa_exportacion_alternativo.insert("FOTO LECTURA",foto_lectura);
+    mapa_exportacion_alternativo.insert("FOTO DESPUÉS DE INSTALACIÓN",foto_despues_instalacion);
     //    mapa_exportacion_alternativo.insert("VER PDF de Trabajo","ordenarPDF");
 
     if(!rutaToXLSXFile_gestor_independiente.isNull() && !rutaToXLSXFile_gestor_independiente.isEmpty())
@@ -5636,7 +5744,9 @@ void Tabla::export_tasks_in_table_to_excel()
                                          <<"LECTURA DE CONTADOR INSTALADO"<< "Nº SERIE CONTADOR INSTALADO"
                                         <<"Nº ANTENA CONTADOR INSTALADO" << "CALIBRE CONTADOR INSTALADO"
                                        <<"MARCA CONTADOR INSTALADO" << "CLASE CONTADOR INSTALADO"<< "LONGITUD CONTADOR INSTALADO"
-                                      << "CÓDIGO DE EMPLAZAMIENTO" << "LINK GEOLOCALIZACIÓN" /*<< "VER PDF de Trabajo"*/;
+                                      << "CÓDIGO DE EMPLAZAMIENTO" << "LINK GEOLOCALIZACIÓN" /*<< "VER PDF de Trabajo"*/
+                                      << "FOTO ANTES DE INSTALACIÓN" << "FOTO NÚMERO SERIE"
+                                      << "FOTO LECTURA" << "FOTO DESPUÉS DE INSTALACIÓN";
 
         listHeaders_extendido << "Población" << "CALLE" << "Nº" << "BIS" << "PISO"
                               << "MANO" << "AÑO O PREFIJO CONT. RETIRADO" << "Nº SERIE CONT. RETIRADO"
@@ -5707,26 +5817,32 @@ void Tabla::export_tasks_in_table_to_excel()
         QString header;
         QString value_header;
         QString value_header_alternative;
+        QList<int> widths;
+        QString column;
+        foreach(column, listHeaders_gestor_independiente){
+            widths << column.size() + 2;
+        }
         for(int i = 0, row=2; i < rows; i++)
         {
             for(int n=0; n < listHeaders_gestor_independiente.count(); n++){
+                QJsonObject jsonObject = jsonArray[i].toObject();
                 header = listHeaders_gestor_independiente.at(n);
                 value_header = mapa_exportacion.value(header);
                 value_header_alternative = mapa_exportacion_alternativo.value(header);
                 QString temp;
                 //                if(header != "VER PDF de Trabajo"){
-                temp = jsonArray[i].toObject().value(value_header).toString();
+                temp = jsonObject.value(value_header).toString();
 
                 if(temp.isEmpty()){
-                    temp = jsonArray[i].toObject().value(value_header_alternative).toString();
+                    temp = jsonObject.value(value_header_alternative).toString();
                 }
                 if(value_header == telefono1){
-                    QString tel1 = jsonArray[i].toObject().value(telefono1).toString();
-                    QString tel2 = jsonArray[i].toObject().value(telefono2).toString();
+                    QString tel1 = jsonObject.value(telefono1).toString();
+                    QString tel2 = jsonObject.value(telefono2).toString();
                     temp = other_task_screen::nullity_check(tel1) + " " + other_task_screen::nullity_check(tel2);
                 }
                 if(value_header == numero_serie_contador){
-                    QString prefijo = jsonArray[i].toObject().value(CONTADOR_Prefijo_anno).toString();
+                    QString prefijo = jsonObject.value(CONTADOR_Prefijo_anno).toString();
                     if(checkIfFieldIsValid(prefijo)){
                         if(!prefijo.isEmpty() &&
                                 (temp.mid(0, prefijo.size()) == prefijo)){
@@ -5746,7 +5862,33 @@ void Tabla::export_tasks_in_table_to_excel()
                         temp.remove(temp.size()-1,1);
                     }
                 }
+                if(value_header.contains("foto_")){
+                    QString anomalia = jsonObject.value(ANOMALIA).toString();
+                    QString abonado = jsonObject.value(numero_abonado).toString();
+                    QString gestor = jsonObject.value(GESTOR).toString();
+                    QString foto_name = jsonObject.value(value_header).toString();
+                    if(checkIfFieldIsValid(foto_name)){
+                        QString url = database_comunication::url_mi_ruta
+                                + "Empresas/" + empresa + "/Gestores/" + gestor
+                                + "/fotos_tareas/" + abonado + "/" + anomalia
+                                + "/" + foto_name;
+                        temp = url;
+                    }
+                    else{
+                        temp = "";
+                    }
+                }
                 xlsx_gestor_independiente.write(row,n+1,temp);
+
+                int width = widths.at(n);
+                if(width < temp.size() && !value_header.contains("foto_")){
+                    width = temp.size() + 2;
+                    xlsx_gestor_independiente.setColumnWidth(n+1, width);
+                }else{
+                    if(i == 0){
+                        xlsx_gestor_independiente.setColumnWidth(n+1, width);
+                    }
+                }
             }
             row++;
         }

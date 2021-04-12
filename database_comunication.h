@@ -384,7 +384,7 @@ public:
     static QJsonObject getJsonObject(QByteArray byte_array);
     static QJsonArray getJsonArray(QByteArray byte_array);
     static QImage getImageFromString(QString str);
-
+    static QString url_mi_ruta;
     bool checkConnection();
     static bool checkInternetConnection();
     static QByteArray getFileData(QString filename_and_dir);

@@ -13,12 +13,20 @@ Informe_Instalacion_Servicios::Informe_Instalacion_Servicios(QWidget *parent, QS
     ui->setupUi(this);
     this->setWindowTitle("Informe de Instalaciones y Servicios");
     this->empresa = empresa;
-//    ui->statusbar->hide();
+    //    ui->statusbar->hide();
 }
 
 Informe_Instalacion_Servicios::~Informe_Instalacion_Servicios()
 {
     delete ui;
+}
+
+void Informe_Instalacion_Servicios::showWidgetData(bool show){
+    if(show){
+        ui->widget_task_data->show();
+    }else{
+        ui->widget_task_data->hide();
+    }
 }
 
 void Informe_Instalacion_Servicios::setData(QJsonObject o)
@@ -41,11 +49,11 @@ void Informe_Instalacion_Servicios::setData(QJsonObject o)
             jsonObjectInfo.insert(lastIDSAT_infos, id_sat_string);
         }
         if(!checkIfFieldIsValid(idOrden)){
-           int ultimoIDOrden = jsonObjectInfo.value(lastIDOrden_infos).toString().trimmed().toInt();
-           ultimoIDOrden++;
-           jsonObject.insert(idOrdenCABB, QString::number(ultimoIDOrden));
-           QString id_orden_string = QString::number(ultimoIDOrden);
-           jsonObjectInfo.insert(lastIDOrden_infos, id_orden_string);
+            int ultimoIDOrden = jsonObjectInfo.value(lastIDOrden_infos).toString().trimmed().toInt();
+            ultimoIDOrden++;
+            jsonObject.insert(idOrdenCABB, QString::number(ultimoIDOrden));
+            QString id_orden_string = QString::number(ultimoIDOrden);
+            jsonObjectInfo.insert(lastIDOrden_infos, id_orden_string);
         }
 
         info->actualizarInfoInServer(jsonObjectInfo);
