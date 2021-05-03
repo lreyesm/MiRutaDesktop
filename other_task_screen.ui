@@ -4049,6 +4049,57 @@ color:rgb(50, 50, 50);</string>
                           </spacer>
                          </item>
                          <item>
+                          <layout class="QVBoxLayout" name="verticalLayout_80">
+                           <property name="spacing">
+                            <number>4</number>
+                           </property>
+                           <item>
+                            <widget class="QLabel" name="lb_numero_serie_modulo">
+                             <property name="font">
+                              <font>
+                               <family>Segoe UI Semibold</family>
+                               <pointsize>10</pointsize>
+                               <weight>7</weight>
+                               <italic>false</italic>
+                               <bold>false</bold>
+                              </font>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">font: 63 10pt &quot;Segoe UI Semibold&quot;;</string>
+                             </property>
+                             <property name="text">
+                              <string>Número serie módulo:</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item>
+                            <widget class="QLineEdit" name="le_numero_serie_modulo">
+                             <property name="minimumSize">
+                              <size>
+                               <width>200</width>
+                               <height>0</height>
+                              </size>
+                             </property>
+                             <property name="font">
+                              <font>
+                               <family>Segoe UI</family>
+                               <pointsize>10</pointsize>
+                               <weight>7</weight>
+                               <italic>false</italic>
+                               <bold>false</bold>
+                              </font>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">background-color: #EEEEEE; 
+border-radius: 3px;
+color:rgb(50, 50, 50);
+font: 63 10pt &quot;Segoe UI&quot;;</string>
+                             </property>
+                            </widget>
+                           </item>
+                          </layout>
+                         </item>
+                         <item>
                           <layout class="QVBoxLayout" name="verticalLayout_30">
                            <item>
                             <widget class="QLabel" name="lb_tipoRadio">
@@ -4904,6 +4955,50 @@ color:rgb(50, 50, 50);</string>
                              </disabled>
                             </palette>
                            </property>
+                           <property name="font">
+                            <font>
+                             <family>Segoe UI</family>
+                             <pointsize>10</pointsize>
+                             <weight>50</weight>
+                             <italic>false</italic>
+                             <bold>false</bold>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">background-color: #EFEFEF; 
+border-radius: 3px;
+color:rgb(50, 50, 50);</string>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </item>
+                       <item>
+                        <layout class="QVBoxLayout" name="verticalLayout_24">
+                         <item>
+                          <widget class="QLabel" name="lb_emplazamiento_devuelto_2">
+                           <property name="font">
+                            <font>
+                             <family>Segoe UI Semibold</family>
+                             <pointsize>10</pointsize>
+                             <weight>7</weight>
+                             <italic>false</italic>
+                             <bold>false</bold>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">font: 63 10pt &quot;Segoe UI Semibold&quot;;</string>
+                           </property>
+                           <property name="text">
+                            <string>Número de precinto</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QLineEdit" name="le_numero_precinto">
                            <property name="font">
                             <font>
                              <family>Segoe UI</family>
@@ -6887,57 +6982,6 @@ font: 63 10pt &quot;Segoe UI&quot;;</string>
                    </item>
                    <item>
                     <widget class="QLineEdit" name="le_ubicacion_en_bateria">
-                     <property name="font">
-                      <font>
-                       <family>Segoe UI</family>
-                       <pointsize>10</pointsize>
-                       <weight>7</weight>
-                       <italic>false</italic>
-                       <bold>false</bold>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">background-color: #EEEEEE; 
-border-radius: 3px;
-color:rgb(50, 50, 50);
-font: 63 10pt &quot;Segoe UI&quot;;</string>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                 <item>
-                  <layout class="QVBoxLayout" name="verticalLayout_80">
-                   <property name="spacing">
-                    <number>4</number>
-                   </property>
-                   <item>
-                    <widget class="QLabel" name="lb_numero_serie_modulo">
-                     <property name="font">
-                      <font>
-                       <family>Segoe UI Semibold</family>
-                       <pointsize>10</pointsize>
-                       <weight>50</weight>
-                       <italic>false</italic>
-                       <bold>false</bold>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string>Número serie módulo:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLineEdit" name="le_numero_serie_modulo">
-                     <property name="minimumSize">
-                      <size>
-                       <width>200</width>
-                       <height>0</height>
-                      </size>
-                     </property>
                      <property name="font">
                       <font>
                        <family>Segoe UI</family>

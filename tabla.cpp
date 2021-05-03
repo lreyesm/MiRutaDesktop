@@ -145,6 +145,8 @@ Tabla::Tabla(QWidget *parent, QString empresa) :
     }
 
     this->setAttribute(Qt::WA_DeleteOnClose);
+
+    ui->pushButton->hide();
 }
 
 void Tabla::migrateExceltoExcel(){

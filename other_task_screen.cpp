@@ -1215,6 +1215,8 @@ void other_task_screen::populateDataView(){
     //       ui->le_emplazamiento_devuelto->setText(ui->le_emplazamiento->text());
     //       ui->le_RESTO_EM->setText(ui->le_RESTEMPLAZA->text());
     //    }
+
+    ui->le_numero_precinto->setText(this->nullity_check(o.value(numero_precinto).toString()));
 }
 bool other_task_screen::populateView(bool load_photos)
 {
@@ -2133,6 +2135,8 @@ QString other_task_screen::guardar_cambios()
     tarea_a_actualizar.insert(C_COMUNERO,ui->le_C_COMUNERO->text().trimmed());
     tarea_a_actualizar.insert(MENSAJE_LIBRE,ui->le_MENSAJE_LIBRE->text().trimmed());
     tarea_a_actualizar.insert(TIPO,ui->le_TIPO->text().trimmed());
+
+    tarea_a_actualizar.insert(numero_precinto, ui->le_numero_precinto->text().trimmed());
 
     return Numero_Interno;
 }
