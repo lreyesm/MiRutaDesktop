@@ -491,6 +491,11 @@ QMap<QString, QString> screen_tabla_tareas::mapExcelImport(QStringList listHeade
     map.insert("ID ORDEN",idOrdenCABB);
     map.insert("ORDEN",idOrdenCABB);
 
+
+    map.insert("NUMIN",numero_interno);
+    map.insert("NUMERO INTERNO",numero_interno);
+    map.insert("NÚMERO INTERNO",numero_interno);
+
     map.insert("DIRECCION","DIRECCION");
 
     map.insert("MUNICIPIO",poblacion);
@@ -636,6 +641,16 @@ QMap<QString, QString> screen_tabla_tareas::mapExcelImport(QStringList listHeade
     map.insert("UBICACIÓN EN BATERÍA", ubicacion_en_bateria);
     map.insert("UBICACION BATERÍA", ubicacion_en_bateria);
     map.insert("UBICACIÓN BATERIA", ubicacion_en_bateria);
+
+    map.insert("FECINST", fecha_instalacion);
+    map.insert("FECEMISIO", FECEMISIO);
+    map.insert("F_INST",  F_INST);
+    map.insert("FECH_CIERRE",FECH_CIERRE);
+    map.insert("FECHIMPORTACION", FechImportacion);
+    map.insert("FECH_CIERRENEW", fech_cierrenew);
+    map.insert("FECH_FACTURACION", fech_facturacion);
+    map.insert("FECH_INFORMACIONNEW", fech_informacionnew);
+    map.insert("F_INSTNEW", f_instnew);
 
     map.insert("PROPIEDAD",propiedad);
 
@@ -945,6 +960,12 @@ QJsonArray screen_tabla_tareas::parse_to_QjsonArray(QString path)
                 }
             }
             number_of_column = listHeaders.size();
+            QStringList fech_fields;
+//            fech_fields << "FECINST" << "FECEMISIO" << "F_INST"
+//                        << "FECH_CIERRE" << "FECHIMPORTACION"
+//                        << "FECH_CIERRENEW" << "FECH_FACTURACION"
+//                        << "FECH_INFORMACIONNEW" << "F_INSTNEW";
+
             QMap<QString, QString> map = mapExcelImport(listHeaders);
             //read data
             for(int i = 2; i <= number_of_row; i++)
@@ -1016,6 +1037,23 @@ QJsonArray screen_tabla_tareas::parse_to_QjsonArray(QString path)
                                             o.insert(fields.at(i), split.at(i).trimmed());
                                         }
                                     }
+                                }
+                            }
+//                            else if(fech_fields.contains(header)){
+//                                QString value_header = map.value(header);
+//                                QString contenido_en_excel = row_content.at(j).trimmed();
+//                                QDateTime dt = QDateTime::fromString(contenido_en_excel, "d/m/yyyy");
+//                                if(dt.isValid()){
+//                                    contenido_en_excel = dt.toString(formato_fecha_hora);
+//                                    o.insert(value_header, contenido_en_excel);
+//                                }
+//                            }
+                            else if(header.contains("NUMIN", Qt::CaseInsensitive)){
+                                QString value_header = map.value(header);
+                                QString contenido_en_excel = row_content.at(j);
+                                QString numin = contenido_en_excel.remove("NUMIN-").trimmed();
+                                if(checkIfFieldIsValid(numin)){
+                                    o.insert(numero_interno, numin);
                                 }
                             }
                             else{
