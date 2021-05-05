@@ -1311,6 +1311,12 @@ void GlobalFunctions::serverAnswer(QByteArray byte_array, database_comunication:
     }
     else if(tipo == database_comunication::GET_MULTIPLE_VALUES_FIELDS_CUSTOM_QUERY){
         jsonArrayAll = database_comunication::getJsonArray(byte_array);
+//        QFile file("BD/query.dat");
+//        if(file.open(QIODevice::WriteOnly)){
+//            file.write(byte_array);
+//            file.close();
+//        };
+//        qDebug()<<byte_array;
         result = database_comunication::script_result::ok;
     }
     else if(tipo == database_comunication::GET_RUTAS_AMOUNT)

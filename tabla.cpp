@@ -1161,6 +1161,7 @@ QMap <QString,QString> Tabla::fillMapForFixModel(QStringList &listHeaders){
     mapa.insert("tipoRadio",tipoRadio_devuelto);
     mapa.insert("REQUERIDA",marcaR);
     mapa.insert("Módulo",numero_serie_modulo);
+    mapa.insert("Número de Precinto",numero_precinto);
     mapa.insert("C.EMPLAZAMIENTO",codigo_de_geolocalizacion);
     mapa.insert("Geolocalización",url_geolocalizacion);
 
@@ -1173,7 +1174,7 @@ QMap <QString,QString> Tabla::fillMapForFixModel(QStringList &listHeaders){
                << "RUEDASDV"<<"LONGDV" << "seriedv" << "PREFIJO DV"<< "CAUSA DESTINO" << "intervencidv"
                << "FECH_CIERRE"<<"TIPORDEN" << "EQUIPO" << "OPERARIO" << "observaciones"<< "TIPOFLUIDO"<< "tipoRadio"
                << "REQUERIDA" << "idexport"<<"fech_cierrenew" << "fech_informacionnew"
-               << "Módulo" << "C.EMPLAZAMIENTO" << "Geolocalización";
+               << "Módulo" << "Número de Precinto" << "C.EMPLAZAMIENTO" << "Geolocalización";
 
     return mapa;
 }
@@ -1460,7 +1461,7 @@ void Tabla::setTableView(bool delegate)
                   <<  1/*RESTO_EM*/ <<  1/*LECT_LEV*/ <<  2/*OBSERVADV*/<<  0.5/*Estado*/ << 2/*MARCADV*/<<  0.75/*CALIBREDV*/ <<  0.75/*RUEDASDV*/
                    <<  0.5/*LONGDV*/<<  1.2/*seriedv*/ <<  0.75/*PREFIJO DV*/<<  1/*CAUSA DESTINO*/ <<  1/*intervencidv*/ << 1.2 /*FECH_CIERRE*/
                     <<  0.75/*TIPORDEN*/<<  1/*EQUIPO*/<<1/*OPERARIO*/<< 2 /*observaciones*/<< 1 /*TIPOFLUIDO*/<< 0.5 /*TIPORadio*/<< 0.75 /*Requerida*/<< 0.5/*idexport*/
-                     <<  1.2/*fech_cierrenew*/ <<  1.2/*fech_informacionnew*/<< 2.2/*Módulo*/<<  1.2/*C.EMPLAZAMIENTO*/<<  4/*Geolocalización*/<<1<<1;
+                     <<  1.2/*fech_cierrenew*/ <<  1.2/*fech_informacionnew*/<< 2.2/*Módulo*/ << 1.5/*Numero precinto*/ <<  1.2/*C.EMPLAZAMIENTO*/<<  4/*Geolocalización*/<<1<<1;
 
         QFont font = ui->tableView->font();
         int pointSize = font.pointSize();
@@ -5681,6 +5682,7 @@ void Tabla::export_tasks_in_table_to_excel()
     mapa_exportacion.insert("MARCA CONTADOR INSTALADO",marca_devuelta);
     mapa_exportacion.insert("CLASE CONTADOR INSTALADO",TIPO_devuelto);
     mapa_exportacion.insert("LONGITUD CONTADOR INSTALADO",largo_devuelto);
+    mapa_exportacion.insert("NÚMERO DE PRECINTO", numero_precinto);
     mapa_exportacion.insert("CÓDIGO DE EMPLAZAMIENTO",codigo_de_geolocalizacion);
     mapa_exportacion.insert("LINK GEOLOCALIZACIÓN",url_geolocalizacion);
     mapa_exportacion.insert("FOTO ANTES DE INSTALACIÓN",foto_antes_instalacion);
@@ -5723,6 +5725,7 @@ void Tabla::export_tasks_in_table_to_excel()
     mapa_exportacion_alternativo.insert("MARCA CONTADOR INSTALADO",marca_devuelta);
     mapa_exportacion_alternativo.insert("CLASE CONTADOR INSTALADO",TIPO_devuelto);
     mapa_exportacion_alternativo.insert("LONGITUD CONTADOR INSTALADO",largo_devuelto);
+    mapa_exportacion_alternativo.insert("NÚMERO DE PRECINTO", numero_precinto);
     mapa_exportacion_alternativo.insert("CÓDIGO DE EMPLAZAMIENTO",codigo_de_geolocalizacion);
     mapa_exportacion_alternativo.insert("LINK GEOLOCALIZACIÓN",url_geolocalizacion);
     mapa_exportacion_alternativo.insert("FOTO ANTES DE INSTALACIÓN",foto_antes_instalacion);
@@ -5746,7 +5749,7 @@ void Tabla::export_tasks_in_table_to_excel()
                                          <<"LECTURA DE CONTADOR INSTALADO"<< "Nº SERIE CONTADOR INSTALADO"
                                         <<"Nº ANTENA CONTADOR INSTALADO" << "CALIBRE CONTADOR INSTALADO"
                                        <<"MARCA CONTADOR INSTALADO" << "CLASE CONTADOR INSTALADO"<< "LONGITUD CONTADOR INSTALADO"
-                                      << "CÓDIGO DE EMPLAZAMIENTO" << "LINK GEOLOCALIZACIÓN" /*<< "VER PDF de Trabajo"*/
+                                      << "NÚMERO DE PRECINTO" << "CÓDIGO DE EMPLAZAMIENTO" << "LINK GEOLOCALIZACIÓN" /*<< "VER PDF de Trabajo"*/
                                       << "FOTO ANTES DE INSTALACIÓN" << "FOTO NÚMERO SERIE"
                                       << "FOTO LECTURA" << "FOTO DESPUÉS DE INSTALACIÓN";
 
@@ -5822,7 +5825,7 @@ void Tabla::export_tasks_in_table_to_excel()
         QList<int> widths;
         QString column;
         foreach(column, listHeaders_gestor_independiente){
-            widths << column.size() + 2;
+            widths << column.size() + 4;
         }
         for(int i = 0, row=2; i < rows; i++)
         {
@@ -5884,7 +5887,7 @@ void Tabla::export_tasks_in_table_to_excel()
 
                 int width = widths.at(n);
                 if(width < temp.size() && !value_header.contains("foto_")){
-                    width = temp.size() + 2;
+                    width = temp.size() + 4;
                     xlsx_gestor_independiente.setColumnWidth(n+1, width);
                 }else{
                     if(i == 0){

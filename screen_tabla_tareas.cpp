@@ -227,6 +227,8 @@ void screen_tabla_tareas::fixModelForTable(QJsonArray jsonArray)
     mapa_alt.insert("Nombre",nombre_cliente);
     mapa_alt.insert("Nº Abonado",numero_abonado);
     mapa_alt.insert("Ruta",ruta);
+    mapa_alt.insert("C.Emplazamiento",codigo_de_geolocalizacion);
+    mapa_alt.insert("Sector P",zona);
     mapa_alt.insert("Lectura",lectura_actual);
     mapa_alt.insert("Observaciones",observaciones);
 
@@ -237,7 +239,8 @@ void screen_tabla_tareas::fixModelForTable(QJsonArray jsonArray)
     //    }
     listHeaders << "Id.Ord" << fecha << "Causa Origen" << "Prefijo"<<"Nº Serie"<< "Marca"
                 <<"Calibre"<< "Actividad"<<"Emplaza." << "Acceso" << "Calle"<< "Portal" << "BIS"
-               << "Piso" << "Mano" << "Población"<< "Nombre"  << "Nº Abonado" << "Ruta" << "Lectura" << "Observaciones";
+               << "Piso" << "Mano" << "Población"<< "Nombre"  << "Nº Abonado" << "Ruta"
+               << "C.Emplazamiento" << "Sector P" << "Lectura" << "Observaciones";
 
     model = new QStandardItemModel(rows, listHeaders.size());
     model->setHorizontalHeaderLabels(listHeaders);
@@ -674,7 +677,7 @@ QJsonArray screen_tabla_tareas::parse_to_QjsonArray(QString path)
         while (!file.atEnd())
         {
             file.readLine(array, 361);
-            QString line = QString::fromUtf8(array).trimmed();//QString(array);
+            QString line = QString::fromLatin1(array).trimmed();//QString(array);
             if(!line.isEmpty()){
                 unparsed_rows << line;
             }
