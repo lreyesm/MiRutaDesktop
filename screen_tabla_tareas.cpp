@@ -677,7 +677,8 @@ QJsonArray screen_tabla_tareas::parse_to_QjsonArray(QString path)
         while (!file.atEnd())
         {
             file.readLine(array, 361);
-            QString line = QString::fromLatin1(array).trimmed();//QString(array);
+            QString line = QString::fromUtf8(array).trimmed();//QString(array);
+            line.replace("�", "Ñ");
             if(!line.isEmpty()){
                 unparsed_rows << line;
             }
@@ -841,8 +842,9 @@ QJsonArray screen_tabla_tareas::parse_to_QjsonArray(QString path)
                 if(!cods_emplazamiento.contains(cod_emplazamiento)){
                     cods_emplazamiento << cod_emplazamiento;
                 }
-                if(!poblaciones.contains(o.value(poblacion).toString().toUpper())){
-                    poblaciones << o.value(poblacion).toString().toUpper();
+                QString pob = o.value(poblacion).toString().toUpper();
+                if(!poblaciones.contains(pob)){
+                    poblaciones << pob;
                 }
             }
             o.insert(prioridad, "BAJA");
