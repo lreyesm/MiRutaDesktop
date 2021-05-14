@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>503</width>
-    <height>551</height>
+    <width>810</width>
+    <height>749</height>
    </rect>
   </property>
   <property name="palette">
@@ -165,8 +165,8 @@ color:rgb(120, 120, 120);</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>503</width>
-     <height>21</height>
+     <width>810</width>
+     <height>20</height>
     </rect>
    </property>
   </widget>

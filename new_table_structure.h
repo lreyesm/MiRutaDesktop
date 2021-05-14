@@ -127,6 +127,7 @@ static QString hibernacion = "hibernacion";
 
 static QString audio_detalle = "audio_detalle";
 static QString numero_precinto = "numero_precinto";
+static QString dia_predeterminado = "dia_predeterminado";
 
 static QString date_time_modified = "date_time_modified";           //checked
 static QString status_tarea = "status_tarea";                       //checked

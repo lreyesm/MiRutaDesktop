@@ -111,6 +111,11 @@ other_task_screen::other_task_screen(QWidget *parent, bool sin_revisar, bool mos
     prioridades << "MEDIA" << "BAJA" << "ALTA"<< "HIBERNAR";
     ui->l_prioridad->addItems(prioridades);
 
+    QStringList dias;
+//    dias << "NO ASIGNADO" << "LUNES" << "MARTES" << "MIÉRCOLES" << "JUEVES"<< "VIERNES" << "SÁBADO"<< "DOMINGO";
+    dias << "NO ASIGNADO" << "1" << "2" << "3" << "4"<< "5";
+    ui->l_dia_predeterminado->addItems(dias);
+
     QStringList ordenes;
     ordenes << "D" << "M" <<"E";
     ui->le_TIPORDEN->addItems(ordenes);
@@ -902,6 +907,10 @@ void other_task_screen::populateDataView(){
             }
         }
         ui->l_prioridad->setText(priority);
+    }
+    QString default_day = o.value(dia_predeterminado).toString().trimmed();
+    if(checkIfFieldIsValid(default_day)){
+        ui->l_dia_predeterminado->setText(default_day);
     }
     if(checkIfFieldIsValid(gestor)){
         if(!ui->cb_gestor->items().contains(gestor)){
@@ -2006,6 +2015,13 @@ QString other_task_screen::guardar_cambios()
     }
     tarea_a_actualizar.insert(ultima_modificacion, "ESCRITORIO "+ administrator_loged);
     tarea_a_actualizar.insert(prioridad,ui->l_prioridad->currentText().trimmed());
+    QString default_day = ui->l_dia_predeterminado->currentText().trimmed();
+    if(checkIfFieldIsValid(default_day)){
+        if(default_day == "NO ASIGNADO"){
+            default_day = "";
+        }
+        tarea_a_actualizar.insert(dia_predeterminado, default_day);
+    }
     tarea_a_actualizar.insert(GESTOR,ui->cb_gestor->currentText().trimmed());
     tarea_a_actualizar.insert(numero_interno,ui->le_numero_interno->text().trimmed());
     tarea_a_actualizar.insert(poblacion,ui->le_poblacion->text().trimmed());
@@ -3292,7 +3308,7 @@ void other_task_screen::checkAndFillEmptyField(){
 void other_task_screen::on_pb_cerrar_tarea_clicked()
 {
     if(true/*QMessageBox::question(this,"Cerrando Tarea","Seguro que desea cerrar esta tarea?",
-                                                                                                                                                                                                                                                                                                                                                                                                                                     QMessageBox::Ok, QMessageBox::No)== QMessageBox::Ok*/){
+                                                                                                                                                                                                                                                                                                                                                                                                                                                     QMessageBox::Ok, QMessageBox::No)== QMessageBox::Ok*/){
 
         tarea_a_actualizar.insert(status_tarea, "CLOSED");
         QString timestamp = QDateTime::currentDateTime().toString(formato_fecha_hora_new_view);

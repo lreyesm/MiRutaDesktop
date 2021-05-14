@@ -6,6 +6,7 @@
 #include "global_variables.h"
 #include "mapa_zonas.h"
 #include "globalfunctions.h"
+#include <QCompleter>
 
 Zona::Zona(QWidget *parent, bool newOne, QString empresa) :
     QWidget(parent),
@@ -23,6 +24,12 @@ Zona::Zona(QWidget *parent, bool newOne, QString empresa) :
         ui->pb_actualizar->show();
         ui->pb_borrar->show();
     }
+//    dias << "LUNES" << "MARTES" << "MIÉRCOLES" << "JUEVES"<< "VIERNES" << "SÁBADO"<< "DOMINGO";
+    dias << "1" << "2" << "3" << "4"<< "5";
+    QCompleter *completer = new QCompleter(dias, this);
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+    completer->setFilterMode(Qt::MatchContains);
+    ui->le_dia_predeterminado->setCompleter(completer);
 }
 
 Zona::~Zona()
@@ -32,25 +39,29 @@ Zona::~Zona()
 
 void Zona::populateView(QJsonObject o)
 {
-    QString zona_m, modelo_m, cod_m, geocode_m;
+    QString zona_m, modelo_m, cod_m, geocode_m, dia_predeterminado;
     zona_m = o.value(zona_zonas).toString();
     cod_m = o.value(codigo_zona_zonas).toString();
     geocode_m = o.value(geolocalizacion_zonas).toString();
+    dia_predeterminado = o.value(dia_predeterminado_zonas).toString();
 
     ui->le_codigo->setText(cod_m);
     ui->le_zona->setText(zona_m);
     ui->le_geolocalizacion->setText(geocode_m);
+    ui->le_dia_predeterminado->setText(dia_predeterminado);
 }
 
 QString Zona::guardarDatos(){
-    QString zona_m, modelo_m, cod_m, geocode_m;
+    QString zona_m, modelo_m, cod_m, geocode_m, dia_predeterminado;
     zona_m =  ui->le_zona->text();
     cod_m = ui->le_codigo->text();
     geocode_m = ui->le_geolocalizacion->text();
+    dia_predeterminado = ui->le_dia_predeterminado->text();
 
     zona.insert(zona_zonas, zona_m);
     zona.insert(codigo_zona_zonas, cod_m);
     zona.insert(geolocalizacion_zonas, geocode_m);
+    zona.insert(dia_predeterminado_zonas, dia_predeterminado);
     return cod_m;
 }
 
@@ -102,6 +113,17 @@ QJsonArray Zona::readZonas(){
         }
     }
     return jsonArray;
+}
+
+QString Zona::getDayOfZona(QString zona_selected){
+    QJsonArray jsonArray = readZonas();
+    for (int i= 0; i < jsonArray.size(); i++) {
+        QJsonObject jsonObject = jsonArray.at(i).toObject();
+        if(zona_selected.contains(jsonObject.value(codigo_zona_zonas).toString() + " -")){
+            return jsonObject.value(dia_predeterminado_zonas).toString();
+        }
+    }
+    return "";
 }
 
 QStringList Zona::getListaZonas(){

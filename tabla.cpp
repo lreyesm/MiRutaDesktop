@@ -1162,6 +1162,7 @@ QMap <QString,QString> Tabla::fillMapForFixModel(QStringList &listHeaders){
     mapa.insert("REQUERIDA",marcaR);
     mapa.insert("Módulo",numero_serie_modulo);
     mapa.insert("Número de Precinto",numero_precinto);
+    mapa.insert("Bloque",dia_predeterminado);
     mapa.insert("C.EMPLAZAMIENTO",codigo_de_geolocalizacion);
     mapa.insert("Geolocalización",url_geolocalizacion);
 
@@ -1174,7 +1175,7 @@ QMap <QString,QString> Tabla::fillMapForFixModel(QStringList &listHeaders){
                << "RUEDASDV"<<"LONGDV" << "seriedv" << "PREFIJO DV"<< "CAUSA DESTINO" << "intervencidv"
                << "FECH_CIERRE"<<"TIPORDEN" << "EQUIPO" << "OPERARIO" << "observaciones"<< "TIPOFLUIDO"<< "tipoRadio"
                << "REQUERIDA" << "idexport"<<"fech_cierrenew" << "fech_informacionnew"
-               << "Módulo" << "Número de Precinto" << "C.EMPLAZAMIENTO" << "Geolocalización";
+               << "Módulo" << "Número de Precinto"  << "Bloque" << "C.EMPLAZAMIENTO" << "Geolocalización";
 
     return mapa;
 }
@@ -1461,7 +1462,8 @@ void Tabla::setTableView(bool delegate)
                   <<  1/*RESTO_EM*/ <<  1/*LECT_LEV*/ <<  2/*OBSERVADV*/<<  0.5/*Estado*/ << 2/*MARCADV*/<<  0.75/*CALIBREDV*/ <<  0.75/*RUEDASDV*/
                    <<  0.5/*LONGDV*/<<  1.2/*seriedv*/ <<  0.75/*PREFIJO DV*/<<  1/*CAUSA DESTINO*/ <<  1/*intervencidv*/ << 1.2 /*FECH_CIERRE*/
                     <<  0.75/*TIPORDEN*/<<  1/*EQUIPO*/<<1/*OPERARIO*/<< 2 /*observaciones*/<< 1 /*TIPOFLUIDO*/<< 0.5 /*TIPORadio*/<< 0.75 /*Requerida*/<< 0.5/*idexport*/
-                     <<  1.2/*fech_cierrenew*/ <<  1.2/*fech_informacionnew*/<< 2.2/*Módulo*/ << 1.5/*Numero precinto*/ <<  1.2/*C.EMPLAZAMIENTO*/<<  4/*Geolocalización*/<<1<<1;
+                     <<  1.2/*fech_cierrenew*/ <<  1.2/*fech_informacionnew*/<< 2.2/*Módulo*/ << 1.5/*Numero precinto*/  << 1.2/*Día predeterminado*/
+                      <<  1.2/*C.EMPLAZAMIENTO*/<<  4/*Geolocalización*/<<1<<1;
 
         QFont font = ui->tableView->font();
         int pointSize = font.pointSize();

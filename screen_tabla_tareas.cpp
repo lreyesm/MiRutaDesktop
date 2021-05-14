@@ -25,6 +25,7 @@
 #include "QProgressIndicator.h"
 #include "globalfunctions.h"
 #include "mylabelshine.h"
+#include "zona.h"
 
 using namespace QXlsx;
 
@@ -229,6 +230,7 @@ void screen_tabla_tareas::fixModelForTable(QJsonArray jsonArray)
     mapa_alt.insert("Ruta",ruta);
     mapa_alt.insert("C.Emplazamiento",codigo_de_geolocalizacion);
     mapa_alt.insert("Sector P",zona);
+    mapa_alt.insert("Bloque", dia_predeterminado);
     mapa_alt.insert("Lectura",lectura_actual);
     mapa_alt.insert("Observaciones",observaciones);
 
@@ -240,7 +242,7 @@ void screen_tabla_tareas::fixModelForTable(QJsonArray jsonArray)
     listHeaders << "Id.Ord" << fecha << "Causa Origen" << "Prefijo"<<"Nº Serie"<< "Marca"
                 <<"Calibre"<< "Actividad"<<"Emplaza." << "Acceso" << "Calle"<< "Portal" << "BIS"
                << "Piso" << "Mano" << "Población"<< "Nombre"  << "Nº Abonado" << "Ruta"
-               << "C.Emplazamiento" << "Sector P" << "Lectura" << "Observaciones";
+               << "C.Emplazamiento" << "Sector P" << "Bloque" << "Lectura" << "Observaciones";
 
     model = new QStandardItemModel(rows, listHeaders.size());
     model->setHorizontalHeaderLabels(listHeaders);
@@ -898,6 +900,8 @@ QJsonArray screen_tabla_tareas::parse_to_QjsonArray(QString path)
                     QString zona_l = jsonObjectRuta.value(barrio_rutas).toString();
                     if(checkIfFieldIsValid(zona_l)){
                         jsonObjectTarea.insert(zona, zona_l);
+                        QString default_day = Zona::getDayOfZona(zona_l);
+                        jsonObjectTarea.insert(dia_predeterminado, default_day);
                     }
                     if(checkIfFieldIsValid(radio_l)){
                         jsonObjectTarea.insert(tipoRadio, radio_l);
@@ -916,6 +920,8 @@ QJsonArray screen_tabla_tareas::parse_to_QjsonArray(QString path)
                         QString zona_l = jsonObjectRuta.value(barrio_rutas).toString();
                         if(checkIfFieldIsValid(zona_l)){
                             jsonObjectTarea.insert(zona, zona_l);
+                            QString default_day = Zona::getDayOfZona(zona_l);
+                            jsonObjectTarea.insert(dia_predeterminado, default_day);
                         }
                         if(checkIfFieldIsValid(radio_l)){
                             jsonObjectTarea.insert(tipoRadio, radio_l);
@@ -1222,6 +1228,8 @@ QJsonArray screen_tabla_tareas::parse_to_QjsonArray(QString path)
                     QString zona_l = jsonObjectRuta.value(barrio_rutas).toString();
                     if(checkIfFieldIsValid(zona_l)){
                         jsonObjectTarea.insert(zona, zona_l);
+                        QString default_day = Zona::getDayOfZona(zona_l);
+                        jsonObjectTarea.insert(dia_predeterminado, default_day);
                     }
                     if(checkIfFieldIsValid(radio_l)){
                         jsonObjectTarea.insert(tipoRadio, radio_l);
@@ -1240,6 +1248,8 @@ QJsonArray screen_tabla_tareas::parse_to_QjsonArray(QString path)
                         QString zona_l = jsonObjectRuta.value(barrio_rutas).toString();
                         if(checkIfFieldIsValid(zona_l)){
                             jsonObjectTarea.insert(zona, zona_l);
+                            QString default_day = Zona::getDayOfZona(zona_l);
+                            jsonObjectTarea.insert(dia_predeterminado, default_day);
                         }
                         if(checkIfFieldIsValid(radio_l)){
                             jsonObjectTarea.insert(tipoRadio, radio_l);

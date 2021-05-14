@@ -1587,6 +1587,45 @@ color:rgb(50, 50, 50);</string>
             </layout>
            </item>
            <item>
+            <layout class="QVBoxLayout" name="verticalLayout_34">
+             <item>
+              <widget class="QLabel" name="label_21">
+               <property name="styleSheet">
+                <string notr="true">font: 63 10pt &quot;Segoe UI Semibold&quot;;
+color: rgb(54, 141, 206);</string>
+               </property>
+               <property name="text">
+                <string>BLOQUE</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="MyLabelSpinner" name="cb_dia_predeterminado">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>22</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: #EFEFEF; 
+border-radius: 2px;
+color:rgb(50, 50, 50);</string>
+               </property>
+               <property name="text">
+                <string>POR DEFECTO</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
             <layout class="QVBoxLayout" name="verticalLayout">
              <item>
               <widget class="QLabel" name="label">
@@ -1967,6 +2006,11 @@ QPushButton:hover:!pressed{
  </widget>
  <customwidgets>
   <customwidget>
+   <class>MyLineEditShine</class>
+   <extends>QLineEdit</extends>
+   <header location="global">mylineeditshine.h</header>
+  </customwidget>
+  <customwidget>
    <class>MyLabelSpinner</class>
    <extends>QLabel</extends>
    <header location="global">mylabelspinner.h</header>
@@ -1975,11 +2019,6 @@ QPushButton:hover:!pressed{
    <class>MyComboBoxShine</class>
    <extends>QComboBox</extends>
    <header location="global">mycomboboxshine.h</header>
-  </customwidget>
-  <customwidget>
-   <class>MyLineEditShine</class>
-   <extends>QLineEdit</extends>
-   <header location="global">mylineeditshine.h</header>
   </customwidget>
  </customwidgets>
  <resources>

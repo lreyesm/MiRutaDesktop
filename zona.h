@@ -22,6 +22,7 @@ public:
     static QJsonArray readZonas();
     static bool writeZonas(QJsonArray zonas);
     static QStringList getListaZonas();
+    static QString getDayOfZona(QString zona_selected);
 signals:
     void script_excecution_result(int);
     void update_tableZonas(bool);
@@ -57,6 +58,7 @@ private:
     void subirTodasLasZonas();
     bool eliminarZona(QString cod);
     QString empresa = "";
+    QStringList dias;
 };
 
 #endif // ZONA_H

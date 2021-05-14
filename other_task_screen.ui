@@ -1865,7 +1865,7 @@ color:rgb(50, 50, 50);</string>
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>0</y>
+           <y>-979</y>
            <width>1314</width>
            <height>1494</height>
           </rect>
@@ -6782,6 +6782,58 @@ font: 63 10pt &quot;Segoe UI&quot;;</string>
                   </layout>
                  </item>
                  <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_104">
+                   <property name="spacing">
+                    <number>4</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="lb_prioridad_2">
+                     <property name="font">
+                      <font>
+                       <family>Segoe UI Semibold</family>
+                       <pointsize>10</pointsize>
+                       <weight>50</weight>
+                       <italic>false</italic>
+                       <bold>false</bold>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string>Bloque</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="MyLabelSpinner" name="l_dia_predeterminado">
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>25</height>
+                      </size>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <family>Segoe UI</family>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">background-color: #EFEFEF; 
+border-radius: 6px;
+color:rgb(50, 50, 50);</string>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
                   <layout class="QVBoxLayout" name="verticalLayout_77">
                    <property name="spacing">
                     <number>4</number>
@@ -9406,14 +9458,14 @@ QPushButton:hover:!pressed{
    <header location="global">mylabelspinner.h</header>
   </customwidget>
   <customwidget>
-   <class>MyLabelMenuChildAnimated</class>
-   <extends>QLabel</extends>
-   <header location="global">mylabelmenuchildanimated.h</header>
-  </customwidget>
-  <customwidget>
    <class>MyComboBoxShine</class>
    <extends>QComboBox</extends>
    <header location="global">mycomboboxshine.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MyLabelMenuChildAnimated</class>
+   <extends>QLabel</extends>
+   <header location="global">mylabelmenuchildanimated.h</header>
   </customwidget>
   <customwidget>
    <class>my_label</class>
