@@ -255,7 +255,7 @@ private slots:
     bool updateTareas();
     bool updateITAC(QStringList lista_cod_emplazamientos, QJsonObject campos);
     void update_itacs_fields_request();
-    void updateITACsGeoCode();
+    bool updateITACsGeoCode();
 
     void on_pb_add_observacion_clicked();
 
@@ -282,6 +282,8 @@ private slots:
     void on_le_numero_serie_contador_textEdited(const QString &arg1);
 
     void on_le_numero_interno_textEdited(const QString &arg1);
+
+    void on_pb_enviar_mensaje_clicked();
 
 private:
     Ui::other_task_screen *ui;

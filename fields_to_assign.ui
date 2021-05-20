@@ -1265,6 +1265,107 @@ color:rgb(50, 50, 50);</string>
             </layout>
            </item>
            <item>
+            <spacer name="verticalSpacer_21">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_33">
+             <item>
+              <widget class="QLabel" name="l_gestor_3">
+               <property name="styleSheet">
+                <string notr="true">font: 63 10pt &quot;Segoe UI Semibold&quot;;
+color: rgb(54, 141, 206);</string>
+               </property>
+               <property name="text">
+                <string>Resultado</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="MyLineEditShine" name="le_resultado">
+               <property name="minimumSize">
+                <size>
+                 <width>250</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Segoe UI</family>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: #EFEFEF; 
+border-radius: 3px;
+color:rgb(50, 50, 50);</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pb_validacion">
+             <property name="minimumSize">
+              <size>
+               <width>100</width>
+               <height>40</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Segoe UI</family>
+               <pointsize>10</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton{
+	border-radius: 6px;
+	color:rgb(120, 120, 120);
+}
+QPushButton:hover:!pressed{
+	  background-color: #EEEEEE; 
+}</string>
+             </property>
+             <property name="text">
+              <string>Informe de Instalación</string>
+             </property>
+             <property name="icon">
+              <iconset resource="assets.qrc">
+               <normaloff>:/icons/accept.png</normaloff>:/icons/accept.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>20</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="flat">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
             <spacer name="verticalSpacer_16">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -1464,6 +1565,45 @@ color: rgb(54, 141, 206);</string>
              </item>
              <item>
               <widget class="MyLabelSpinner" name="cb_zonas">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>22</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: #EFEFEF; 
+border-radius: 2px;
+color:rgb(50, 50, 50);</string>
+               </property>
+               <property name="text">
+                <string>POR DEFECTO</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_34">
+             <item>
+              <widget class="QLabel" name="label_21">
+               <property name="styleSheet">
+                <string notr="true">font: 63 10pt &quot;Segoe UI Semibold&quot;;
+color: rgb(54, 141, 206);</string>
+               </property>
+               <property name="text">
+                <string>BLOQUE</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="MyLabelSpinner" name="cb_dia_predeterminado">
                <property name="minimumSize">
                 <size>
                  <width>0</width>
@@ -1866,6 +2006,11 @@ QPushButton:hover:!pressed{
  </widget>
  <customwidgets>
   <customwidget>
+   <class>MyLineEditShine</class>
+   <extends>QLineEdit</extends>
+   <header location="global">mylineeditshine.h</header>
+  </customwidget>
+  <customwidget>
    <class>MyLabelSpinner</class>
    <extends>QLabel</extends>
    <header location="global">mylabelspinner.h</header>
@@ -1874,11 +2019,6 @@ QPushButton:hover:!pressed{
    <class>MyComboBoxShine</class>
    <extends>QComboBox</extends>
    <header location="global">mycomboboxshine.h</header>
-  </customwidget>
-  <customwidget>
-   <class>MyLineEditShine</class>
-   <extends>QLineEdit</extends>
-   <header location="global">mylineeditshine.h</header>
   </customwidget>
  </customwidgets>
  <resources>

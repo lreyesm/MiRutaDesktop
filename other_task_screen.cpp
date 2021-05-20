@@ -51,6 +51,7 @@
 #include "processesclass.h"
 #include "globalfunctions.h"
 #include "mylabelshine.h"
+#include "sendwhatsappmessage.h"
 
 QString other_task_screen::administrator_loged="";
 QString other_task_screen::last_operario="";
@@ -109,6 +110,11 @@ other_task_screen::other_task_screen(QWidget *parent, bool sin_revisar, bool mos
     QStringList prioridades;
     prioridades << "MEDIA" << "BAJA" << "ALTA"<< "HIBERNAR";
     ui->l_prioridad->addItems(prioridades);
+
+    QStringList dias;
+//    dias << "NO ASIGNADO" << "LUNES" << "MARTES" << "MIÉRCOLES" << "JUEVES"<< "VIERNES" << "SÁBADO"<< "DOMINGO";
+    dias << "NO ASIGNADO" << "1" << "2" << "3" << "4"<< "5";
+    ui->l_dia_predeterminado->addItems(dias);
 
     QStringList ordenes;
     ordenes << "D" << "M" <<"E";
@@ -298,10 +304,10 @@ void other_task_screen::on_pb_close_clicked()
 void other_task_screen::closeEvent(QCloseEvent *event)
 {
     closing_window = true;
-    timerChangingGeoCode.stop();
     disconnect(&timerChangingGeoCode,SIGNAL(timeout()),this,SLOT(setGeoCodeByCodEmplazamiento()));
-    timer.stop();
     disconnect(&timer,SIGNAL(timeout()),this,SLOT(requestContadoresList()));
+    timerChangingGeoCode.stop();
+    timer.stop();
     hidingLoading();
     emit closing();
     QWidget::closeEvent(event);
@@ -902,6 +908,10 @@ void other_task_screen::populateDataView(){
         }
         ui->l_prioridad->setText(priority);
     }
+    QString default_day = o.value(dia_predeterminado).toString().trimmed();
+    if(checkIfFieldIsValid(default_day)){
+        ui->l_dia_predeterminado->setText(default_day);
+    }
     if(checkIfFieldIsValid(gestor)){
         if(!ui->cb_gestor->items().contains(gestor)){
             ui->cb_gestor->addItem(gestor);
@@ -1214,6 +1224,8 @@ void other_task_screen::populateDataView(){
     //       ui->le_emplazamiento_devuelto->setText(ui->le_emplazamiento->text());
     //       ui->le_RESTO_EM->setText(ui->le_RESTEMPLAZA->text());
     //    }
+
+    ui->le_numero_precinto->setText(this->nullity_check(o.value(numero_precinto).toString()));
 }
 bool other_task_screen::populateView(bool load_photos)
 {
@@ -2003,6 +2015,13 @@ QString other_task_screen::guardar_cambios()
     }
     tarea_a_actualizar.insert(ultima_modificacion, "ESCRITORIO "+ administrator_loged);
     tarea_a_actualizar.insert(prioridad,ui->l_prioridad->currentText().trimmed());
+    QString default_day = ui->l_dia_predeterminado->currentText().trimmed();
+    if(checkIfFieldIsValid(default_day)){
+        if(default_day == "NO ASIGNADO"){
+            default_day = "";
+        }
+        tarea_a_actualizar.insert(dia_predeterminado, default_day);
+    }
     tarea_a_actualizar.insert(GESTOR,ui->cb_gestor->currentText().trimmed());
     tarea_a_actualizar.insert(numero_interno,ui->le_numero_interno->text().trimmed());
     tarea_a_actualizar.insert(poblacion,ui->le_poblacion->text().trimmed());
@@ -2132,6 +2151,8 @@ QString other_task_screen::guardar_cambios()
     tarea_a_actualizar.insert(C_COMUNERO,ui->le_C_COMUNERO->text().trimmed());
     tarea_a_actualizar.insert(MENSAJE_LIBRE,ui->le_MENSAJE_LIBRE->text().trimmed());
     tarea_a_actualizar.insert(TIPO,ui->le_TIPO->text().trimmed());
+
+    tarea_a_actualizar.insert(numero_precinto, ui->le_numero_precinto->text().trimmed());
 
     return Numero_Interno;
 }
@@ -2442,7 +2463,9 @@ void other_task_screen::on_pb_update_server_info_clicked()
                     case database_comunication::script_result::ok:
                         result = database_comunication::script_result::task_to_server_ok;
                         if(!geoCodeChanged){
-                            emit task_upload_excecution_result(result);
+                            if(!closing_window){
+                                emit task_upload_excecution_result(result);
+                            }
                         }
                         if(showMesageBox)
                         {
@@ -2477,7 +2500,9 @@ void other_task_screen::on_pb_update_server_info_clicked()
                 case database_comunication::script_result::ok:
                     result = database_comunication::script_result::task_to_server_ok;
                     if(!geoCodeChanged){
-                        emit task_upload_excecution_result(result);
+                        if(!closing_window){
+                            emit task_upload_excecution_result(result);
+                        }
                     }
                     if(showMesageBox)
                     {
@@ -2557,7 +2582,9 @@ void other_task_screen::on_pb_update_server_info_clicked()
         //mostrar cartel en consecuencia si esta todo ok o si hubo error
         if(result != database_comunication::script_result::task_to_server_ok){
             if(!geoCodeChanged){
-                emit task_upload_excecution_result(result);
+                if(!closing_window){
+                    emit task_upload_excecution_result(result);
+                }
             }
         }
     }
@@ -2641,7 +2668,9 @@ void other_task_screen::on_pb_update_server_info_clicked()
 
         QJsonArray jsonArray = readJsonArrayTasks();
         updateTaskInJsonArrayAllLocal(jsonArray, tarea_a_actualizar);
-        emit task_upload_excecution_result(database_comunication::task_to_server_ok);
+        if(!closing_window){
+            emit task_upload_excecution_result(database_comunication::task_to_server_ok);
+        }
         if(!this->isHidden() ){
             GlobalFunctions::showMessage(this,"Información actualizada","Información actualizada en el respaldo local satisfactoriamente.");
         }
@@ -2652,7 +2681,9 @@ void other_task_screen::on_pb_update_server_info_clicked()
         updateTareas();
         updateITACsGeoCode();
         emit updateITACs();
-        emit task_upload_excecution_result(result);
+        if(!closing_window){
+            emit task_upload_excecution_result(result);
+        }
     }
     hide_loading();
 }
@@ -3277,7 +3308,7 @@ void other_task_screen::checkAndFillEmptyField(){
 void other_task_screen::on_pb_cerrar_tarea_clicked()
 {
     if(true/*QMessageBox::question(this,"Cerrando Tarea","Seguro que desea cerrar esta tarea?",
-                                                                                                                                                                                                                                                                                                                                                                                                                             QMessageBox::Ok, QMessageBox::No)== QMessageBox::Ok*/){
+                                                                                                                                                                                                                                                                                                                                                                                                                                                     QMessageBox::Ok, QMessageBox::No)== QMessageBox::Ok*/){
 
         tarea_a_actualizar.insert(status_tarea, "CLOSED");
         QString timestamp = QDateTime::currentDateTime().toString(formato_fecha_hora_new_view);
@@ -3931,10 +3962,13 @@ void other_task_screen::update_itacs_fields_request(){
             this, SLOT(serverAnswer(QByteArray,database_comunication::serverRequestType)));
     database_com.serverRequest(database_comunication::serverRequestType::UPDATE_ITAC_FIELDS,keys,values);
 }
-void  other_task_screen::updateITACsGeoCode(){
+bool other_task_screen::updateITACsGeoCode(){
 
     QStringList cods_emplazamiento;
     QString cod_emplazamiento = ui->le_codigo_geolocalizacion->text().trimmed();
+    if(!GlobalFunctions::checkIfFieldIsValid(cod_emplazamiento)){
+        return false;
+    }
 
     GlobalFunctions gf(this, empresa);
     if(gf.checkIfItacExist(cod_emplazamiento)){
@@ -3946,9 +3980,10 @@ void  other_task_screen::updateITACsGeoCode(){
         if(checkIfFieldIsValid(geoCode)){
             QJsonObject campos;
             campos.insert(geolocalizacion_itacs, geoCode);
-            updateITAC(cods_emplazamiento, campos);
+            return updateITAC(cods_emplazamiento, campos);
         }
     }
+    return false;
 }
 bool other_task_screen::updateITAC(QStringList lista_cod_emplazamientos, QJsonObject campos){
 
@@ -4007,6 +4042,9 @@ bool other_task_screen::updateTareas(){
     QString numIn, geoCodeCasa = tarea_a_actualizar.value(geolocalizacion).toString();
     QString geoCodeMano = tarea_a_actualizar.value(codigo_de_localizacion).toString();
     QString cod_emplazamiento_itac = ui->le_codigo_geolocalizacion->text().trimmed();
+    if(!GlobalFunctions::checkIfFieldIsValid(cod_emplazamiento_itac)){
+        return false;
+    }
     QJsonObject numeros_internos;
     QJsonObject campos;
     QJsonObject tarea;
@@ -4212,7 +4250,6 @@ bool other_task_screen::on_pb_tarea_sin_revisar_clicked()
 
     numeros_internos.insert("1", o.value(numero_interno).toString().trimmed());
     campos.insert(ultima_modificacion, "ESCRITORIO "+ administrator_loged);
-    //    campos.insert(date_time_modified, QDateTime::currentDateTime().toString(formato_fecha_hora));//ver si esto es necesario
 
     QStringList keys, values;
     QJsonDocument d;
@@ -4632,7 +4669,9 @@ void other_task_screen::updateITACsFromServer(){
     emit updateITACs();
 }
 void other_task_screen::updateTareasFromServer(){
-    emit task_upload_excecution_result(database_comunication::task_to_server_ok);
+    if(!closing_window){
+        emit task_upload_excecution_result(database_comunication::task_to_server_ok);
+    }
 }
 
 void other_task_screen::setGeoCodeByCodEmplazamiento()
@@ -4640,6 +4679,9 @@ void other_task_screen::setGeoCodeByCodEmplazamiento()
     timerChangingGeoCode.stop();
     disconnect(&timerChangingGeoCode,SIGNAL(timeout()),this,SLOT(setGeoCodeByCodEmplazamiento()));
 
+    if(closing_window){
+        return;
+    }
     QString cod_emplazamiento = ui->le_codigo_geolocalizacion->text();
     QString zona_l = Ruta::getZonaRutaFromCodEmplazamiento(cod_emplazamiento);
 
@@ -4800,4 +4842,20 @@ void other_task_screen::on_le_numero_interno_textEdited(const QString &arg1)
     else{
         ui->pb_update_server_info->setEnabled(true);
     }
+}
+
+void other_task_screen::on_pb_enviar_mensaje_clicked()
+{
+    QString phone1 = ui->le_telefono1->text();
+    QString phone2 = ui->le_telefono2->text();
+    QString dir = GlobalFunctions::getDirOfTask(tarea_a_actualizar);
+    QString gestor = ui->cb_gestor->currentText();
+    QString abonado = ui->le_numero_abonado->text();
+    if(!GlobalFunctions::checkIfFieldIsValid(phone1) && !GlobalFunctions::checkIfFieldIsValid(phone2)){
+        GlobalFunctions::showWarning(this, "Sin Teléfonos", "No hay teléfonos disponibles en esta tarea");
+        return;
+    }
+    SendWhatsappMessage *sendWhatsappMessage = new SendWhatsappMessage(this, gestor, dir, abonado, phone1, phone2);
+    sendWhatsappMessage->setAttribute(Qt::WA_DeleteOnClose);
+    sendWhatsappMessage->show();
 }

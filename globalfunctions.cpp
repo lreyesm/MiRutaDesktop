@@ -75,6 +75,34 @@ void GlobalFunctions::execJavaScriptCode(QString code) //param code: JavaScript 
     // Since the QScriptEngine is created on the method stack, it will be deleted automatically when the method ends.
 }
 
+QString GlobalFunctions::getDirOfTask(QJsonObject jsonObject){
+    QString dir = "";
+    QString field = jsonObject.value(poblacion).toString();
+    if(checkIfFieldIsValid(field)){
+        dir += field +", ";
+    }
+    field = jsonObject.value(calle).toString();
+    if(checkIfFieldIsValid(field)){
+        dir += field +", ";
+    }
+    field = jsonObject.value(numero).toString();
+    if(checkIfFieldIsValid(field)){
+        dir += field +" ";
+    }
+    field = jsonObject.value(BIS).toString();
+    if(checkIfFieldIsValid(field)){
+        dir += field+" ";
+    }
+    field = jsonObject.value(piso).toString();
+    if(checkIfFieldIsValid(field)){
+        dir += field+" ";
+    }
+    field = jsonObject.value(mano).toString();
+    if(checkIfFieldIsValid(field)){
+        dir += field;
+    }
+    return dir.trimmed();
+}
 void GlobalFunctions::setDelay(int delay_ms){
     QEventLoop loop;
     QTimer::singleShot(delay_ms, &loop, &QEventLoop::quit);
@@ -1283,6 +1311,12 @@ void GlobalFunctions::serverAnswer(QByteArray byte_array, database_comunication:
     }
     else if(tipo == database_comunication::GET_MULTIPLE_VALUES_FIELDS_CUSTOM_QUERY){
         jsonArrayAll = database_comunication::getJsonArray(byte_array);
+        QFile file("BD/query.dat");
+        if(file.open(QIODevice::WriteOnly)){
+            file.write(byte_array);
+            file.close();
+        };
+        qDebug()<<byte_array;
         result = database_comunication::script_result::ok;
     }
     else if(tipo == database_comunication::GET_RUTAS_AMOUNT)

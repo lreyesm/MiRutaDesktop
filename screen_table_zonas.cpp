@@ -1,6 +1,8 @@
 #include "screen_table_zonas.h"
 #include "ui_screen_table_zonas.h"
 
+#include <QTimer>
+
 Screen_Table_Zonas::Screen_Table_Zonas(QWidget *parent, bool show, QString empresa) :
     QMainWindow(parent),
     ui(new Ui::Screen_Table_Zonas)
@@ -8,6 +10,7 @@ Screen_Table_Zonas::Screen_Table_Zonas(QWidget *parent, bool show, QString empre
     ui->setupUi(this);
     this->setWindowTitle("Tabla de Sectores P");
     this->empresa = empresa;
+
     getZonasFromServer(show);
 }
 
@@ -15,6 +18,8 @@ Screen_Table_Zonas::~Screen_Table_Zonas()
 {
     delete ui;
 }
+
+
 void Screen_Table_Zonas::getZonasFromServer(bool view)
 {
     QStringList keys, values;
@@ -46,9 +51,10 @@ void Screen_Table_Zonas::fixModelForTable(QJsonArray jsonArray)
     QMap <QString,QString> mapa;
     mapa.insert("Código",codigo_zona_zonas);
     mapa.insert("Sector P",zona_zonas);
+    mapa.insert("Bloque",dia_predeterminado_zonas);
 
     QStringList listHeaders;
-    listHeaders <<"Código" << "Sector P";
+    listHeaders <<"Código" << "Sector P" << "Bloque";
 
     model = new QStandardItemModel(rows, listHeaders.size());
     model->setHorizontalHeaderLabels(listHeaders);
@@ -70,13 +76,12 @@ void Screen_Table_Zonas::setTableView()
 {
     if(model!=nullptr){
         ui->tableView->setModel(model);
-
-        //        ui->tableView->setEditTriggers(QAbstractItemView::AllEditTriggers);
         ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
         ui->tableView->resizeColumnsToContents();
         float ancho = (float)(ui->tableView->width()-20)/3;
-        ui->tableView->setColumnWidth(0, (int)(ancho * (float)2/4));
-        ui->tableView->setColumnWidth(1, (int)(ancho * (float)2/4));
+        ui->tableView->setColumnWidth(0, (int)(ancho * (float)2/3));
+        ui->tableView->setColumnWidth(1, (int)(ancho * (float)2/3));
+        ui->tableView->setColumnWidth(2, (int)(ancho * (float)1/3));
         ui->tableView->horizontalHeader()->setStretchLastSection(true);
         ui->tableView->horizontalHeader()->setSectionsMovable(true);
         if(!connected_header_signal){
@@ -92,9 +97,10 @@ void Screen_Table_Zonas::on_sectionClicked(int logicalIndex)
     QMap <QString,QString> mapa;
     mapa.insert("Código",codigo_zona_zonas);
     mapa.insert("Sector P",zona_zonas);
+    mapa.insert("Bloque", dia_predeterminado_zonas);
 
     QStringList listHeaders;
-    listHeaders <<"Código" << "Sector P";
+    listHeaders <<"Código" << "Sector P" << "Bloque";
 
     QString columna = listHeaders.at(logicalIndex);
     QString ordenamiento = mapa.value(columna);

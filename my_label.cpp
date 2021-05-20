@@ -50,7 +50,6 @@ void my_label::setPixmap(const QPixmap &p)
         setDefaultPhoto(false);
         QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect(this);//dar sombra a borde del widget
         effect->setBlurRadius(20);
-        effect->setColor(color_blue_app);
         this->setGraphicsEffect(effect);
     }else{
         defaultPhoto = true;

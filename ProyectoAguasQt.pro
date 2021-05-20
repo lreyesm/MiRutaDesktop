@@ -40,6 +40,7 @@ SOURCES += \
     cliente.cpp \
     combobox.cpp \
     counter.cpp \
+    databaseoptions.cpp \
     daterangeselection.cpp \
     datetimewidget.cpp \
     dbtareascontroller.cpp \
@@ -143,6 +144,7 @@ SOURCES += \
     select_file_to_download.cpp \
     selection_priority.cpp \
     selectionorder.cpp \
+    sendwhatsappmessage.cpp \
     smtp.cpp \
     tabla.cpp \
     operator_selection_screen.cpp \
@@ -167,6 +169,7 @@ HEADERS += \
     cliente.h \
     combobox.h \
     counter.h \
+    databaseoptions.h \
     daterangeselection.h \
     datetimewidget.h \
     dbtareascontroller.h \
@@ -272,6 +275,7 @@ HEADERS += \
     select_file_to_download.h \
     selection_priority.h \
     selectionorder.h \
+    sendwhatsappmessage.h \
     smtp.h \
     structure_administrador.h \
     structure_calibre.h \
@@ -313,6 +317,7 @@ FORMS += \
     clase.ui \
     cliente.ui \
     counter.ui \
+    databaseoptions.ui \
     daterangeselection.ui \
     datetimewidget.ui \
     emplazamiento.ui \
@@ -386,6 +391,7 @@ FORMS += \
     select_file_to_download.ui \
     selection_priority.ui \
     selectionorder.ui \
+    sendwhatsappmessage.ui \
     tabla.ui \
     operator_selection_screen.ui \
     navegador.ui \

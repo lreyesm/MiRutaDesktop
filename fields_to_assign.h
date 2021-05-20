@@ -5,6 +5,7 @@
 #include <QMap> //HashMap
 #include <navegador.h>
 #include <QJsonArray>
+#include <QJsonObject>
 #include <QCompleter>
 
 namespace Ui {
@@ -51,6 +52,9 @@ private slots:
     void setObservation(QString obs);
     void on_pb_erase_observacion_clicked();
 
+    void on_pb_validacion_clicked();
+
+    void getData(QJsonObject);
 private:
     Ui::Fields_to_Assign *ui;
     QMap<QString, QString> fields;

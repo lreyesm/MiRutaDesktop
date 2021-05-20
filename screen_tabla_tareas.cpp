@@ -25,6 +25,7 @@
 #include "QProgressIndicator.h"
 #include "globalfunctions.h"
 #include "mylabelshine.h"
+#include "zona.h"
 
 using namespace QXlsx;
 
@@ -188,7 +189,7 @@ void screen_tabla_tareas::fixModelForTable(QJsonArray jsonArray)
     fecha = "Fech.Import";
     mapa.insert(fecha,FechImportacion);
 
-    mapa.insert("IdOrdCABB",idOrdenCABB);
+    mapa.insert("Id.Ord",idOrdenCABB);
     mapa.insert("Causa Origen",ANOMALIA);
     mapa.insert("Prefijo",CONTADOR_Prefijo_anno);
     mapa.insert("Marca",marca_contador);
@@ -209,7 +210,7 @@ void screen_tabla_tareas::fixModelForTable(QJsonArray jsonArray)
     mapa.insert("Lectura",lectura_ultima);
     mapa.insert("Observaciones",observaciones);
 
-    mapa_alt.insert("IdOrdCABB",idOrdenCABB);
+    mapa_alt.insert("Id.Ord",idOrdenCABB);
     mapa_alt.insert("Causa Origen",ANOMALIA);
     mapa_alt.insert("Prefijo",CONTADOR_Prefijo_anno);
     mapa_alt.insert("Marca",marca_contador);
@@ -227,6 +228,9 @@ void screen_tabla_tareas::fixModelForTable(QJsonArray jsonArray)
     mapa_alt.insert("Nombre",nombre_cliente);
     mapa_alt.insert("Nº Abonado",numero_abonado);
     mapa_alt.insert("Ruta",ruta);
+    mapa_alt.insert("C.Emplazamiento",codigo_de_geolocalizacion);
+    mapa_alt.insert("Sector P",zona);
+    mapa_alt.insert("Bloque", dia_predeterminado);
     mapa_alt.insert("Lectura",lectura_actual);
     mapa_alt.insert("Observaciones",observaciones);
 
@@ -235,9 +239,10 @@ void screen_tabla_tareas::fixModelForTable(QJsonArray jsonArray)
     //    for(int i=0; i< mapa.keys().size(); i++){
     //        listHeaders<<mapa.keys().at(i);
     //    }
-    listHeaders << "IdOrdCABB" << fecha << "Causa Origen" << "Prefijo"<<"Nº Serie"<< "Marca"
+    listHeaders << "Id.Ord" << fecha << "Causa Origen" << "Prefijo"<<"Nº Serie"<< "Marca"
                 <<"Calibre"<< "Actividad"<<"Emplaza." << "Acceso" << "Calle"<< "Portal" << "BIS"
-               << "Piso" << "Mano" << "Población"<< "Nombre"  << "Nº Abonado" << "Ruta" << "Lectura" << "Observaciones";
+               << "Piso" << "Mano" << "Población"<< "Nombre"  << "Nº Abonado" << "Ruta"
+               << "C.Emplazamiento" << "Sector P" << "Bloque" << "Lectura" << "Observaciones";
 
     model = new QStandardItemModel(rows, listHeaders.size());
     model->setHorizontalHeaderLabels(listHeaders);
@@ -485,7 +490,16 @@ QString screen_tabla_tareas::obtenerPrefijoDeSerie(QString serie){ //ok correcta
 QMap<QString, QString> screen_tabla_tareas::mapExcelImport(QStringList listHeaders){
     QMap<QString, QString> map;
     //campos de excel de entrada
+    map.insert("ID.ORD",idOrdenCABB);
+    map.insert("ID. ORD",idOrdenCABB);
+    map.insert("ID. ORDEN",idOrdenCABB);
+    map.insert("ID ORDEN",idOrdenCABB);
     map.insert("ORDEN",idOrdenCABB);
+
+
+    map.insert("NUMIN",numero_interno);
+    map.insert("NUMERO INTERNO",numero_interno);
+    map.insert("NÚMERO INTERNO",numero_interno);
 
     map.insert("DIRECCION","DIRECCION");
 
@@ -505,6 +519,10 @@ QMap<QString, QString> screen_tabla_tareas::mapExcelImport(QStringList listHeade
     map.insert("NÚMERO",numero);
     map.insert("NUMERO",numero);
     map.insert("PORTAL",numero);
+    map.insert("NÚMERO PORTAL",numero);
+    map.insert("NUMERO PORTAL",numero);
+    map.insert("NÚMERO DE PORTAL",numero);
+    map.insert("NUMERO DE PORTAL",numero);
     map.insert("BIS",BIS);
     map.insert("BLOQUE",BIS);
     map.insert("PISO",piso);
@@ -517,6 +535,7 @@ QMap<QString, QString> screen_tabla_tareas::mapExcelImport(QStringList listHeade
     map.insert("PREFIJO",CONTADOR_Prefijo_anno);
 
     map.insert("CONTADOR",numero_serie_contador);
+    map.insert("CONTADOR",numero_serie_contador);
     map.insert("NUM_CONT",numero_serie_contador);
     map.insert("Nº SERIE",numero_serie_contador);
     map.insert("NºSERIE",numero_serie_contador);
@@ -524,6 +543,8 @@ QMap<QString, QString> screen_tabla_tareas::mapExcelImport(QStringList listHeade
     map.insert("SERIE",numero_serie_contador);
     map.insert("NUMERO SERIE",numero_serie_contador);
     map.insert("NÚMERO SERIE",numero_serie_contador);
+    map.insert("NUMERO SERIE DEL CONTADOR",numero_serie_contador);
+    map.insert("NÚMERO SERIE DEL CONTADOR",numero_serie_contador);
     map.insert("Nº SERIE CONT. RETIRADO",numero_serie_contador);
 
     map.insert("CALIBRE",calibre_toma);
@@ -626,6 +647,16 @@ QMap<QString, QString> screen_tabla_tareas::mapExcelImport(QStringList listHeade
     map.insert("UBICACION BATERÍA", ubicacion_en_bateria);
     map.insert("UBICACIÓN BATERIA", ubicacion_en_bateria);
 
+    map.insert("FECINST", fecha_instalacion);
+    map.insert("FECEMISIO", FECEMISIO);
+    map.insert("F_INST",  F_INST);
+    map.insert("FECH_CIERRE",FECH_CIERRE);
+    map.insert("FECHIMPORTACION", FechImportacion);
+    map.insert("FECH_CIERRENEW", fech_cierrenew);
+    map.insert("FECH_FACTURACION", fech_facturacion);
+    map.insert("FECH_INFORMACIONNEW", fech_informacionnew);
+    map.insert("F_INSTNEW", f_instnew);
+
     map.insert("PROPIEDAD",propiedad);
 
     return map;
@@ -649,6 +680,7 @@ QJsonArray screen_tabla_tareas::parse_to_QjsonArray(QString path)
         {
             file.readLine(array, 361);
             QString line = QString::fromUtf8(array).trimmed();//QString(array);
+            line.replace("�", "Ñ");
             if(!line.isEmpty()){
                 unparsed_rows << line;
             }
@@ -812,8 +844,9 @@ QJsonArray screen_tabla_tareas::parse_to_QjsonArray(QString path)
                 if(!cods_emplazamiento.contains(cod_emplazamiento)){
                     cods_emplazamiento << cod_emplazamiento;
                 }
-                if(!poblaciones.contains(o.value(poblacion).toString().toUpper())){
-                    poblaciones << o.value(poblacion).toString().toUpper();
+                QString pob = o.value(poblacion).toString().toUpper();
+                if(!poblaciones.contains(pob)){
+                    poblaciones << pob;
                 }
             }
             o.insert(prioridad, "BAJA");
@@ -867,6 +900,8 @@ QJsonArray screen_tabla_tareas::parse_to_QjsonArray(QString path)
                     QString zona_l = jsonObjectRuta.value(barrio_rutas).toString();
                     if(checkIfFieldIsValid(zona_l)){
                         jsonObjectTarea.insert(zona, zona_l);
+                        QString default_day = Zona::getDayOfZona(zona_l);
+                        jsonObjectTarea.insert(dia_predeterminado, default_day);
                     }
                     if(checkIfFieldIsValid(radio_l)){
                         jsonObjectTarea.insert(tipoRadio, radio_l);
@@ -885,6 +920,8 @@ QJsonArray screen_tabla_tareas::parse_to_QjsonArray(QString path)
                         QString zona_l = jsonObjectRuta.value(barrio_rutas).toString();
                         if(checkIfFieldIsValid(zona_l)){
                             jsonObjectTarea.insert(zona, zona_l);
+                            QString default_day = Zona::getDayOfZona(zona_l);
+                            jsonObjectTarea.insert(dia_predeterminado, default_day);
                         }
                         if(checkIfFieldIsValid(radio_l)){
                             jsonObjectTarea.insert(tipoRadio, radio_l);
@@ -934,6 +971,12 @@ QJsonArray screen_tabla_tareas::parse_to_QjsonArray(QString path)
                 }
             }
             number_of_column = listHeaders.size();
+            QStringList fech_fields;
+//            fech_fields << "FECINST" << "FECEMISIO" << "F_INST"
+//                        << "FECH_CIERRE" << "FECHIMPORTACION"
+//                        << "FECH_CIERRENEW" << "FECH_FACTURACION"
+//                        << "FECH_INFORMACIONNEW" << "F_INSTNEW";
+
             QMap<QString, QString> map = mapExcelImport(listHeaders);
             //read data
             for(int i = 2; i <= number_of_row; i++)
@@ -1005,6 +1048,23 @@ QJsonArray screen_tabla_tareas::parse_to_QjsonArray(QString path)
                                             o.insert(fields.at(i), split.at(i).trimmed());
                                         }
                                     }
+                                }
+                            }
+//                            else if(fech_fields.contains(header)){
+//                                QString value_header = map.value(header);
+//                                QString contenido_en_excel = row_content.at(j).trimmed();
+//                                QDateTime dt = QDateTime::fromString(contenido_en_excel, "d/m/yyyy");
+//                                if(dt.isValid()){
+//                                    contenido_en_excel = dt.toString(formato_fecha_hora);
+//                                    o.insert(value_header, contenido_en_excel);
+//                                }
+//                            }
+                            else if(header.contains("NUMIN", Qt::CaseInsensitive)){
+                                QString value_header = map.value(header);
+                                QString contenido_en_excel = row_content.at(j);
+                                QString numin = contenido_en_excel.remove("NUMIN-").trimmed();
+                                if(checkIfFieldIsValid(numin)){
+                                    o.insert(numero_interno, numin);
                                 }
                             }
                             else{
@@ -1086,7 +1146,7 @@ QJsonArray screen_tabla_tareas::parse_to_QjsonArray(QString path)
                     }else{
                         bis.prepend("-");
                     }
-                    QString portal = o.value(numero).toString().trimmed();                   
+                    QString portal = o.value(numero).toString().trimmed();
                     QString ruta_l = o.value(ruta).toString().trimmed();
                     bool ok;
                     int port_int = portal.toInt(&ok);
@@ -1117,6 +1177,10 @@ QJsonArray screen_tabla_tareas::parse_to_QjsonArray(QString path)
                         o.insert(geolocalizacion, geocode);
                         o.insert(url_geolocalizacion, "https://maps.google.com/?q=" + geocode);
                     }
+                }
+                cod_emplazamiento = o.value(codigo_de_geolocalizacion).toString();
+                if(!checkIfFieldIsValid(cod_emplazamiento)){
+                    o.insert(codigo_de_geolocalizacion, o.value(numero_abonado).toString().trimmed());
                 }
 
                 o.remove("");
@@ -1164,6 +1228,8 @@ QJsonArray screen_tabla_tareas::parse_to_QjsonArray(QString path)
                     QString zona_l = jsonObjectRuta.value(barrio_rutas).toString();
                     if(checkIfFieldIsValid(zona_l)){
                         jsonObjectTarea.insert(zona, zona_l);
+                        QString default_day = Zona::getDayOfZona(zona_l);
+                        jsonObjectTarea.insert(dia_predeterminado, default_day);
                     }
                     if(checkIfFieldIsValid(radio_l)){
                         jsonObjectTarea.insert(tipoRadio, radio_l);
@@ -1182,6 +1248,8 @@ QJsonArray screen_tabla_tareas::parse_to_QjsonArray(QString path)
                         QString zona_l = jsonObjectRuta.value(barrio_rutas).toString();
                         if(checkIfFieldIsValid(zona_l)){
                             jsonObjectTarea.insert(zona, zona_l);
+                            QString default_day = Zona::getDayOfZona(zona_l);
+                            jsonObjectTarea.insert(dia_predeterminado, default_day);
                         }
                         if(checkIfFieldIsValid(radio_l)){
                             jsonObjectTarea.insert(tipoRadio, radio_l);

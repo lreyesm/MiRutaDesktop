@@ -152,6 +152,7 @@ private slots:
     void save_login_request();
     bool save_login();
     void openTableTareas();
+    void enableLoginButton();
 private:
     Ui::MainWindow *ui;
 

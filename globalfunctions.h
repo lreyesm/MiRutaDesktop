@@ -97,6 +97,7 @@ public:
 
     static void setDelay(int delay_ms);
 
+    static QString getDirOfTask(QJsonObject jsonObject);
 signals:
     void script_excecution_result(int);
 

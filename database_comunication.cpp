@@ -10,6 +10,11 @@
 #include <QtNetwork>
 #include "global_variables.h"
 
+//    url = "http://localhost/";
+//    url = "https://server26194.webcindario.com/";
+//    url = "https://server26194.000webhostapp.com/"; //servidor de pruebas
+QString database_comunication::url_mi_ruta = "https://mywateroute.com/Mi_Ruta/";
+
 database_comunication::database_comunication():QObject()
 {
     tipoPeticion = serverRequestType::NONE_REQUEST;
@@ -33,11 +38,7 @@ void database_comunication::serverRequest(serverRequestType type, QStringList ke
     QUrlQuery query;
     QString url, filename;
 
-//        url = "http://localhost/";
-    //    url = "https://server26194.webcindario.com/";
-    //    url = "https://server26194.000webhostapp.com/"; //servidor de pruebas
-
-    url = "https://mywateroute.com/Mi_Ruta/"; //servidor actual de michel de pago*******************************
+    url = url_mi_ruta; //servidor actual de michel de pago*******************************
 
     tipoPeticion = type;
 
@@ -1154,8 +1155,8 @@ void database_comunication::serverRequest(serverRequestType type, QStringList ke
         networkRequest.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded");
 
         /*QNetworkReply *nr =*/ networkManager->post(networkRequest,postData);
-//        QObject::connect(this, &database_comunication::cancelDownload
-//                         , nr, &QNetworkReply::abort);
+        //        QObject::connect(this, &database_comunication::cancelDownload
+        //                         , nr, &QNetworkReply::abort);
     }
     else {
         networkManager = new QNetworkAccessManager(this);
@@ -1179,8 +1180,8 @@ void database_comunication::serverRequest(serverRequestType type, QStringList ke
                                     QString::number(postData.length()).toLatin1());
 
         /*QNetworkReply *nr =*/ networkManager->post(networkRequest,postData);
-//        QObject::connect(this, &database_comunication::cancelDownload
-//                         , nr, &QNetworkReply::abort);
+        //        QObject::connect(this, &database_comunication::cancelDownload
+        //                         , nr, &QNetworkReply::abort);
     }
 
 }

@@ -45,7 +45,7 @@ static QString RESTO_EM = "RESTO_EM";  //resto emplazamiento devuelto           
 static QString lectura_ultima = "CODLEC";//(voy a cambiar CODLEC del CABB para la lectura, ellos lo utilizan para la ruta)
 static QString lectura_actual = "LECT_LEV";//-------------  //checked
 static QString lectura_contador_nuevo = "LECTURA_CONTADOR_NUEVO";
-static QString observaciones_devueltas = "OBSERVADV";//obs de app android       //checked   //new//
+static QString observaciones_devueltas = "OBSERVADV";//codigo de obs de app excritorio      //checked   //new//
 static QString TIPO = "TIPO";   //CLASE DE CONTADOR                             //checked
 static QString TIPO_devuelto = "TIPO_DEVUELTO"; //CLASE DE CONTADOR DEVUELTO            //checked   //new// ----------
 static QString Estado = "Estado";                           //checked   //new//
@@ -126,6 +126,8 @@ static QString accion_ordenada = "accion_ordenada";
 static QString hibernacion = "hibernacion";
 
 static QString audio_detalle = "audio_detalle";
+static QString numero_precinto = "numero_precinto";
+static QString dia_predeterminado = "dia_predeterminado";
 
 static QString date_time_modified = "date_time_modified";           //checked
 static QString status_tarea = "status_tarea";                       //checked

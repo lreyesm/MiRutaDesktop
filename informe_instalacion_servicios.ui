@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>812</width>
-    <height>416</height>
+    <height>459</height>
    </rect>
   </property>
   <property name="palette">
@@ -108,201 +108,203 @@
            <number>30</number>
           </property>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_4">
-            <property name="spacing">
-             <number>15</number>
-            </property>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_85">
-              <property name="spacing">
-               <number>5</number>
-              </property>
-              <item>
-               <widget class="QLabel" name="lb_ID_FINCA">
-                <property name="styleSheet">
-                 <string notr="true">font: 63 10pt &quot;Segoe UI Semibold&quot;;color: rgb(54, 141, 206);</string>
-                </property>
-                <property name="text">
-                 <string>Id SAT</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="le_id_sat">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>20</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background-color: #EFEFEF; 
+           <widget class="QWidget" name="widget_task_data" native="true">
+            <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <property name="spacing">
+              <number>15</number>
+             </property>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_85">
+               <property name="spacing">
+                <number>5</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="lb_ID_FINCA">
+                 <property name="styleSheet">
+                  <string notr="true">font: 63 10pt &quot;Segoe UI Semibold&quot;;color: rgb(54, 141, 206);</string>
+                 </property>
+                 <property name="text">
+                  <string>Id SAT</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_id_sat">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: #EFEFEF; 
 border-radius: 3px;
 color:rgb(50, 50, 50);</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_86">
-              <property name="spacing">
-               <number>5</number>
-              </property>
-              <item>
-               <widget class="QLabel" name="lb_ID_FINCA_2">
-                <property name="styleSheet">
-                 <string notr="true">font: 63 10pt &quot;Segoe UI Semibold&quot;;color: rgb(54, 141, 206);</string>
-                </property>
-                <property name="text">
-                 <string>Num Abonado</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="le_numero_abonado">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>20</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background-color: #EFEFEF; 
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_86">
+               <property name="spacing">
+                <number>5</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="lb_ID_FINCA_2">
+                 <property name="styleSheet">
+                  <string notr="true">font: 63 10pt &quot;Segoe UI Semibold&quot;;color: rgb(54, 141, 206);</string>
+                 </property>
+                 <property name="text">
+                  <string>Num Abonado</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_numero_abonado">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: #EFEFEF; 
 border-radius: 3px;
 color:rgb(50, 50, 50);</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_87">
-              <property name="spacing">
-               <number>5</number>
-              </property>
-              <item>
-               <widget class="QLabel" name="lb_ID_FINCA_3">
-                <property name="styleSheet">
-                 <string notr="true">font: 63 10pt &quot;Segoe UI Semibold&quot;;color: rgb(54, 141, 206);</string>
-                </property>
-                <property name="text">
-                 <string>Calibre</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="le_calibre_real">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>20</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background-color: #EFEFEF; 
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_87">
+               <property name="spacing">
+                <number>5</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="lb_ID_FINCA_3">
+                 <property name="styleSheet">
+                  <string notr="true">font: 63 10pt &quot;Segoe UI Semibold&quot;;color: rgb(54, 141, 206);</string>
+                 </property>
+                 <property name="text">
+                  <string>Calibre</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_calibre_real">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: #EFEFEF; 
 border-radius: 3px;
 color:rgb(50, 50, 50);</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_88">
-              <property name="spacing">
-               <number>5</number>
-              </property>
-              <item>
-               <widget class="QLabel" name="lb_ID_FINCA_4">
-                <property name="styleSheet">
-                 <string notr="true">font: 63 10pt &quot;Segoe UI Semibold&quot;;color: rgb(54, 141, 206);</string>
-                </property>
-                <property name="text">
-                 <string>Fecha informe</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="le_fecha_informe">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>20</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background-color: #EFEFEF; 
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_88">
+               <property name="spacing">
+                <number>5</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="lb_ID_FINCA_4">
+                 <property name="styleSheet">
+                  <string notr="true">font: 63 10pt &quot;Segoe UI Semibold&quot;;color: rgb(54, 141, 206);</string>
+                 </property>
+                 <property name="text">
+                  <string>Fecha informe</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_fecha_informe">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: #EFEFEF; 
 border-radius: 3px;
 color:rgb(50, 50, 50);</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_89">
-              <property name="spacing">
-               <number>5</number>
-              </property>
-              <item>
-               <widget class="QLabel" name="lb_ID_FINCA_5">
-                <property name="styleSheet">
-                 <string notr="true">font: 63 10pt &quot;Segoe UI Semibold&quot;;color: rgb(54, 141, 206);</string>
-                </property>
-                <property name="text">
-                 <string>Fecha Realización</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="le_fecha_realizacion">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>20</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background-color: #EFEFEF; 
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_89">
+               <property name="spacing">
+                <number>5</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="lb_ID_FINCA_5">
+                 <property name="styleSheet">
+                  <string notr="true">font: 63 10pt &quot;Segoe UI Semibold&quot;;color: rgb(54, 141, 206);</string>
+                 </property>
+                 <property name="text">
+                  <string>Fecha Realización</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="le_fecha_realizacion">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: #EFEFEF; 
 border-radius: 3px;
 color:rgb(50, 50, 50);</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-           </layout>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
           </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_5">

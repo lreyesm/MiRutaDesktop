@@ -24,6 +24,7 @@ public:
     QStringList getCheckBoxeServicios();
 public slots:
     void setData(QJsonObject o);
+    void showWidgetData(bool show);
 signals:
     void finalizado_informe(int);
     void sendData(QJsonObject);

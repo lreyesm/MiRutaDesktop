@@ -430,6 +430,13 @@ private slots:
 
     void add_causas_to_select();
     void add_calibres_to_select(const QString &anomalia);
+    void update_itacs_fields_request();
+    void on_pb_database_config_clicked();
+
+    void setTareasPorPagina(int cant);
+    void on_pushButton_clicked();
+
+    void on_actionSendMessage_triggered();
 private:
     Ui::Tabla *ui;
     QThread thread;
@@ -590,6 +597,15 @@ private:
 
     bool getTareasCustomQuery(QString query, int id_start = 0);
     bool filter_enabled = false;
+    bool updateITACs(QStringList lista_cod_emplazamientos, QJsonObject campos);
+    QJsonArray importarExtraExcel();
+    void migrateExceltoExcel();
+
+    QJsonObject getJsonObjectInJsonArray(QJsonArray jsonArray, QString field, QString value);
+    QMap<QString, QString> mapExcelExtraImport(QStringList listHeaders);
+    void export_jsonArray_to_excel(QJsonArray jsonArray, QMap<QString, QString> mapa_exportacion, QStringList listHeaders);
+    void fixPortals();
+    void updateTask(QJsonObject jsonObject);
 };
 
 #endif // TABLA_H

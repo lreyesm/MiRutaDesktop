@@ -27,6 +27,8 @@ signals:
 public slots:
     void fixModelForTable(QJsonArray);
     void populateTable(database_comunication::serverRequestType tipo);
+
+
 private slots:
     void on_pb_nueva_clicked();
 
