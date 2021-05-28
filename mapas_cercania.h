@@ -119,10 +119,9 @@ private slots:
     void on_pb_add_zonas_clicked();
 
     QStringList getFieldValues(QString field);
-    void showFilterWidgetOptions();
+    void showFilterWidgetOptions(QString field);
     void filterColumnField();
     void addRemoveFilterList(QString value);
-    void filterZonas(QStringList zonas_selected);
     bool tareaConCitaHoy(QJsonObject jsonObject);
     void on_pb_map_type_change_clicked();
 
@@ -130,8 +129,13 @@ private slots:
     void setLoadingText(QString mess);
     void show_loading(QString mess);
     void hide_loading();
+
+    void on_pb_add_blocks_clicked();
+
+    void filterField(QStringList zonas_selected, QString field);
 private:
     Ui::Mapas_Cercania *ui;
+    QString lastSectionField;
     QJsonArray jsonArrayTareas, jsonArrayTareasForTable;
     double zoom_level = 18;
     MarkerModelCercania *marker_model = nullptr;

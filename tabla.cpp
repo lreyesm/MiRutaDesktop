@@ -147,6 +147,27 @@ Tabla::Tabla(QWidget *parent, QString empresa) :
     this->setAttribute(Qt::WA_DeleteOnClose);
 
     ui->pushButton->hide();
+
+    selectedTaskTimer.setInterval(1500);
+    selectedTaskTimer.start();
+    connect(&selectedTaskTimer, &QTimer::timeout, this, &Tabla::countSelectedTasks);
+    ui->l_cantidad_de_tareas_seleccionadas->hide();
+}
+
+void Tabla::countSelectedTasks(){
+    ui->l_cantidad_de_tareas_seleccionadas->hide();
+    if(ui->tableView != nullptr){
+        if(ui->tableView->selectionModel() != nullptr){
+            int count = ui->tableView->selectionModel()->selectedRows().count();
+            if(count > 1){
+                ui->l_cantidad_de_tareas_seleccionadas->setText("Seleccionadas: " + QString::number(count));
+                ui->l_cantidad_de_tareas_seleccionadas->show();
+            }
+            else{
+                ui->l_cantidad_de_tareas_seleccionadas->hide();
+            }
+        }
+    }
 }
 
 void Tabla::migrateExceltoExcel(){
@@ -708,6 +729,7 @@ void Tabla::showEvent( QShowEvent * event )
 }
 void Tabla::closeEvent(QCloseEvent *event)
 {   
+    selectedTaskTimer.stop();
     emit closing();
     QWidget::closeEvent(event);
 }
@@ -1097,7 +1119,7 @@ QMap <QString,QString> Tabla::fillMapForFixModel(QStringList &listHeaders){
         fecha = "Fech.Import";
         mapa.insert(fecha,FechImportacion);
     }
-    mapa.insert("Id.Ord",idOrdenCABB);
+    mapa.insert("Id.Orden",idOrdenCABB);
     mapa.insert("NUMIN", numero_interno);
     mapa.insert("CAUSA ORIGEN", ANOMALIA);
     mapa.insert("C.ACCIÓN ORD.", tipo_tarea);
@@ -1166,7 +1188,7 @@ QMap <QString,QString> Tabla::fillMapForFixModel(QStringList &listHeaders){
     mapa.insert("C.EMPLAZAMIENTO",codigo_de_geolocalizacion);
     mapa.insert("Geolocalización",url_geolocalizacion);
 
-    listHeaders <<"Id.Ord" << fecha << "CAUSA ORIGEN" << "C.ACCIÓN ORD." << "AREALIZAR"<< "INTERVENCI" <<"PROP."
+    listHeaders <<"Id.Orden" << fecha << "CAUSA ORIGEN" << "C.ACCIÓN ORD." << "AREALIZAR"<< "INTERVENCI" <<"PROP."
                << "AÑO o PREFIJO"<<"SERIE" << "MARCA" << "CALIBRE"<< "RUEDAS" << "FECINST"
                << "ACTIVI" << "EMPLAZA" << "ACCESO"<< "CALLE"  << "NUME" << "BIS"
                << "PISO"<<"MANO" << "MUNICIPIO" << "TELEFONO 1" << "TELEFONO 2" << "NOMBRE" << "ABONADO" << "CODLEC"
@@ -1454,7 +1476,7 @@ void Tabla::setTableView(bool delegate)
         ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
         QList<double> sizes;
-        sizes << 0.5/*ordCabb*/ << 1.2 /*Fech Import*/<< 1/*CausaOrigen*/<< 1/*c.AccionOrdenada*/<< 1.5/*ARealizar*/<< 2/*Intervenc*/
+        sizes << 1/*ordCabb*/ << 1.2 /*Fech Import*/<< 1/*CausaOrigen*/<< 1/*c.AccionOrdenada*/<< 1.5/*ARealizar*/<< 2/*Intervenc*/
               <<  0.5/*PROPIEDAD*/ <<  1/*AÑO o PREFIJO*/ <<  1/*SERIE*/ << 1.8/* MARCA*/ <<  0.5/* CALIBRE*/ << 0.5/*ruedas*/ << 1.2/* FECINST*/
                <<  1.2/*ACTIVI */ <<  1.5/*EMPLAZA */ <<  1.5/*ACCESO */ <<  2/*CALLE */ <<  0.5/*NUME */ <<  0.5/* BIS*/ <<  0.5/* PISO*/
                 <<  0.5/*MANO */ << 1.2/*MUNICIPIO */ << 1/*TELEFONO1 */ << 1/*TELEFONO2 */ << 2.5/*NOMBRE */ << 1/*ABONADO */ << 0.75/*CODLEC */ << 1.2/*FECEMISIO */
@@ -4553,8 +4575,8 @@ void Tabla::on_actionAsignar_campos_comunes_triggered()
                 for(int n=0; n < fields_selected.size(); n++){
                     QString key = fields_selected.keys().at(n);
                     if(checkIfFieldIsValid(key)){
-                        QString value = fields_selected.value(key, "null");
-                        if(checkIfFieldIsValid(value)){
+                        QString value = fields_selected.value(key, "");
+                        if(checkIfFieldIsValid(value) || key == dia_predeterminado){
                             campos.insert(key, value);
                         }
                     }
@@ -5320,7 +5342,7 @@ void Tabla::on_pb_cercania_clicked()
            << ultima_modificacion << fecha_hora_cita << status_tarea << MENSAJE_LIBRE << nuevo_citas << numero_abonado
            << nombre_cliente << numero_serie_contador << telefono1 << telefono2 << nuevo_citas << date_time_modified
            << codigo_de_geolocalizacion << codigo_de_localizacion << geolocalizacion << zona << observaciones
-           << equipo << OPERARIO << TIPORDEN << tipoRadio;
+           << equipo << OPERARIO << TIPORDEN << tipoRadio << dia_predeterminado;
     QString query = "(" + lastQuery + ") AND ( "
                                       "( (" + codigo_de_localizacion + " <> 'NULL') AND (" + codigo_de_localizacion + " <> 'null') )"
                                                                                                                       "OR ( (" + geolocalizacion + " <> 'NULL') AND (" + geolocalizacion + " <> 'null') )"                                                                                                                                                                                      ")";
@@ -8328,8 +8350,7 @@ void Tabla::addItemsToPaginationInfo(int sizeShowing){
                                       + ((currentPages==0)?"1":QString::number(currentPages)));
     ui->l_current_pagination->hideSpinnerList();
 
-    ui->l_cantidad_de_tareas->setText("Mostrando "
-                                      + (QString::number(((currentPage - 1) * limit_pagination) + 1) + "-"
+    ui->l_cantidad_de_tareas->setText((QString::number(((currentPage - 1) * limit_pagination) + 1) + "-"
                                          + (QString::number(sizeShowing + ((currentPage - 1) * limit_pagination)))
                                          + " de " + QString::number(countTareas))
                                       /*+ " " + ((sizeShowing != 1)?"tareas":"tarea")*/);

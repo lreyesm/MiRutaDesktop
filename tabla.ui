@@ -386,6 +386,39 @@ QLabel:hover:!pressed{
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_22">
              <item>
+              <widget class="MyLabelShine" name="l_cantidad_de_tareas_seleccionadas">
+               <property name="minimumSize">
+                <size>
+                 <width>180</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>180</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Segoe UI</family>
+                 <pointsize>12</pointsize>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: #FFFFFF; 
+border-radius: 6px;
+color:rgb(77, 77, 77);</string>
+               </property>
+               <property name="text">
+                <string>...</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
               <spacer name="horizontalSpacer_17">
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
@@ -402,13 +435,13 @@ QLabel:hover:!pressed{
               <widget class="MyLabelShine" name="l_cantidad_de_tareas">
                <property name="minimumSize">
                 <size>
-                 <width>260</width>
+                 <width>200</width>
                  <height>30</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>260</width>
+                 <width>200</width>
                  <height>30</height>
                 </size>
                </property>

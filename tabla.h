@@ -437,6 +437,7 @@ private slots:
     void on_pushButton_clicked();
 
     void on_actionSendMessage_triggered();
+    void countSelectedTasks();
 private:
     Ui::Tabla *ui;
     QThread thread;
@@ -446,6 +447,7 @@ private:
     QString equipoName="";
     QString empresa = "";
     QTimer start_moving_screen;
+    QTimer selectedTaskTimer;
     int init_pos_x;
     int init_pos_y;
     bool first_move = true;
