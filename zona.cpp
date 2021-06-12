@@ -119,7 +119,8 @@ QString Zona::getDayOfZona(QString zona_selected){
     QJsonArray jsonArray = readZonas();
     for (int i= 0; i < jsonArray.size(); i++) {
         QJsonObject jsonObject = jsonArray.at(i).toObject();
-        if(zona_selected.contains(jsonObject.value(codigo_zona_zonas).toString() + " -")){
+        if(zona_selected.contains(jsonObject.value(codigo_zona_zonas).toString()
+                                  + " - " + jsonObject.value(zona_zonas).toString().trimmed())){
             return jsonObject.value(dia_predeterminado_zonas).toString();
         }
     }

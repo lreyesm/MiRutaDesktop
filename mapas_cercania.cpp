@@ -523,12 +523,12 @@ void Mapas_Cercania::filterZona(QString zona_selected){
     }
     zoom_level = fillMapWithGeolocalizations(jsonArrayFiltered, first_coords);
 }
-void Mapas_Cercania::filterZonas(QStringList zonas_selected){
+void Mapas_Cercania::filterField(QStringList filterColumnList, QString field){
     QJsonArray jsonArrayFiltered;
     QGeoCoordinate first_coords;
     for (int i= 0; i < jsonArrayTareas.size(); i++) {
-        QString zona_tarea = jsonArrayTareas.at(i).toObject().value(zona).toString().trimmed();
-        if(zonas_selected.contains(zona_tarea)){
+        QString field_tarea = jsonArrayTareas.at(i).toObject().value(field).toString().trimmed();
+        if(filterColumnList.contains(field_tarea)){
             jsonArrayFiltered.append(jsonArrayTareas.at(i).toObject());
             if(!first_coords.isValid()){
                 QString geoCode = jsonArrayTareas.at(i).toObject().
@@ -545,6 +545,7 @@ void Mapas_Cercania::filterZonas(QStringList zonas_selected){
     }
     zoom_level = fillMapWithGeolocalizations(jsonArrayFiltered, first_coords);
 }
+
 void Mapas_Cercania::showResumen(){
     QPoint thisPos = this->mapToGlobal(QPoint(0,0));
     if(resumen == nullptr){
@@ -1141,8 +1142,6 @@ void Mapas_Cercania::openTareaXconTipo(){
     }
 }
 
-
-
 bool Mapas_Cercania::checkIfFieldIsValid(QString var){//devuelve true si es valido
     if(var!=nullptr && !var.trimmed().isEmpty() && !var.isNull() && var!="null" && var!="NULL"){
         return true;
@@ -1151,12 +1150,13 @@ bool Mapas_Cercania::checkIfFieldIsValid(QString var){//devuelve true si es vali
         return false;
     }
 }
+
 QString Mapas_Cercania::getStringFromCoord(QGeoCoordinate coords){
     if(coords.isValid()){
         QString latitud = QString::number(coords.latitude(), 'f', 13);
         QString longitud = QString::number(coords.longitude(), 'f', 13);
-//        qDebug()<<"Coords: -> "<<coords;
-//        qDebug()<<"Conversion: -> " + latitud + "," + longitud;
+        //        qDebug()<<"Coords: -> "<<coords;
+        //        qDebug()<<"Conversion: -> " + latitud + "," + longitud;
         return latitud + "," + longitud;
     }
     return "";
@@ -1202,7 +1202,6 @@ double Mapas_Cercania::getZoomLevel()
 {
     return zoom_level;
 }
-
 
 void Mapas_Cercania::on_pb_home_casa_clicked()
 {
@@ -1480,8 +1479,17 @@ void Mapas_Cercania::on_pb_add_zonas_clicked()
 {
     emit show_filter();
     filterColumnList.clear();
-    showFilterWidgetOptions();
+    lastSectionField = zona;
+    showFilterWidgetOptions(zona);
 }
+void Mapas_Cercania::on_pb_add_blocks_clicked()
+{
+    emit show_filter();
+    filterColumnList.clear();
+    lastSectionField = dia_predeterminado;
+    showFilterWidgetOptions(dia_predeterminado);
+}
+
 QStringList Mapas_Cercania::getFieldValues(QString field){
     QJsonArray jsonArray = jsonArrayTareas;
     QStringList values;
@@ -1497,16 +1505,19 @@ QStringList Mapas_Cercania::getFieldValues(QString field){
     values.sort();
     return values;
 }
+
 void Mapas_Cercania::filterColumnField(){
 
     if(filterColumnList.isEmpty()){
         return;
     }
-    filterZonas(filterColumnList);
-    disconnect(ui->cb_zonas, &MyComboBoxShine::currentTextChanged, this, &Mapas_Cercania::filterZona);
-    ui->cb_zonas->clear();
-    ui->cb_zonas->addItems(filterColumnList);
-    connect(ui->cb_zonas, &MyComboBoxShine::currentTextChanged, this, &Mapas_Cercania::filterZona);
+    filterField(filterColumnList, lastSectionField);
+    if(lastSectionField == zona){
+        disconnect(ui->cb_zonas, &MyComboBoxShine::currentTextChanged, this, &Mapas_Cercania::filterZona);
+        ui->cb_zonas->clear();
+        ui->cb_zonas->addItems(filterColumnList);
+        connect(ui->cb_zonas, &MyComboBoxShine::currentTextChanged, this, &Mapas_Cercania::filterZona);
+    }
 }
 QString Mapas_Cercania::getScrollBarStyle(){
     QString style =
@@ -1544,7 +1555,7 @@ QString Mapas_Cercania::getScrollBarStyle(){
 
     return style;
 }
-void Mapas_Cercania::showFilterWidgetOptions(){
+void Mapas_Cercania::showFilterWidgetOptions(QString field){
 
     QVBoxLayout *vlayout = new QVBoxLayout;
     vlayout->setMargin(5);
@@ -1568,7 +1579,7 @@ void Mapas_Cercania::showFilterWidgetOptions(){
     cb_todos->setFont(f);
 
     int itemHeight = 35;
-    QStringList values = getFieldValues(zona);
+    QStringList values = getFieldValues(field);
     QString value;
     int width = 100;
     foreach(value, values){
@@ -1727,3 +1738,4 @@ void Mapas_Cercania::setLoadingText(QString mess){
 void Mapas_Cercania::hide_loading(){
     emit hidingLoading();
 }
+

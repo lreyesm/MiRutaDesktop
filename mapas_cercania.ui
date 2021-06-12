@@ -418,6 +418,46 @@ QPushButton:hover:!pressed{
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="QPushButton" name="pb_add_blocks">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>0</y>
+      <width>32</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <italic>false</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+	border-radius: 10px;
+	color: #388DCE; 
+}
+QPushButton:hover:!pressed{
+	  background-color: #FFFFFF; 
+}</string>
+    </property>
+    <property name="text">
+     <string>B</string>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>20</width>
+      <height>20</height>
+     </size>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+   </widget>
   </widget>
   <widget class="MyLabelAnimated" name="pb_show_filter_zona">
    <property name="geometry">

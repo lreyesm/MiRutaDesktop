@@ -126,8 +126,8 @@ void Fields_to_Assign::iniciateVariables(){
     ui->cb_zonas->addItems(zonasLista);
 
     QStringList dias;
-//    dias << "POR DEFECTO" << "LUNES" << "MARTES" << "MIÉRCOLES" << "JUEVES"<< "VIERNES" << "SÁBADO"<< "DOMINGO";
-    dias << "POR DEFECTO" << "1" << "2" << "3" << "4"<< "5";
+    //    dias << "POR DEFECTO" << "LUNES" << "MARTES" << "MIÉRCOLES" << "JUEVES"<< "VIERNES" << "SÁBADO"<< "DOMINGO";
+    dias << "POR DEFECTO" << "NINGUNO" << "1" << "2" << "3" << "4"<< "5";
     ui->cb_dia_predeterminado->clear();
     ui->cb_dia_predeterminado->addItems(dias);
 
@@ -244,7 +244,11 @@ void Fields_to_Assign::on_buttonBox_accepted()
         fields.insert(zona, ui->cb_zonas->currentText());
     }
     if(!ui->cb_dia_predeterminado->currentText().isEmpty() && ui->cb_dia_predeterminado->currentText()!= "POR DEFECTO"){
-        fields.insert(dia_predeterminado, ui->cb_dia_predeterminado->currentText());
+        if(ui->cb_dia_predeterminado->currentText() == "NINGUNO"){
+            fields.insert(dia_predeterminado, "");
+        }else{
+            fields.insert(dia_predeterminado, ui->cb_dia_predeterminado->currentText());
+        }
     }
     if(!ui->l_prioridad->text().isEmpty() && ui->l_prioridad->currentText()!= "POR DEFECTO"){
         fields.insert(prioridad, ui->l_prioridad->text());
