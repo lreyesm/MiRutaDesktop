@@ -6,7 +6,7 @@
 #include <QColor>
 
 
-static QString versionMiRuta = "V3.1.8";
+static QString versionMiRuta = "V3.1.9";
 static QColor color_blue_app = QColor(54,141,206);
 static QString limite_archivos_en_servidor = "256Mb";
 static QString formato_fecha_hora = "yyyy-MM-dd HH:mm:ss";

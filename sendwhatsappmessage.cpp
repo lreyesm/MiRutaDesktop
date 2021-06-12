@@ -41,11 +41,42 @@ SendWhatsappMessage::SendWhatsappMessage(QWidget *parent, QString gestor, QStrin
     connect(ui->l_spinner_country, &MyLabelSpinner::itemSelected, this, &SendWhatsappMessage::setCountryCode);
 
     this->move(parent->width()/2-this->width()/2, parent->height()/2-this->height()/2);
-    QString messageText = "GESTOR: " + gestor;
-    messageText += "\n\nAviso de próximo cambio de contador en:";
-    messageText += "\n\nDIRECCIÓN: " + dir;
-    messageText += "\nABONADO: " + abonado;
-    messageText += "\n\n";
+
+    QString messageText = "";
+    if(gestor == "CABB"){
+        messageText += "\nUr- kontagailuan hurrengo esku- hartzeari buruzko oharra.";
+
+        messageText += "\n\nGeconta Medidores de Fluidos SL-k, Bilbao Bizkaia";
+        messageText += "\nUr Partzuergoaren entrepresa kolaboratzaile gisa,";
+        messageText += "\ninformatzen zaitu " + dir + ", kalean,";
+        messageText += "\nabonatu zenbakia " + abonado + ", ";
+        messageText += "\nur-hotzaren kontagailuarekin lotura duen ";
+        messageText += "\nesku-hartze bat egin behar dugula.";
+        messageText += "\nArren eskatzen dizugu gurekin harremanetan";
+        messageText += "\njar zaitezela bisita eguna eta ordua adosteko.";
+    }
+    else{
+         messageText = "GESTOR: " + gestor;
+         messageText += "\n\nAviso de próximo cambio de contador en:";
+         messageText += "\n\nDIRECCIÓN: " + dir;
+         messageText += "\nABONADO: " + abonado;
+         messageText += "\n\n";
+//        messageText += "\nAviso de próxima intervención en contador de agua";
+//        messageText += "\n/ Ur neurgailuan hurrengo eskuhartzearen oharra.";
+
+//        messageText += "\n\nGeconta Medidores de fluidos SL, como empresa ";
+//        messageText += "\ncolaboradora del " + gestor + ", le informa que estamos ";
+//        messageText += "\npendientes de una intervención que implica ";
+//        messageText += "\nal contador de agua fría de ";
+//        messageText += "\n" + dir + ", abonado " + abonado + ".";
+//        messageText += "\nLe rogamos que se ponga en contacto con nosotros,";
+//        messageText += "\npara coordinar fecha y hora de visita.";
+    }
+    // QString messageText = "GESTOR: " + gestor;
+    // messageText += "\n\nAviso de próximo cambio de contador en:";
+    // messageText += "\n\nDIRECCIÓN: " + dir;
+    // messageText += "\nABONADO: " + abonado;
+    // messageText += "\n\n";
 
     ui->pt_message->setPlainText(messageText);
 }
