@@ -54,6 +54,17 @@ SendWhatsappMessage::SendWhatsappMessage(QWidget *parent, QString gestor, QStrin
         messageText += "\nesku-hartze bat egin behar dugula.";
         messageText += "\nArren eskatzen dizugu gurekin harremanetan";
         messageText += "\njar zaitezela bisita eguna eta ordua adosteko.";
+
+        messageText += "\n\n\nAviso de próxima intervención en contador de agua";
+        messageText += "\n/ Ur neurgailuan hurrengo eskuhartzearen oharra.";
+
+        messageText += "\n\nGeconta Medidores de fluidos SL, como empresa ";
+        messageText += "\ncolaboradora del " + gestor + ", le informa que estamos ";
+        messageText += "\npendientes de una intervención que implica ";
+        messageText += "\nal contador de agua fría de ";
+        messageText += "\n" + dir + ", abonado " + abonado + ".";
+        messageText += "\nLe rogamos que se ponga en contacto con nosotros,";
+        messageText += "\npara coordinar fecha y hora de visita.";
     }
     else{
          messageText = "GESTOR: " + gestor;
@@ -61,16 +72,6 @@ SendWhatsappMessage::SendWhatsappMessage(QWidget *parent, QString gestor, QStrin
          messageText += "\n\nDIRECCIÓN: " + dir;
          messageText += "\nABONADO: " + abonado;
          messageText += "\n\n";
-//        messageText += "\nAviso de próxima intervención en contador de agua";
-//        messageText += "\n/ Ur neurgailuan hurrengo eskuhartzearen oharra.";
-
-//        messageText += "\n\nGeconta Medidores de fluidos SL, como empresa ";
-//        messageText += "\ncolaboradora del " + gestor + ", le informa que estamos ";
-//        messageText += "\npendientes de una intervención que implica ";
-//        messageText += "\nal contador de agua fría de ";
-//        messageText += "\n" + dir + ", abonado " + abonado + ".";
-//        messageText += "\nLe rogamos que se ponga en contacto con nosotros,";
-//        messageText += "\npara coordinar fecha y hora de visita.";
     }
     // QString messageText = "GESTOR: " + gestor;
     // messageText += "\n\nAviso de próximo cambio de contador en:";
