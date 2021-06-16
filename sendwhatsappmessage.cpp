@@ -44,7 +44,7 @@ SendWhatsappMessage::SendWhatsappMessage(QWidget *parent, QString gestor, QStrin
 
     QString messageText = "";
     if(gestor == "CABB"){
-        messageText += "\nUr- kontagailuan hurrengo esku- hartzeari buruzko oharra.";
+        messageText += "\nUR-KONTAGAILUAN hurrengo esku-hartzeari buruzko oharra.";
 
         messageText += "\n\nGeconta Medidores de Fluidos SL-k, Bilbao Bizkaia";
         messageText += "\nUr Partzuergoaren entrepresa kolaboratzaile gisa,";
@@ -55,8 +55,7 @@ SendWhatsappMessage::SendWhatsappMessage(QWidget *parent, QString gestor, QStrin
         messageText += "\nArren eskatzen dizugu gurekin harremanetan";
         messageText += "\njar zaitezela bisita eguna eta ordua adosteko.";
 
-        messageText += "\n\n\nAviso de próxima intervención en contador de agua";
-        messageText += "\n/ Ur neurgailuan hurrengo eskuhartzearen oharra.";
+        messageText += "\n\n\nAviso de próxima intervención en CONTADOR DE AGUA.";
 
         messageText += "\n\nGeconta Medidores de fluidos SL, como empresa ";
         messageText += "\ncolaboradora del " + gestor + ", le informa que estamos ";
