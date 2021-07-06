@@ -122,6 +122,8 @@ private slots:
     void updateContadoresInTable();
     void on_pb_inicio_clicked();
 
+    void on_pb_export_contadores_to_excel_clicked();
+
 private:
     Ui::Screen_tabla_contadores *ui;
 //    Counter *contador = nullptr;
@@ -176,6 +178,7 @@ private:
     bool filter_enabled = false;
     QJsonArray fixJsonToLastModel(QJsonArray jsonArray);
     QString getQueyStatus();
+    void export_jsonArray_to_excel(QJsonArray jsonArray, QMap<QString, QString> mapa_exportacion, QStringList listHeaders);
 };
 
 #endif // SCREEN_TABLA_CONTADORES_H

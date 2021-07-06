@@ -603,11 +603,13 @@ QMap <QString,QString> Screen_tabla_contadores::fillMapForFixModel(QStringList &
     mapa.insert("Lectura",lectura_inicial_contadores);
     mapa.insert("Encargado",encargado_contadores);
     mapa.insert("Estado",status_contadores);
+    mapa.insert("Fecha de Modificación", date_time_modified_contadores);
 
     listHeaders << "Numero serie" << "Año o prefijo" << "Calibre"
                 << "Longitud" << "Ruedas" << "C.Marca"<< "Marca"
                 << "Modelo" << "C.Clase"<< "Clase"  << "T.Fluido"
-                << "T.Radio" << "Lectura" << "Encargado" << "Estado";
+                << "T.Radio" << "Lectura" << "Encargado" << "Estado"
+                << "Fecha de Modificación";
 
     return mapa;
 }
@@ -1794,3 +1796,72 @@ void Screen_tabla_contadores::on_pb_inicio_clicked()
 {
     getContadores();
 }
+
+void Screen_tabla_contadores::on_pb_export_contadores_to_excel_clicked()
+{
+    QJsonArray jsonArray = getCurrentJsonArrayInTable();
+    QStringList listHeaders;
+    QMap<QString,QString> mapa_exportacion = fillMapForFixModel(listHeaders);
+    export_jsonArray_to_excel(jsonArray, mapa_exportacion, listHeaders);
+}
+
+
+
+void Screen_tabla_contadores::export_jsonArray_to_excel(QJsonArray jsonArray,
+                                                        QMap<QString,QString> mapa_exportacion,
+                                                        QStringList listHeaders)
+{
+    QDir dir;
+    dir.setPath(QDir::currentPath() +"/Contadores Exportados");
+    if(!dir.exists()){
+        dir.mkpath(dir.path());
+    }
+    QString rutaToXLSXFile_gestor_independiente = QFileDialog::getSaveFileName(this,"Seleccione la ruta y nombre del fichero xlsx.",
+                                                                               dir.path()+"/"+ QDateTime::currentDateTime().toString(formato_fecha_hora).
+                                                                               replace(":","_").replace("-","_").replace(" ","__")
+                                                                               +"__Contadores_Exportados", "Excel (*.xlsx)");
+
+    QString rutaToXLSXFile_table = rutaToXLSXFile_gestor_independiente;
+
+    if(!rutaToXLSXFile_gestor_independiente.isNull() && !rutaToXLSXFile_gestor_independiente.isEmpty())
+    {
+        int rows = jsonArray.count() ;
+
+        QXlsx::Document xlsx;
+
+        //write headers-----------------------------------------------------------------------------------
+        for (int i=0; i<listHeaders.count(); i++)
+        {
+            xlsx.write(1, i+1, listHeaders[i]/*.toUpper()*/);
+        }
+        //end write headers-------------------------------------------------------------------------------
+        QString header;
+        QString value_header;
+        for(int i = 0, row=2; i < rows; i++)
+        {
+            for(int n=0; n < listHeaders.count(); n++){
+                header = listHeaders.at(n);
+                value_header = mapa_exportacion.value(header);
+                QJsonObject jsonObject = jsonArray[i].toObject();
+                QString temp = jsonObject.value(value_header).toString();
+
+                if(!checkIfFieldIsValid(temp)){
+                    temp = "";
+                }
+                xlsx.write(row,n+1,temp);
+            }
+            row++;
+        }
+        xlsx.saveAs(rutaToXLSXFile_gestor_independiente);
+
+        GlobalFunctions::showMessage(this,"Éxito","Fichero XLSX de contadores generado");
+
+        GlobalFunctions gf(this, empresa);
+        if(gf.showQuestion(this, "Confirmación","¿Desea abrir carpeta de exportación?",
+                           QMessageBox::Ok, QMessageBox::No) == QMessageBox::Ok){
+            GlobalFunctions::showInExplorer(dir.path());
+        }
+    }
+}
+
+
