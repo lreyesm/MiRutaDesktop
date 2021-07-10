@@ -515,7 +515,6 @@ private:
     int getCurrentRadioButton();
     void setRadiobutton(int type);
     void habilitarBotonAtras(bool enable_disable);
-    QString changeFechaFormat(QString f);
     void filtrarPorCambiosSinRevisar(int id_start = 0);
     void export_tasks_in_table_to_excel();
     QJsonObject get_JObject_from_JArray(QJsonArray jsonArray, QString principal_var);

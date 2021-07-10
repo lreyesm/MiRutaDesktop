@@ -75,6 +75,16 @@ void GlobalFunctions::execJavaScriptCode(QString code) //param code: JavaScript 
     // Since the QScriptEngine is created on the method stack, it will be deleted automatically when the method ends.
 }
 
+QString GlobalFunctions::changeFechaFormat(QString f){
+    if(checkIfFieldIsValid(f)){
+        QDateTime dt = QDateTime::fromString(f, "yyyy-MM-dd hh:mm:ss");
+        return dt.toString("dd/MM/yy hh:mm");
+    }else{
+        return "";
+    }
+
+}
+
 QString GlobalFunctions::getDirOfTask(QJsonObject jsonObject){
     QString dir = "";
     QString field = jsonObject.value(poblacion).toString();

@@ -65,6 +65,8 @@ Screen_tabla_contadores::Screen_tabla_contadores(QWidget *parent, QString empres
     eff->setOffset(2);
     ui->pb_create_new_contador->setGraphicsEffect(eff);
 
+    campos_de_fechas << date_time_modified_contadores;
+
     connect(ui->l_current_pagination, &MyLabelSpinner::itemSelected,
             this, &Screen_tabla_contadores::moveToPage);
     connect(this, &Screen_tabla_contadores::mouse_pressed, ui->l_current_pagination, &MyLabelSpinner::hideSpinnerList);
@@ -642,8 +644,11 @@ void Screen_tabla_contadores::fixModelForTable(QJsonArray jsonArray){
             //                    }
             //                }
             //            }
+            if(key == date_time_modified_contadores){
+                value = GlobalFunctions::changeFechaFormat(value) ;
+            }
             if(!checkIfFieldIsValid(value)){
-                value ="";
+                value = "";
             }
             item->setData(value ,Qt::EditRole);
             model->setItem(i, n, item);
@@ -734,6 +739,9 @@ QStringList Screen_tabla_contadores::getFieldValues(QString field){
         for (int i=0; i < jsonArray.size(); i++) {
             value = jsonArray.at(i).toObject().value(field).toString();
             if(checkIfFieldIsValid(value)){
+                if(campos_de_fechas.contains(field)){
+                    value = value.trimmed().split(" ").at(0).trimmed();
+                }
                 if(!values.contains(value)){
                     values << value;
                 }
@@ -778,15 +786,24 @@ void Screen_tabla_contadores::filterColumnField(){
         jsonArrayInTableFiltered = QJsonArray();
 
         for(int i=0; i< jsonArray.size(); i++){
-            QString value = jsonArray[i].toObject().value(lastSectionField).toString().trimmed();
+            QJsonObject jsonObject = jsonArray[i].toObject();
+            QString value = jsonObject.value(lastSectionField).toString().trimmed();
             if(lastSectionField == status_contadores){
                 if(!checkIfFieldIsValid(value) && filterColumnList.contains("DISPONIBLE")){
-                    jsonArrayInTableFiltered.append(jsonArray[i].toObject());
+                    jsonArrayInTableFiltered.append(jsonObject);
                     continue;
                 }
             }
-            if(checkIfFieldIsValid(value) && filterColumnList.contains(value, Qt::CaseInsensitive)){
-                jsonArrayInTableFiltered.append(jsonArray[i].toObject());
+            if(campos_de_fechas.contains(lastSectionField)){
+                value = value.trimmed().split(" ").at(0).trimmed();
+            }
+            if(checkIfFieldIsValid(value)){
+                if(campos_de_fechas.contains(lastSectionField)){
+                    value = value.trimmed().split(" ").at(0).trimmed();
+                }
+                if(filterColumnList.contains(value, Qt::CaseInsensitive)){
+                    jsonArrayInTableFiltered.append(jsonObject);
+                }
             }
         }
         jsonInfoContadoresAmount = QJsonObject();

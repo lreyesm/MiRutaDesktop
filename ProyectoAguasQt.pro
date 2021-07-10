@@ -403,7 +403,7 @@ FORMS += \
 RESOURCES += \
     assets.qrc
 
-#RC_ICONS = /icons/icono.ico
+RC_ICONS = /icons/icono.ico
 
 DISTFILES +=
 

@@ -1319,7 +1319,7 @@ void Tabla::fixModelforTable(QJsonArray jsonArray, bool save_history)
                 }
                 column_info = value;
             }else{
-                column_info = changeFechaFormat(jsonObject.value(mapa.value(listHeaders.at(n))).toString());
+                column_info = GlobalFunctions::changeFechaFormat(jsonObject.value(mapa.value(listHeaders.at(n))).toString());
             }
 
             column_info = returnIfSerieOrPrefijo(jsonArray, i, value_header, column_info);
@@ -1354,7 +1354,7 @@ void Tabla::fixModelforTable(QJsonArray jsonArray, bool save_history)
                     QString cita = jsonObject.value(fecha_hora_cita).toString().trimmed();
                     if(checkIfFieldIsValid(cita)){
                         column_info = "Cita Vencida:\n";
-                        column_info += changeFechaFormat(cita);
+                        column_info += GlobalFunctions::changeFechaFormat(cita);
                         depreceated_color = true;
                     }
                 }else{
@@ -1365,7 +1365,7 @@ void Tabla::fixModelforTable(QJsonArray jsonArray, bool save_history)
                         column_info = "Tocado en Puerta:\n";
                         list_f = tocado.split("\n");
                         for (int c =0; c < list_f.size(); c++) {
-                            l.append(changeFechaFormat(list_f.at(c)));
+                            l.append(GlobalFunctions::changeFechaFormat(list_f.at(c)));
                         }
                         column_info += l.join("\n") + "\n\n";
                         l.clear();
@@ -1376,7 +1376,7 @@ void Tabla::fixModelforTable(QJsonArray jsonArray, bool save_history)
                         column_info += "Nota de Aviso:\n";
                         list_f = notas.split("\n");
                         for (int c =0; c < list_f.size(); c++) {
-                            l.append(changeFechaFormat(list_f.at(c)));
+                            l.append(GlobalFunctions::changeFechaFormat(list_f.at(c)));
                         }
                         column_info += l.join("\n")+ "\n\n";
                         l.clear();
@@ -1389,7 +1389,7 @@ void Tabla::fixModelforTable(QJsonArray jsonArray, bool save_history)
                     
                     QString cita = jsonObject.value(fecha_hora_cita).toString().trimmed();
                     if(checkIfFieldIsValid(cita)){
-                        column_info += "\n\nCita Vencida:\n" +changeFechaFormat(cita);
+                        column_info += "\n\nCita Vencida:\n" +GlobalFunctions::changeFechaFormat(cita);
                         rows_red << i;
                         depreceated_color = true;
                     }
@@ -1446,15 +1446,7 @@ void Tabla::fixModelforTable(QJsonArray jsonArray, bool save_history)
                                    "ver ultima tabla guardada.", 4000);
     }
 }
-QString Tabla::changeFechaFormat(QString f){
-    if(checkIfFieldIsValid(f)){
-        QDateTime dt = QDateTime::fromString(f, "yyyy-MM-dd hh:mm:ss");
-        return dt.toString("dd/MM/yy hh:mm");
-    }else{
-        return "";
-    }
-    
-}
+
 bool Tabla::checkIfFieldIsValid(QString var){//devuelve true si es valido
     if(!var.trimmed().isEmpty() && !var.isNull() && var!="null" && var!="NULL"){
         return true;
@@ -3625,7 +3617,7 @@ QMap<QString,QString> Tabla::fillMapaExp(){
     mapa_exportacion.insert("GESTOR",GESTOR);
     mapa_exportacion.insert("LECTURA DE CONTADOR INSTALADO",lectura_contador_nuevo);
     mapa_exportacion.insert("Nº SERIE CONTADOR INSTALADO",numero_serie_contador_devuelto);
-    mapa_exportacion.insert("Nº ANTENA CONTADOR INSTALADO",numero_serie_modulo);
+    mapa_exportacion.insert("Nº es demaANTENA CONTADOR INSTALADO",numero_serie_modulo);
     mapa_exportacion.insert("CALIBRE CONTADOR INSTALADO",calibre_real);
     mapa_exportacion.insert("MARCA CONTADOR INSTALADO",marca_devuelta);
     mapa_exportacion.insert("CLASE CONTADOR INSTALADO",TIPO_devuelto);

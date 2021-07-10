@@ -767,7 +767,7 @@ QPushButton:hover:pressed{
 }</string>
           </property>
           <property name="text">
-           <string>CARGAR DESDE EXCEL</string>
+           <string>EXPORTAR A EXCEL</string>
           </property>
           <property name="flat">
            <bool>true</bool>

@@ -127,6 +127,7 @@ private slots:
 private:
     Ui::Screen_tabla_contadores *ui;
 //    Counter *contador = nullptr;
+    QStringList campos_de_fechas;
     database_comunication database_com;
     other_task_screen *oneTareaScreen=nullptr;
     QStandardItemModel* model;

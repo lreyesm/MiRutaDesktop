@@ -98,6 +98,9 @@ public:
     static void setDelay(int delay_ms);
 
     static QString getDirOfTask(QJsonObject jsonObject);
+
+    static QString changeFechaFormat(QString f);
+
 signals:
     void script_excecution_result(int);
 
