@@ -45,6 +45,7 @@
 #include "globalfunctions.h"
 #include "databaseoptions.h"
 #include "sendwhatsappmessage.h"
+#include "idordenassign.h"
 
 using namespace QXlsx;
 
@@ -1635,6 +1636,9 @@ QStringList Tabla::getFieldValues(QString field){
                 QString key = keys.at(i);
                 if(!key.contains("query") && !key.contains("count_values")){
                     QString value = jsonObjectValues.value(key).toString();
+                    if(campos_de_fechas.contains(field)){
+                        value = value.trimmed().split(" ").at(0).trimmed();
+                    }
                     if(!values.contains(value, Qt::CaseInsensitive) && checkIfFieldIsValid(value)){
                         values << value;
                     }
@@ -4753,6 +4757,52 @@ void Tabla::on_actionSendMessage_triggered(){
         }
     }
 }
+void Tabla::on_actionAsignOrderID_triggered(){
+    if(!other_task_screen::conexion_activa){
+        GlobalFunctions::showMessage(this,"Sin conexión","No se puede asignar sin conexión");
+        return;
+    }
+
+    QModelIndexList selection = ui->tableView->selectionModel()->selectedRows();
+
+    if(selection.isEmpty()){
+        GlobalFunctions::showMessage(this,"Sin Selección","Debe seleccionar al menos una tarea");
+        return;
+    }
+    IDOrdenAssign *id_orden_screen = new IDOrdenAssign(this);
+    connect(id_orden_screen, &IDOrdenAssign::id_selected, this, &Tabla::updateIDOrdenes);
+    id_orden_screen->moveCenter();
+    id_orden_screen->show();
+}
+void Tabla::updateIDOrdenes(QString id_orden){
+    QJsonObject jsonObject;
+    bool ok;
+    int id_orden_inicial = id_orden.toInt(&ok);
+    QJsonArray jsonArray = getCurrentJsonArrayInTable();
+    QModelIndexList selection = ui->tableView->selectionModel()->selectedRows();
+    if(ok){
+        int total = selection.count();
+        for(int i=0; i< selection.count(); i++)
+        {
+            show_loading("Espere, Asignando ID orden...");
+            QModelIndex index = selection.at(i);
+            int posicion = index.row();
+
+            if(jsonArray.size() > posicion){
+                jsonObject = jsonArray[posicion].toObject();
+                jsonObject.insert(idOrdenCABB, QString::number(id_orden_inicial));
+                jsonObject.insert(ID_SAT, QString::number(id_orden_inicial));
+                id_orden_inicial++;
+//                jsonArray.replace(posicion, jsonObject);
+                setLoadingText("Espere, asignando ID orden... ("
+                               +QString::number(i+1)+"/"+QString::number(total)+")");
+                updateTask(jsonObject);
+            }
+            hide_loading();
+        }
+        emit updateTableInfo();
+    }
+}
 void Tabla::on_actionAsignar_a_un_equipo_triggered(){
     if(!other_task_screen::conexion_activa){
         GlobalFunctions::showMessage(this,"Sin conexión","No se puede asignar sin conexión");
@@ -5421,6 +5471,9 @@ void Tabla::getMenuClickedItem(int selected)
     }
     else if(selected == RESUMEN_TAREAS){
         on_actionResumen_Tareas_triggered();
+    }
+    else if(selected == ASIGNAR_ID_ORDEN){
+        on_actionAsignOrderID_triggered();
     }
     else if(selected == ENVIAR_MENSAJE){
         on_actionSendMessage_triggered();
@@ -8343,8 +8396,8 @@ void Tabla::addItemsToPaginationInfo(int sizeShowing){
     ui->l_current_pagination->hideSpinnerList();
 
     ui->l_cantidad_de_tareas->setText((QString::number(((currentPage - 1) * limit_pagination) + 1) + "-"
-                                         + (QString::number(sizeShowing + ((currentPage - 1) * limit_pagination)))
-                                         + " de " + QString::number(countTareas))
+                                       + (QString::number(sizeShowing + ((currentPage - 1) * limit_pagination)))
+                                       + " de " + QString::number(countTareas))
                                       /*+ " " + ((sizeShowing != 1)?"tareas":"tarea")*/);
     checkPaginationButtons();
 }

@@ -6,7 +6,7 @@
 #include <QColor>
 
 
-static QString versionMiRuta = "V3.2.2";
+static QString versionMiRuta = "V3.2.3";
 static QColor color_blue_app = QColor(54,141,206);
 static QString limite_archivos_en_servidor = "256Mb";
 static QString formato_fecha_hora = "yyyy-MM-dd HH:mm:ss";
@@ -56,7 +56,7 @@ static QString url_server = "https://lreyesm.000webhostapp.com/Mi_Ruta/";
 //ultimo trabajo antes de que se caiga la conexion
 static QString ultimo_respaldo = QDir::currentPath()+"/Respaldos/ultimo_trabajo_salvado.txt";
 
-enum {ABRIR, ENVIAR_MENSAJE, MOSTRAR_EN_MAPA,DESCARGAR_FOTOS, RESUMEN_TAREAS,ASIGNAR_COMUNES, ASIGNAR_A_EQUIPO, ASIGNAR_A_OPERARIO, ELIMINAR};
+enum {ABRIR, ENVIAR_MENSAJE, MOSTRAR_EN_MAPA,DESCARGAR_FOTOS, ASIGNAR_ID_ORDEN, RESUMEN_TAREAS,ASIGNAR_COMUNES, ASIGNAR_A_EQUIPO, ASIGNAR_A_OPERARIO, ELIMINAR};
 
 enum {TODAS,ABIERTAS,AUSENTE,CITA,EJECUTADA,CERRADA,INFORMADA,REQUERIDA, NINGUNO};
 

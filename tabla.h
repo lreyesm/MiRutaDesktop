@@ -438,6 +438,8 @@ private slots:
 
     void on_actionSendMessage_triggered();
     void countSelectedTasks();
+    void on_actionAsignOrderID_triggered();
+    void updateIDOrdenes(QString id_orden);
 private:
     Ui::Tabla *ui;
     QThread thread;

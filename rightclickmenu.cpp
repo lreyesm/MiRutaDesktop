@@ -116,3 +116,9 @@ void RightClickMenu::on_pb_send_message_clicked()
     this->close();
     emit clickPressed(ENVIAR_MENSAJE);
 }
+
+void RightClickMenu::on_pb_asignar_id_orden_clicked()
+{
+    this->close();
+    emit clickPressed(ASIGNAR_ID_ORDEN);
+}

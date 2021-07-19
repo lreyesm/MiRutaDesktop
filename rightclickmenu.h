@@ -43,6 +43,8 @@ private slots:
 
     void on_pb_send_message_clicked();
 
+    void on_pb_asignar_id_orden_clicked();
+
 private:
     Ui::RightClickMenu *ui;
 };
