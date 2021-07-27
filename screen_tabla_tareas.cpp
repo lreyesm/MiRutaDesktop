@@ -790,7 +790,7 @@ QJsonArray screen_tabla_tareas::parse_to_QjsonArray(QString path)
             QString ruta_l = unparsed_rows[i].mid(pos,8).trimmed();
             o.insert(ruta, QJsonValue(ruta_l));//(voy a cambiar CODLEC del CABB para la lectura, ellos lo utilizan para la ruta)
             pos+=8;
-            //Fecha instalado (fecha importe)------------------------------------------------------------------------------------------------------------
+            //Fecha emision ------------------------------------------------------------------------------------------------------------
             o.insert(FECEMISIO, QJsonValue(unparsed_rows[i].mid(pos,10).trimmed()));
             pos+=10;
             //Fecha generado parte (?)------------------------------------------------------------------------------------------------------------
