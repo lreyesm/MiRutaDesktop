@@ -524,6 +524,42 @@ QLabel:hover:!pressed{
     <bool>true</bool>
    </property>
   </widget>
+  <widget class="MyLabelAnimated" name="pb_filter_users">
+   <property name="geometry">
+    <rect>
+     <x>619</x>
+     <y>10</y>
+     <width>41</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mostrar filtro de Sector P&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel{
+	border-radius: 20px;
+	background-color: rgba(255,255,255, 0.7);
+
+}
+QLabel:hover:!pressed{
+	border-radius: 10px;
+	 background-color: #FFFFFF; 
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="assets.qrc">:/icons/USER_priority_marker.png</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>

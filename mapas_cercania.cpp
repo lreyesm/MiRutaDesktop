@@ -154,6 +154,7 @@ void Mapas_Cercania::resizeEvent(QResizeEvent *e)
                             ui->pb_map_search->pos().y());
     ui->l_mostrar_en_tabla->move(this->width() - 100, 10);
     ui->pb_show_filter_zona->move(this->width() - 150, 10);
+    ui->pb_filter_users->move(this->width() - 200, 10);
     ui->widget_zona->move(this->width() - 310, 60);
     ui->l_cantidad_de_tareas->move(10, this->height() - 40);
     ui->pb_map_type_change->move(10, this->height() - 90);
@@ -374,16 +375,22 @@ double Mapas_Cercania::fillMapWithGeolocalizations(QJsonArray jsonArray, QGeoCoo
 
     mapa_coords_operarios.clear();
     for (int i= 0; i < jsonArrayOperarios.size(); i++) {
-        QString geocode = jsonArrayOperarios.at(i).toObject().value(geolocalizacion_operarios).toString().trimmed(); //operario
+        QJsonObject jsonObject = jsonArrayOperarios.at(i).toObject();
+        if(!filteredUsers.isEmpty()){
+            if(!filteredUsers.contains(jsonObject.value(operario_operarios).toString())){
+                continue;
+            }
+        }
+        QString geocode = jsonObject.value(geolocalizacion_operarios).toString().trimmed(); //operario
         if(checkIfFieldIsValid(geocode)){
             QGeoCoordinate coords = getCoordsFromString(geocode, latitud, longitud);
             if(mapa_coords_operarios.contains(coords.toString())){
                 QJsonArray jsonArray = mapa_coords_operarios.value(coords.toString());
-                jsonArray.append(jsonArrayOperarios.at(i).toObject());
+                jsonArray.append(jsonObject);
                 mapa_coords_operarios.insert(coords.toString(), jsonArray);
             }else{
                 QJsonArray jsonArray;
-                jsonArray.append(jsonArrayOperarios.at(i).toObject());
+                jsonArray.append(jsonObject);
                 mapa_coords_operarios.insert(coords.toString(), jsonArray);
                 marker_model->moveMarker(coords);
             }
@@ -1519,42 +1526,146 @@ void Mapas_Cercania::filterColumnField(){
         connect(ui->cb_zonas, &MyComboBoxShine::currentTextChanged, this, &Mapas_Cercania::filterZona);
     }
 }
-QString Mapas_Cercania::getScrollBarStyle(){
-    QString style =
-            "QScrollBar:vertical{"
-            "border: 2px #777777;"
-            "background-color: solid #777777;"
-            "border-radius: 5px;"
-            "width: 10px;"
-            "margin: 3px 0px 3px 0px;"
-            "}"
 
-            "QScrollBar::handle:vertical{"
-            "background-color: #777777;"
-            "border-radius: 5px;"
-            "min-height: 20px;"
-            "}"
-
-            "QScrollBar::add-line:vertical{"
-            "border: 2px solid white;"
-            "background: solid white;"
-            "border-radius: 5px;"
-            "height 10px;"
-            "subcontrol-position: bottom;"
-            "subcontrol-origin: margin;"
-            "}"
-
-            "QScrollBar::sub-line:vertical{"
-            "border: 2px solid white;"
-            "background: solid white;"
-            "border-radius: 5px;"
-            "height 10px;"
-            "subcontrol-position: top;"
-            "subcontrol-origin: margin;"
-            "}";
-
-    return style;
+void Mapas_Cercania::on_pb_filter_users_clicked()
+{
+    QStringList users;
+    QJsonArray jsonArrayOperarios = Operario::readOperarios();
+    for(int i=0; i < jsonArrayOperarios.size(); i++){
+        QJsonObject jsonObject = jsonArrayOperarios[i].toObject();
+        users.append(jsonObject.value(operario_operarios).toString());
+    }
+    showWidgetOptions(users);
 }
+void Mapas_Cercania::filterUsers(){
+    fillMap();
+}
+void Mapas_Cercania::addRemoveFilterUser(QString user){
+    if(filteredUsers.contains(user)){
+        filteredUsers.removeOne(user);
+    }else{
+        filteredUsers << user;
+    }
+}
+void Mapas_Cercania::showWidgetOptions(QStringList values){
+
+    QVBoxLayout *vlayout = new QVBoxLayout;
+    vlayout->setMargin(5);
+    vlayout->setSpacing(0);
+    vlayout->setObjectName("v_layout");
+    vlayout->setAlignment(Qt::AlignCenter);
+
+    QWidget *widgetValues = new QWidget;
+    widgetValues->setStyleSheet("background-color: rgb(77, 77, 77);"
+                                "border-radius: 5px;");
+    widgetValues->setLayout(vlayout);
+
+    MyLineEditShine *lineEdit = new MyLineEditShine();
+    QCheckBox *cb_todos = new QCheckBox();
+    cb_todos->setStyleSheet("color: rgb(255, 255, 255);"
+                            "background-color: rgba(77, 77, 77);");
+    QFont f = cb_todos->font();
+    f.setFamily("Segoe UI");
+    f.setPointSize(9);
+    cb_todos->setText("Todos");
+    cb_todos->setFont(f);
+
+    int itemHeight = 35;
+
+    QString value;
+    int width = 100;
+    foreach(value, values){
+        MyCheckBox *cb = new MyCheckBox();
+        if(filteredUsers.contains(value)){
+            cb->setChecked(true);
+        }
+        cb->setText(value);
+        cb->setObjectName("cb_"+value);
+        cb->setFixedHeight(itemHeight-5);
+        cb->setStyleSheet("color: rgb(255, 255, 255);"
+                          "background-color: rgba(77, 77, 77);");
+        connect(cb, &MyCheckBox::toggleCheckBox, this, &Mapas_Cercania::addRemoveFilterUser);
+        connect(lineEdit, &MyLineEditShine::textChanged, cb, &MyCheckBox::onTextSelectedChanged);
+        connect(cb_todos, &QCheckBox::toggled, cb, &MyCheckBox::set_Checked);
+
+        QFont font = cb->font();
+        font.setFamily("Segoe UI");
+        font.setPointSize(9);
+
+        cb->setFont(font);
+
+        widgetValues->layout()->addWidget(cb);
+        if((value.size() + 1) * 10  > width){
+            if((value.size() + 1) * 10 < 500){
+                width = (value.size() + 1) * 10;
+            }
+        }
+    }
+    QPushButton *button_filter = new QPushButton("FILTRAR  ");
+    button_filter->setStyleSheet("color: rgb(255, 255, 255);"
+                                 "background-color: rgba(77, 77, 77);");
+    button_filter->setIcon(QIcon(":/icons/filter.png"));
+    button_filter->setIconSize(QSize(20, 20));
+    connect(button_filter, &QPushButton::clicked, this, &Mapas_Cercania::filterUsers);
+
+    QFont font = button_filter->font();
+    font.setFamily("Segoe UI");
+    font.setBold(true);
+    font.setPointSize(10);
+
+    button_filter->setFont(font);
+
+    //    widgetValues->setFixedHeight(35 * (values.size() + 1));
+    widgetValues->setFixedWidth(width);
+
+    QScrollArea *scroll = new QScrollArea;
+    QWidget *widget = new QWidget(this);
+
+    widget->setFixedSize((widgetValues->width() > 500)? 580 : widgetValues->width() + 80,
+                         (values.size() > 10)? 515: (values.size() * itemHeight + 170));
+
+    lineEdit->setStyleSheet("color: rgb(77, 77, 77);"
+                            "background-color: rgb(255, 255, 255);");
+    lineEdit->setFixedHeight(20);
+    lineEdit->setFixedWidth(widgetValues->width());
+
+    QCompleter *completer = new QCompleter(values, this);
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+    completer->setFilterMode(Qt::MatchContains);
+    lineEdit->setCompleter(completer);
+
+    widget->setStyleSheet("background-color: rgba(77, 77, 77);"
+                          "border-radius: 5px;");
+    QVBoxLayout *layout = new QVBoxLayout(widget);
+
+    scroll->setWidget(widgetValues);
+    scroll->setWidgetResizable(true);
+    scroll->setStyleSheet(GlobalFunctions::getScrollBarStyle());
+
+    layout->setMargin(15);
+    layout->setSpacing(15);
+
+    layout->addWidget(lineEdit);
+    layout->addWidget(cb_todos);
+    layout->addWidget(scroll);
+    layout->addWidget(button_filter);
+
+    layout->setAlignment(Qt::AlignCenter);
+
+    QPoint lastCursorPos(this->width()/2, 150);
+    QRect rect = this->geometry();
+    if(lastCursorPos.x() > rect.width()/2){
+        lastCursorPos.setX(lastCursorPos.x()-widget->width());
+    }
+    widget->move(lastCursorPos);
+    widget->show();
+
+    connect(button_filter, &QPushButton::clicked, widget, &QWidget::deleteLater);
+    connect(this, &Mapas_Cercania::show_filter, widget, &QWidget::deleteLater);
+    connect(this, &Mapas_Cercania::closing, widget, &QWidget::deleteLater);
+    connect(this, &Mapas_Cercania::deleteLabelInformation, widget, &QWidget::deleteLater);
+}
+
 void Mapas_Cercania::showFilterWidgetOptions(QString field){
 
     QVBoxLayout *vlayout = new QVBoxLayout;
@@ -1645,7 +1756,7 @@ void Mapas_Cercania::showFilterWidgetOptions(QString field){
 
     scroll->setWidget(widgetValues);
     scroll->setWidgetResizable(true);
-    scroll->setStyleSheet(getScrollBarStyle());
+    scroll->setStyleSheet(GlobalFunctions::getScrollBarStyle());
 
     layout->setMargin(15);
     layout->setSpacing(15);

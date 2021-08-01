@@ -75,6 +75,44 @@ void GlobalFunctions::execJavaScriptCode(QString code) //param code: JavaScript 
     // Since the QScriptEngine is created on the method stack, it will be deleted automatically when the method ends.
 }
 
+
+QString GlobalFunctions::getScrollBarStyle(){
+    QString style =
+            "QScrollBar:vertical{"
+            "border: 2px #777777;"
+            "background-color: solid #777777;"
+            "border-radius: 5px;"
+            "width: 10px;"
+            "margin: 3px 0px 3px 0px;"
+            "}"
+
+            "QScrollBar::handle:vertical{"
+            "background-color: #777777;"
+            "border-radius: 5px;"
+            "min-height: 20px;"
+            "}"
+
+            "QScrollBar::add-line:vertical{"
+            "border: 2px solid white;"
+            "background: solid white;"
+            "border-radius: 5px;"
+            "height 10px;"
+            "subcontrol-position: bottom;"
+            "subcontrol-origin: margin;"
+            "}"
+
+            "QScrollBar::sub-line:vertical{"
+            "border: 2px solid white;"
+            "background: solid white;"
+            "border-radius: 5px;"
+            "height 10px;"
+            "subcontrol-position: top;"
+            "subcontrol-origin: margin;"
+            "}";
+
+    return style;
+}
+
 QString GlobalFunctions::changeFechaFormat(QString f){
     if(checkIfFieldIsValid(f)){
         QDateTime dt = QDateTime::fromString(f, "yyyy-MM-dd hh:mm:ss");

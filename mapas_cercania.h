@@ -79,6 +79,8 @@ protected slots:
     void resizeEvent(QResizeEvent *e);
 
 private slots:
+    void filterUsers();
+    void showWidgetOptions(QStringList);
     void on_pb_home_casa_clicked();
 
     void on_pb_erase_clicked();
@@ -115,6 +117,8 @@ private slots:
 
     void on_pb_show_filter_zona_clicked();
 
+    void on_pb_filter_users_clicked();
+
     void getOperariosFromServer();
     void on_pb_add_zonas_clicked();
 
@@ -122,6 +126,7 @@ private slots:
     void showFilterWidgetOptions(QString field);
     void filterColumnField();
     void addRemoveFilterList(QString value);
+    void addRemoveFilterUser(QString user);
     bool tareaConCitaHoy(QJsonObject jsonObject);
     void on_pb_map_type_change_clicked();
 
@@ -197,6 +202,7 @@ private:
     QString getScrollBarStyle();
 
     QStringList filterColumnList;
+    QStringList filteredUsers;
 };
 
 #endif // MAPAS_CERCANIA_H

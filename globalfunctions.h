@@ -21,6 +21,8 @@ public:
     static QString gestor_selected_file;
     static QString empresa_selected_file;
 
+    static QString getScrollBarStyle();
+
     static QString readGestorSelected();
     static void writeGestorSelected(QString gestor);
     static void writeEmpresaSelected(QString empresa);
