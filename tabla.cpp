@@ -3315,7 +3315,8 @@ void Tabla::exportExcelAndDat(QJsonArray jsonArray){
     QString name = crearFicheroDATConTabla(jsonArray, dir +"/GCT"+ numExp + "_EXTRA.dat");
     //    disconnect(this,SIGNAL(exportarExcelyDAT()),this,SLOT(exportExcelAndDat()));
 
-    QFileDialog::getOpenFileName(this, "Aqui se ha guardado el informe", dir, tr("Images (*.dat *.xls *.xlsx)"));
+    GlobalFunctions::showInExplorer(dir);
+//    QFileDialog::getOpenFileName(this, "Aqui se ha guardado el informe", dir, tr("Images (*.dat *.xls *.xlsx)"));
 }
 
 QString Tabla::fill_with_spaces(QString str,int size, bool blank)
@@ -4210,7 +4211,7 @@ QString Tabla::fillSheetPartes(QJsonArray jsonArray, QXlsx::Document &xlsx)
                 << "CODIGOMOTIVO"  << "FECHASERVICIO"  << "LECTURA2"  << "LECTURAVIEJO"
                 << "ADICIONALLECTORCONTADOR"  << "CODIGOAGUAS"  << "CODIGOMARCA"<< "FECHABAJA"
                 << "CODIGOAVERIA"  << "OBSINTERNAS"<< "CODIGOAVERIAFINAL"
-                << "TIPO FLUIDO"  << "TIPO DE RADIO" << "GEOLOCALIZACION";
+                << "TIPO FLUIDO"  << "TIPO DE RADIO"<< "EMPLAZAMIENTONUEVO" << "GEOLOCALIZACION";
 
     int rows = jsonArray.count();
 
@@ -5876,7 +5877,6 @@ void Tabla::export_tasks_in_table_to_excel()
             openCSV = true;
         }
         QTextStream xout(&fileCSV);
-
 
         //write headers-----------------------------------------------------------------------------------
         for (int i=0; i<listHeaders_gestor_independiente.count(); i++)
