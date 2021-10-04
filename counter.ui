@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>571</width>
-    <height>550</height>
+    <height>580</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>571</width>
-    <height>550</height>
+    <height>580</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>571</width>
-    <height>550</height>
+    <height>580</height>
    </size>
   </property>
   <property name="palette">
@@ -168,7 +168,7 @@ QPushButton:hover:!pressed{
      <x>40</x>
      <y>40</y>
      <width>491</width>
-     <height>472</height>
+     <height>538</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_9">

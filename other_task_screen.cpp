@@ -254,7 +254,7 @@ void other_task_screen::scalePhoto(QPixmap pixmap, QLabel *label, int max_w, int
     label->setPixmap(pixmap);
 }
 
-void other_task_screen::setLogoType(QPixmap logo){    
+void other_task_screen::setLogoType(QPixmap logo){
     scalePhoto(logo, ui->l_logo, 61, 61);
 }
 void other_task_screen::getLogoType(){
@@ -602,11 +602,12 @@ void other_task_screen::initializeMaps(){
     ui->le_TIPO->setCompleter(completer);
     ui->le_TIPO_DEVUELTO->setCompleter(completer);
 
-    completer = new QCompleter(lista_tipo_radio, this);
-    completer->setCaseSensitivity(Qt::CaseInsensitive);
-    completer->setFilterMode(Qt::MatchContains);
-    ui->le_tipoRadio_levantado->setCompleter(completer);
-    ui->le_tipoRadio->setCompleter(completer);
+    completer_radios = new QCompleter(lista_tipo_radio, this);
+    completer_radios->setCaseSensitivity(Qt::CaseInsensitive);
+    completer_radios->setFilterMode(Qt::MatchContains);
+    ui->le_tipoRadio_levantado->setCompleter(completer_radios);
+    ui->le_tipoRadio->setCompleter(completer_radios);
+    connect(completer_radios,SIGNAL(activated(QString)),this,SLOT(autocompleteModule(QString)));
 
     completer = new QCompleter(listaZonas, this);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
@@ -1917,7 +1918,7 @@ void other_task_screen::on_pb_edit_clicked()
     toogleEdit(true);
 }
 
-void other_task_screen::fill_counter_data(QString serie){    
+void other_task_screen::fill_counter_data(QString serie){
     GlobalFunctions gf(this, empresa);
     QJsonObject jsonObject = gf.getContadorFromServer(serie);
     if(!jsonObject.isEmpty()){
@@ -3541,7 +3542,7 @@ void other_task_screen::configuraAndCreatePdf(bool show){
     }
 }
 void other_task_screen::on_pb_crear_pdf_clicked()
-{   
+{
     configuraAndCreatePdf(true);
 }
 
@@ -4858,4 +4859,75 @@ void other_task_screen::on_pb_enviar_mensaje_clicked()
     SendWhatsappMessage *sendWhatsappMessage = new SendWhatsappMessage(this, gestor, dir, abonado, phone1, phone2);
     sendWhatsappMessage->setAttribute(Qt::WA_DeleteOnClose);
     sendWhatsappMessage->show();
+}
+
+void other_task_screen::on_pb_duplicate_info_clicked()
+{
+    tarea_a_actualizar.insert(numero_serie_contador_devuelto, tarea_a_actualizar.value(numero_serie_contador).toString());
+    tarea_a_actualizar.insert(marca_devuelta, tarea_a_actualizar.value(marca_contador).toString());
+    tarea_a_actualizar.insert(calibre_real, tarea_a_actualizar.value(calibre_toma).toString());
+    tarea_a_actualizar.insert(largo_devuelto, tarea_a_actualizar.value(LARGO).toString());
+    tarea_a_actualizar.insert(RUEDASDV, tarea_a_actualizar.value(ruedas).toString());
+    tarea_a_actualizar.insert(TIPOFLUIDO_devuelto, tarea_a_actualizar.value(TIPOFLUIDO).toString());
+    tarea_a_actualizar.insert(TIPO_devuelto, tarea_a_actualizar.value(TIPO).toString());
+    tarea_a_actualizar.insert(tipoRadio_devuelto, tarea_a_actualizar.value(tipoRadio).toString());
+
+    ui->le_numero_serie_contador_devuelto->setText(tarea_a_actualizar.value(numero_serie_contador).toString());
+    ui->le_marca_devuelta->setText(tarea_a_actualizar.value(marca_contador).toString());
+    ui->le_calibre_toma_real->setText(tarea_a_actualizar.value(calibre_toma).toString());
+    ui->le_largo_devuelto->setText(tarea_a_actualizar.value(LARGO).toString());
+    ui->le_RUEDASDV->setText(tarea_a_actualizar.value(ruedas).toString());
+    ui->le_TIPO_FLUIDO_DEVUELTO->setText(tarea_a_actualizar.value(TIPOFLUIDO).toString());
+    ui->le_TIPO_DEVUELTO->setText(tarea_a_actualizar.value(TIPO).toString());
+    ui->le_tipoRadio->setText(tarea_a_actualizar.value(tipoRadio).toString());
+}
+
+void other_task_screen::on_le_tipoRadio_textEdited(const QString &arg1)
+{
+    autocompleteModule(arg1);
+}
+
+void other_task_screen::on_le_tipoRadio_editingFinished()
+{
+    QString arg1 = ui->le_tipoRadio->text();
+    autocompleteModule(arg1);
+}
+
+void other_task_screen::autocompleteModule(const QString &arg1){
+    QString module_value = "";
+    if(arg1 == "R3"){
+        module_value = "800812";
+    }
+    else if(arg1 == "R4"){
+        module_value = "3031799";
+    }
+    else if(arg1 == "W4"){
+        module_value = "3062884";
+    }
+    else if(arg1 == "LRW"){
+        module_value = "3088016";
+    }
+
+    if(!module_value.isEmpty()) {
+        QString currentModule = ui->le_numero_serie_modulo->text();
+        if(currentModule.trimmed().isEmpty()){
+            ui->le_numero_serie_modulo->setText(module_value + ";;;;;");
+        }
+        else if (currentModule.contains(";")){
+            QStringList split = currentModule.split(";");
+            split[0] = module_value;
+            currentModule = split.join(";");
+            ui->le_numero_serie_modulo->setText(currentModule);
+            tarea_a_actualizar.insert(numero_serie_modulo, currentModule);
+        }
+    }
+}
+
+void other_task_screen::on_le_MENSAJE_LIBRE_textChanged(const QString &arg1)
+{
+    QString anomaly = "NZ0";
+    if(arg1.contains(anomaly)){
+        ui->le_intervencion_devuelta->setText(anomaly);
+        tarea_a_actualizar.insert(intervencion_devuelta, anomaly);
+    }
 }

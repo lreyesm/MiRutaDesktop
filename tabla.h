@@ -28,7 +28,7 @@ class Tabla : public QMainWindow
 {
     Q_OBJECT
 
-    enum{F_SERIE = 1, F_SIN_REVISAR, F_RESULTADO, F_POR_OPERARIO, F_POR_EQUIPO, F_GESTOR, F_SECTION, F_DIRECCION,
+    enum{F_SERIE = 1, F_SERIE_DEVUELTO, F_SIN_REVISAR, F_RESULTADO, F_POR_OPERARIO, F_POR_EQUIPO, F_GESTOR, F_SECTION, F_DIRECCION,
          F_CAUSA_ORIGEN, F_GEOLOCALIZACION, F_TITULAR, F_N_ABONADO, F_ZONA, F_NO_EN_BATERIA,
          F_EN_BATERIA};
 
@@ -440,6 +440,7 @@ private slots:
     void countSelectedTasks();
     void on_actionAsignOrderID_triggered();
     void updateIDOrdenes(QString id_orden);
+    void on_actionN_SerieDevuelto_triggered();
 private:
     Ui::Tabla *ui;
     QThread thread;

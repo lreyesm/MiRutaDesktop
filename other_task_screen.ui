@@ -1865,9 +1865,9 @@ color:rgb(50, 50, 50);</string>
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>-979</y>
-           <width>1314</width>
-           <height>1494</height>
+           <y>-188</y>
+           <width>1418</width>
+           <height>1664</height>
           </rect>
          </property>
          <layout class="QGridLayout" name="gridLayout_6">
@@ -4037,6 +4037,42 @@ color:rgb(50, 50, 50);</string>
                              <bold>false</bold>
                             </font>
                            </property>
+                           <property name="orientation">
+                            <enum>Qt::Horizontal</enum>
+                           </property>
+                           <property name="sizeHint" stdset="0">
+                            <size>
+                             <width>40</width>
+                             <height>20</height>
+                            </size>
+                           </property>
+                          </spacer>
+                         </item>
+                         <item>
+                          <widget class="QPushButton" name="pb_duplicate_info">
+                           <property name="toolTip">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copiar información de contador antiguo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="icon">
+                            <iconset resource="assets.qrc">
+                             <normaloff>:/icons/copy.png</normaloff>:/icons/copy.png</iconset>
+                           </property>
+                           <property name="iconSize">
+                            <size>
+                             <width>30</width>
+                             <height>30</height>
+                            </size>
+                           </property>
+                           <property name="flat">
+                            <bool>true</bool>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <spacer name="horizontalSpacer_30">
                            <property name="orientation">
                             <enum>Qt::Horizontal</enum>
                            </property>

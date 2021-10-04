@@ -40,7 +40,7 @@ Counter::Counter(QWidget *parent, QString empresa) :
     ui->widget_desde_hasta->hide();
 
     QStringList status;
-    status << "INSTALLED" << "DISPONIBLE";
+    status  << "DISPONIBLE" << "INSTALLED";
     ui->l_status->addItems(status);
 
     this->setAttribute(Qt::WA_DeleteOnClose);

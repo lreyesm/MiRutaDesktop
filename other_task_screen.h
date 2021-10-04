@@ -285,6 +285,15 @@ private slots:
 
     void on_pb_enviar_mensaje_clicked();
 
+    void on_pb_duplicate_info_clicked();
+
+    void on_le_tipoRadio_textEdited(const QString &arg1);
+
+    void on_le_tipoRadio_editingFinished();
+
+    void on_le_MENSAJE_LIBRE_textChanged(const QString &arg1);
+    void autocompleteModule(const QString &arg1);
+
 private:
     Ui::other_task_screen *ui;
     QTimer timerChangingGeoCode;
@@ -299,7 +308,7 @@ private:
     int init_pos_y;
     bool first_move = true;
 
-    QCompleter *completer_numeros_serie, *completer_numeros_serie_devueltos, *completer_emplazamientoDV, *completer_emplazamiento, *completer_resultados, *completer_causas;
+    QCompleter *completer_numeros_serie, *completer_numeros_serie_devueltos, *completer_emplazamientoDV, *completer_emplazamiento, *completer_resultados, *completer_causas, *completer_radios;
     QMap<QString, QString> mapaTiposDeClase,mapaTiposDeMarca, mapaTiposDeRestoEmplazamiento, mapaEstados;
     QStringList lista_tipo_fluido, lista_tipo_radio;
     void Pdf_creator(QPixmap Before_installation, QPixmap After_installation, QPixmap Lectura,

@@ -219,7 +219,6 @@
         <file>icons/ventana_dialogo.png</file>
         <file>icons/background_gray.png</file>
         <file>icons/fondo_transparente.png</file>
-        <file>icons/icono.ico</file>
         <file>icons/circle.png</file>
         <file>icons/recycle.png</file>
         <file>icons/add_image_black.png</file>
@@ -306,5 +305,8 @@
         <file>icons/whatsapp.png</file>
         <file>icons/send.png</file>
         <file>files/country_code.txt</file>
+        <file>icons/copy.png</file>
+        <file>icons/icono.ico</file>
+        <file>icons/numero_serie_devuelto.png</file>
     </qresource>
 </RCC>

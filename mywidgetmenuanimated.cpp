@@ -571,6 +571,11 @@ void MyWidgetMenuAnimated::setOwner(const QString owner_name)
         setMyLabelAnimatedProperties(equipo, "equipo", x_pos, y_pos);
         y_pos +=space;
 
+
+        MyLabelAnimated *numero_serie_devuelto = new MyLabelAnimated(this);
+        setMyLabelAnimatedProperties(numero_serie_devuelto, "numero_serie_devuelto", x_pos, y_pos);
+        y_pos +=space;
+
         MyLabelAnimated *zona = new MyLabelAnimated(this);
         setMyLabelAnimatedProperties(zona, "zona", x_pos, y_pos);
         y_pos +=space;

@@ -48,6 +48,8 @@
 #include "idordenassign.h"
 
 using namespace QXlsx;
+// https://www3.cs.stonybrook.edu/~alee/g++/g++.html
+// https://stackoverflow.com/questions/39777502/how-to-install-qtxlsx-addon-on-windows
 
 Tabla::Tabla(QWidget *parent, QString empresa) :
     QMainWindow(parent),
@@ -2237,6 +2239,12 @@ void Tabla::add_causas_to_select()
     filter_column_field_selected = ANOMALIA;
     QString queryStatus = getQueyStatus();
     QString query = " (" + queryStatus +  ") ";
+    if(currentGestor != "Todos"){
+        QString gestorQuery = " AND (" + GESTOR + " LIKE '" + currentGestor +"')";
+        if(!query.contains(gestorQuery)){
+            query += gestorQuery;
+        }
+    }
     bool res = getTareasValuesFieldCustomQueryServer(
                 empresa, filter_column_field_selected, query);
     if(res){
@@ -2479,6 +2487,12 @@ void Tabla::on_actionC_Geolocalizaci_n_triggered()
 
     QString queryStatus = getQueyStatus();
     QString query = " (" + queryStatus +  ") ";
+    if(currentGestor != "Todos"){
+        QString gestorQuery = " AND (" + GESTOR + " LIKE '" + currentGestor +"')";
+        if(!query.contains(gestorQuery)){
+            query += gestorQuery;
+        }
+    }
     bool res = getTareasValuesFieldCustomQueryServer(
                 empresa, filter_column_field_selected, query);
     if(res){
@@ -2501,6 +2515,12 @@ void Tabla::on_actionTitular_triggered()
 
     QString queryStatus = getQueyStatus();
     QString query = " (" + queryStatus +  ") ";
+    if(currentGestor != "Todos"){
+        QString gestorQuery = " AND (" + GESTOR + " LIKE '" + currentGestor +"')";
+        if(!query.contains(gestorQuery)){
+            query += gestorQuery;
+        }
+    }
     bool res = getTareasValuesFieldCustomQueryServer(
                 empresa, filter_column_field_selected, query);
     if(res){
@@ -2523,6 +2543,12 @@ void Tabla::on_actionN_Abonado_triggered()
 
     QString queryStatus = getQueyStatus();
     QString query = " (" + queryStatus +  ") ";
+    if(currentGestor != "Todos"){
+        QString gestorQuery = " AND (" + GESTOR + " LIKE '" + currentGestor +"')";
+        if(!query.contains(gestorQuery)){
+            query += gestorQuery;
+        }
+    }
     bool res = getTareasValuesFieldCustomQueryServer(
                 empresa, filter_column_field_selected, query);
     if(res){
@@ -2545,6 +2571,12 @@ void Tabla::on_actionZona_triggered()
     filter_column_field_selected = zona;
     QString queryStatus = getQueyStatus();
     QString query = " (" + queryStatus +  ") ";
+    if(currentGestor != "Todos"){
+        QString gestorQuery = " AND (" + GESTOR + " LIKE '" + currentGestor +"')";
+        if(!query.contains(gestorQuery)){
+            query += gestorQuery;
+        }
+    }
     bool res = getTareasValuesFieldCustomQueryServer(
                 empresa, filter_column_field_selected, query);
     if(res){
@@ -2567,6 +2599,40 @@ void Tabla::on_actionN_Serie_triggered()
     filter_column_field_selected = numero_serie_contador;
     QString queryStatus = getQueyStatus();
     QString query = " (" + queryStatus +  ") ";
+    if(currentGestor != "Todos"){
+        QString gestorQuery = " AND (" + GESTOR + " LIKE '" + currentGestor +"')";
+        if(!query.contains(gestorQuery)){
+            query += gestorQuery;
+        }
+    }
+    bool res = getTareasValuesFieldCustomQueryServer(
+                empresa, filter_column_field_selected, query);
+    if(res){
+        fillValuesInLineEditToFilter();
+    }
+
+    ui->widget_filtro_lineEdit->show();
+    ui->widget_filtros->show();
+
+    hide_loading();
+}
+
+void Tabla::on_actionN_SerieDevuelto_triggered()
+{
+    show_loading("Cargando Series...");
+    hideAllFilters();
+    filter_type |= F_SERIE_DEVUELTO;
+    ui->l_tipo_filtro->setText("Nº Serie Devuelto:");
+
+    filter_column_field_selected = numero_serie_contador_devuelto;
+    QString queryStatus = getQueyStatus();
+    QString query = " (" + queryStatus +  ") ";
+    if(currentGestor != "Todos"){
+        QString gestorQuery = " AND (" + GESTOR + " LIKE '" + currentGestor +"')";
+        if(!query.contains(gestorQuery)){
+            query += gestorQuery;
+        }
+    }
     bool res = getTareasValuesFieldCustomQueryServer(
                 empresa, filter_column_field_selected, query);
     if(res){
@@ -2589,6 +2655,12 @@ void Tabla::on_actionPor_Resultado_triggered(){
     filter_column_field_selected = resultado;
     QString queryStatus = getQueyStatus();
     QString query = " (" + queryStatus +  ") ";
+    if(currentGestor != "Todos"){
+        QString gestorQuery = " AND (" + GESTOR + " LIKE '" + currentGestor +"')";
+        if(!query.contains(gestorQuery)){
+            query += gestorQuery;
+        }
+    }
     bool res = getTareasValuesFieldCustomQueryServer(
                 empresa, filter_column_field_selected, query);
     if(res){
@@ -2690,7 +2762,8 @@ void Tabla::openTareaX(QString numin){
     connect(oneTareaScreen, SIGNAL(task_upload_excecution_result(int)),this, SLOT(updateTableWithServerInfo(int)));
     connect(oneTareaScreen, SIGNAL(tarea_revisada(QString)),this, SLOT(on_tarea_revisada(QString)));
     connect(oneTareaScreen, &other_task_screen::updateITACs,this, &Tabla::updateITACsServerInfo);
-    //    connect(oneTareaScreen, &other_task_screen::closing,oneTareaScreen, &other_task_screen::deleteLater);
+    connect(oneTareaScreen, &other_task_screen::closing, this, &QWidget::showMaximized);
+    //    connect(oneTareaScreen, &other_task_screen::closing, oneTareaScreen, &other_task_screen::deleteLater);
 
     oneTareaScreen->setAttribute(Qt::WA_DeleteOnClose);
     //    QRect rect = QGuiApplication::screens().first()->geometry();
@@ -2731,6 +2804,7 @@ void Tabla::abrirTareaX(int index){
     connect(oneTareaScreen, SIGNAL(task_upload_excecution_result(int)),this, SLOT(updateTableWithServerInfo(int)));
     connect(oneTareaScreen, SIGNAL(tarea_revisada(QString)),this, SLOT(on_tarea_revisada(QString)));
     connect(oneTareaScreen, &other_task_screen::updateITACs,this, &Tabla::updateITACsServerInfo);
+    connect(oneTareaScreen, &other_task_screen::closing, this, &QWidget::showMaximized);
     //    connect(oneTareaScreen, &other_task_screen::closing, oneTareaScreen, &other_task_screen::deleteLater);
 
     oneTareaScreen->setAttribute(Qt::WA_DeleteOnClose);
@@ -5716,6 +5790,7 @@ void Tabla::export_tasks_in_table_to_excel()
     mapa_exp_extendido.insert("Código Observaciones",observaciones_devueltas);
     mapa_exp_extendido.insert("Piezas",piezas);
     mapa_exp_extendido.insert("NUMERO INTERNO",numero_interno);
+    mapa_exp_extendido.insert("INFORMACIÓN INTERNA",intervencion_devuelta);
 
 
     mapa_exportacion.insert("Población",poblacion);
@@ -5836,7 +5911,7 @@ void Tabla::export_tasks_in_table_to_excel()
                             <<"Nº ANTENA CONTADOR INSTALADO" << "MARCA CONTADOR INSTALADO" << "CALIBRE CONTADOR INSTALADO"
                            << "LONGITUD CONTADOR INSTALADO" << "DIGITOS" << "TIPO" << "CLASE CONTADOR INSTALADO"
                            <<"EMPLAZAMIENTO DEVUELTO" << "Causa Destino"<<"Código Observaciones"
-                          << "Piezas"<<"NUMERO INTERNO" /*<< "VER PDF de Trabajo"*/;
+                          << "Piezas"<<"NUMERO INTERNO" << "INFORMACIÓN INTERNA" /*<< "VER PDF de Trabajo"*/;
 
         QJsonArray jsonArray, jsonArrayAllShowing;
 
@@ -7452,6 +7527,9 @@ void Tabla::onActionPress(QString action){
     }
     else if(action == "l_numero_serie"){
         on_actionN_Serie_triggered();
+    }
+    else if(action == "l_numero_serie_devuelto"){
+        on_actionN_SerieDevuelto_triggered();
     }
     else if(action == "l_equipo"){
         on_actionEquipo_triggered();
