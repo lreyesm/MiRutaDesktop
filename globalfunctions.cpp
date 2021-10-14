@@ -1072,7 +1072,7 @@ QStringList GlobalFunctions::getTareasList(QString field, QString value){
 QStringList GlobalFunctions::getContadoresList(bool disponibles, QString serie){
     QString query = "";
     if(disponibles){
-        query = " (" + status_contadores + " NOT LIKE 'INSTALLED%')";
+        query = " (" + status_contadores + " NOT LIKE 'INSTALLED%' OR " + status_contadores + " IS NULL)";
     }else{
         query = " (" + status_contadores + " LIKE 'INSTALLED%')";
     }

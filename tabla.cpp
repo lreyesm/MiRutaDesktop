@@ -1124,6 +1124,7 @@ QMap <QString,QString> Tabla::fillMapForFixModel(QStringList &listHeaders){
     }
     mapa.insert("Id.Orden",idOrdenCABB);
     mapa.insert("NUMIN", numero_interno);
+    mapa.insert("Modificación", date_time_modified);
     mapa.insert("CAUSA ORIGEN", ANOMALIA);
     mapa.insert("C.ACCIÓN ORD.", tipo_tarea);
     mapa.insert("AREALIZAR",AREALIZAR);
@@ -1182,6 +1183,8 @@ QMap <QString,QString> Tabla::fillMapForFixModel(QStringList &listHeaders){
     mapa.insert("idexport",idexport);
     mapa.insert("fech_facturacion",fech_facturacion);
     mapa.insert("fech_cierrenew",fecha_de_cambio);
+    mapa.insert("Servicios",servicios);
+    mapa.insert("Suministros",suministros);
     mapa.insert("fech_informacionnew",fech_informacionnew);
     mapa.insert("tipoRadio",tipoRadio_devuelto);
     mapa.insert("REQUERIDA",marcaR);
@@ -1191,7 +1194,7 @@ QMap <QString,QString> Tabla::fillMapForFixModel(QStringList &listHeaders){
     mapa.insert("C.EMPLAZAMIENTO",codigo_de_geolocalizacion);
     mapa.insert("Geolocalización",url_geolocalizacion);
 
-    listHeaders <<"Id.Orden" << fecha << "CAUSA ORIGEN" << "C.ACCIÓN ORD." << "AREALIZAR"<< "INTERVENCI" <<"PROP."
+    listHeaders <<"Id.Orden" << fecha << "Modificación" << "CAUSA ORIGEN" << "C.ACCIÓN ORD." << "AREALIZAR"<< "INTERVENCI" <<"PROP."
                << "AÑO o PREFIJO"<<"SERIE" << "MARCA" << "CALIBRE"<< "RUEDAS" << "FECINST"
                << "ACTIVI" << "EMPLAZA" << "ACCESO"<< "CALLE"  << "NUME" << "BIS"
                << "PISO"<<"MANO" << "MUNICIPIO" << "TELEFONO 1" << "TELEFONO 2" << "NOMBRE" << "ABONADO" << "CODLEC"
@@ -1199,7 +1202,7 @@ QMap <QString,QString> Tabla::fillMapForFixModel(QStringList &listHeaders){
                << "RESTO_EM"  << "LECT_LEV" << "OBSERVADV"<< "Estado"  << "MARCADV" << "CALIBREDV"
                << "RUEDASDV"<<"LONGDV" << "seriedv" << "PREFIJO DV"<< "CAUSA DESTINO" << "intervencidv"
                << "FECH_CIERRE"<<"TIPORDEN" << "EQUIPO" << "OPERARIO" << "observaciones"<< "TIPOFLUIDO"<< "tipoRadio"
-               << "REQUERIDA" << "idexport"<<"fech_cierrenew" << "fech_informacionnew"
+               << "REQUERIDA" << "idexport"<<"fech_cierrenew" << "Servicios" << "Suministros"<< "fech_informacionnew"
                << "Módulo" << "Número de Precinto"  << "Bloque" << "C.EMPLAZAMIENTO" << "Geolocalización";
 
     return mapa;
@@ -1471,7 +1474,7 @@ void Tabla::setTableView(bool delegate)
         ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
         QList<double> sizes;
-        sizes << 1/*ordCabb*/ << 1.2 /*Fech Import*/<< 1/*CausaOrigen*/<< 1/*c.AccionOrdenada*/<< 1.5/*ARealizar*/<< 2/*Intervenc*/
+        sizes << 1/*ordCabb*/ << 1.2 /*Fech Import*/<< 1.2 /*Fech Modificación*/<< 1/*CausaOrigen*/<< 1/*c.AccionOrdenada*/<< 1.5/*ARealizar*/<< 2/*Intervenc*/
               <<  0.5/*PROPIEDAD*/ <<  1/*AÑO o PREFIJO*/ <<  1/*SERIE*/ << 1.8/* MARCA*/ <<  0.5/* CALIBRE*/ << 0.5/*ruedas*/ << 1.2/* FECINST*/
                <<  1.2/*ACTIVI */ <<  1.5/*EMPLAZA */ <<  1.5/*ACCESO */ <<  2/*CALLE */ <<  0.5/*NUME */ <<  0.5/* BIS*/ <<  0.5/* PISO*/
                 <<  0.5/*MANO */ << 1.2/*MUNICIPIO */ << 1/*TELEFONO1 */ << 1/*TELEFONO2 */ << 2.5/*NOMBRE */ << 1/*ABONADO */ << 0.75/*CODLEC */ << 1.2/*FECEMISIO */
@@ -1479,7 +1482,7 @@ void Tabla::setTableView(bool delegate)
                   <<  1/*RESTO_EM*/ <<  1/*LECT_LEV*/ <<  2/*OBSERVADV*/<<  0.5/*Estado*/ << 2/*MARCADV*/<<  0.75/*CALIBREDV*/ <<  0.75/*RUEDASDV*/
                    <<  0.5/*LONGDV*/<<  1.2/*seriedv*/ <<  0.75/*PREFIJO DV*/<<  1/*CAUSA DESTINO*/ <<  1/*intervencidv*/ << 1.2 /*FECH_CIERRE*/
                     <<  0.75/*TIPORDEN*/<<  1/*EQUIPO*/<<1/*OPERARIO*/<< 2 /*observaciones*/<< 1 /*TIPOFLUIDO*/<< 0.5 /*TIPORadio*/<< 0.75 /*Requerida*/<< 0.5/*idexport*/
-                     <<  1.2/*fech_cierrenew*/ <<  1.2/*fech_informacionnew*/<< 2.2/*Módulo*/ << 1.5/*Numero precinto*/  << 1.2/*Día predeterminado*/
+                     <<  1.2/*fech_cierrenew*/<<  1.2/*Servicicios*/<<  1.2/*Suministros*/ <<  1.2/*fech_informacionnew*/<< 2.2/*Módulo*/ << 1.5/*Numero precinto*/  << 1.2/*Día predeterminado*/
                       <<  1.2/*C.EMPLAZAMIENTO*/<<  4/*Geolocalización*/<<1<<1;
 
         QFont font = ui->tableView->font();
@@ -5813,6 +5816,8 @@ void Tabla::export_tasks_in_table_to_excel()
     mapa_exportacion.insert("TELEFONO",telefono1);
     mapa_exportacion.insert("ACCESO",acceso);
     mapa_exportacion.insert("RESULTADO",resultado);
+    mapa_exportacion.insert("SERVICIOS",servicios);
+    mapa_exportacion.insert("SUMINISTROS",suministros);
     mapa_exportacion.insert("NUEVO",nuevo_citas);
     mapa_exportacion.insert("FECHA",F_INST);
     mapa_exportacion.insert("ZONAS",zona);
@@ -5856,6 +5861,8 @@ void Tabla::export_tasks_in_table_to_excel()
     mapa_exportacion_alternativo.insert("TELEFONO",telefono1);
     mapa_exportacion_alternativo.insert("ACCESO",acceso);
     mapa_exportacion_alternativo.insert("RESULTADO",resultado);
+    mapa_exportacion_alternativo.insert("SERVICIOS",servicios);
+    mapa_exportacion_alternativo.insert("SUMINISTROS",suministros);
     mapa_exportacion_alternativo.insert("NUEVO",nuevo_citas);
     mapa_exportacion_alternativo.insert("FECHA",F_INST);
     mapa_exportacion_alternativo.insert("ZONAS",zona);
@@ -5889,14 +5896,14 @@ void Tabla::export_tasks_in_table_to_excel()
                                          << "OPERARIO" <<"Anomalía (TAREA A REALIZAR)"
                                          << "EMPLAZAMIENTO" << "UBICACIÓN BATERÍA" << "OBSERVACIONES" << "ACTIVIDAD"
                                          << "TITULAR" << "NºABONADO" << "TELEFONO" << "ACCESO"
-                                         << "RESULTADO" << "NUEVO" << "FECHA" << "ZONAS"
-                                         << "RUTA" << "MARCA"<< "ÚLTIMA LECTURA"<<"GESTOR"
-                                         <<"LECTURA DE CONTADOR INSTALADO"<< "Nº SERIE CONTADOR INSTALADO"
-                                        <<"Nº ANTENA CONTADOR INSTALADO" << "CALIBRE CONTADOR INSTALADO"
-                                       <<"MARCA CONTADOR INSTALADO" << "CLASE CONTADOR INSTALADO"<< "LONGITUD CONTADOR INSTALADO"
-                                      << "NÚMERO DE PRECINTO" << "CÓDIGO DE EMPLAZAMIENTO" << "LINK GEOLOCALIZACIÓN" /*<< "VER PDF de Trabajo"*/
-                                      << "FOTO ANTES DE INSTALACIÓN" << "FOTO NÚMERO SERIE"
-                                      << "FOTO LECTURA" << "FOTO DESPUÉS DE INSTALACIÓN";
+                                         << "RESULTADO" << "SERVICIOS" << "SUMINISTROS" << "NUEVO" << "FECHA"
+                                         << "ZONAS" << "RUTA" << "MARCA"<< "ÚLTIMA LECTURA"<<"GESTOR"
+                                         << "LECTURA DE CONTADOR INSTALADO"<< "Nº SERIE CONTADOR INSTALADO"
+                                         << "Nº ANTENA CONTADOR INSTALADO" << "CALIBRE CONTADOR INSTALADO"
+                                         << "MARCA CONTADOR INSTALADO" << "CLASE CONTADOR INSTALADO"<< "LONGITUD CONTADOR INSTALADO"
+                                         << "NÚMERO DE PRECINTO" << "CÓDIGO DE EMPLAZAMIENTO" << "LINK GEOLOCALIZACIÓN" /*<< "VER PDF de Trabajo"*/
+                                         << "FOTO ANTES DE INSTALACIÓN" << "FOTO NÚMERO SERIE"
+                                         << "FOTO LECTURA" << "FOTO DESPUÉS DE INSTALACIÓN";
 
         listHeaders_extendido << "Población" << "CALLE" << "Nº" << "BIS" << "PISO"
                               << "MANO" << "AÑO O PREFIJO CONT. RETIRADO" << "Nº SERIE CONT. RETIRADO"
@@ -5906,12 +5913,12 @@ void Tabla::export_tasks_in_table_to_excel()
                               << "TITULAR" << "NºABONADO" << "TELEFONO" << "ACCESO"
                               << "NUEVO" << "ZONAS" << "MARCA" << "GESTOR"
                               << "CÓDIGO DE EMPLAZAMIENTO" << "LINK GEOLOCALIZACIÓN"<< "FECHA"<<"RESULTADO"
-                              <<"ÚLTIMA LECTURA"
-                             <<"LECTURA DE CONTADOR INSTALADO"<< "Nº SERIE CONTADOR INSTALADO"
-                            <<"Nº ANTENA CONTADOR INSTALADO" << "MARCA CONTADOR INSTALADO" << "CALIBRE CONTADOR INSTALADO"
-                           << "LONGITUD CONTADOR INSTALADO" << "DIGITOS" << "TIPO" << "CLASE CONTADOR INSTALADO"
-                           <<"EMPLAZAMIENTO DEVUELTO" << "Causa Destino"<<"Código Observaciones"
-                          << "Piezas"<<"NUMERO INTERNO" << "INFORMACIÓN INTERNA" /*<< "VER PDF de Trabajo"*/;
+                              << "ÚLTIMA LECTURA"
+                              << "LECTURA DE CONTADOR INSTALADO"<< "Nº SERIE CONTADOR INSTALADO"
+                              << "Nº ANTENA CONTADOR INSTALADO" << "MARCA CONTADOR INSTALADO" << "CALIBRE CONTADOR INSTALADO"
+                              << "LONGITUD CONTADOR INSTALADO" << "DIGITOS" << "TIPO" << "CLASE CONTADOR INSTALADO"
+                              << "EMPLAZAMIENTO DEVUELTO" << "Causa Destino"<<"Código Observaciones"
+                              << "Piezas"<<"NUMERO INTERNO" << "INFORMACIÓN INTERNA" /*<< "VER PDF de Trabajo"*/;
 
         QJsonArray jsonArray, jsonArrayAllShowing;
 
@@ -6009,6 +6016,11 @@ void Tabla::export_tasks_in_table_to_excel()
                         }
                         temp = temp.trimmed();
                         temp.remove(temp.size()-1,1);
+                    }
+                }
+                if(value_header == servicios || value_header == suministros){
+                    if(checkIfFieldIsValid(temp)){
+                        temp = temp.replace("\n", " - ").trimmed();
                     }
                 }
                 if(value_header.contains("foto_")){

@@ -52,6 +52,7 @@
 #include "globalfunctions.h"
 #include "mylabelshine.h"
 #include "sendwhatsappmessage.h"
+#include "screen_tabla_contadores.h"
 
 QString other_task_screen::administrator_loged="";
 QString other_task_screen::last_operario="";
@@ -4864,21 +4865,36 @@ void other_task_screen::on_pb_enviar_mensaje_clicked()
 void other_task_screen::on_pb_duplicate_info_clicked()
 {
     tarea_a_actualizar.insert(numero_serie_contador_devuelto, tarea_a_actualizar.value(numero_serie_contador).toString());
-    tarea_a_actualizar.insert(marca_devuelta, tarea_a_actualizar.value(marca_contador).toString());
+    QString mark = tarea_a_actualizar.value(marca_contador).toString();
+    QString largo = tarea_a_actualizar.value(LARGO).toString();
+    QString tipo_fluido =  tarea_a_actualizar.value(TIPOFLUIDO).toString();
+    QString clase = tarea_a_actualizar.value(TIPO).toString();
+    if(mark.isEmpty()){
+        largo = "115";
+        tipo_fluido = "FRIA";
+        clase = "R";
+    }
+    else if (mark.contains("-")){
+        QStringList split = mark.split("-");
+        if(split.length() > 0 && split.at(0).contains("0")){
+            mark = split.at(0);
+        }
+    }
+    tarea_a_actualizar.insert(marca_devuelta, mark);
     tarea_a_actualizar.insert(calibre_real, tarea_a_actualizar.value(calibre_toma).toString());
-    tarea_a_actualizar.insert(largo_devuelto, tarea_a_actualizar.value(LARGO).toString());
+    tarea_a_actualizar.insert(largo_devuelto, largo);
     tarea_a_actualizar.insert(RUEDASDV, tarea_a_actualizar.value(ruedas).toString());
-    tarea_a_actualizar.insert(TIPOFLUIDO_devuelto, tarea_a_actualizar.value(TIPOFLUIDO).toString());
-    tarea_a_actualizar.insert(TIPO_devuelto, tarea_a_actualizar.value(TIPO).toString());
+    tarea_a_actualizar.insert(TIPOFLUIDO_devuelto, tipo_fluido);
+    tarea_a_actualizar.insert(TIPO_devuelto, clase);
     tarea_a_actualizar.insert(tipoRadio_devuelto, tarea_a_actualizar.value(tipoRadio).toString());
 
     ui->le_numero_serie_contador_devuelto->setText(tarea_a_actualizar.value(numero_serie_contador).toString());
-    ui->le_marca_devuelta->setText(tarea_a_actualizar.value(marca_contador).toString());
+    ui->le_marca_devuelta->setText(mark);
     ui->le_calibre_toma_real->setText(tarea_a_actualizar.value(calibre_toma).toString());
-    ui->le_largo_devuelto->setText(tarea_a_actualizar.value(LARGO).toString());
+    ui->le_largo_devuelto->setText(largo);
     ui->le_RUEDASDV->setText(tarea_a_actualizar.value(ruedas).toString());
-    ui->le_TIPO_FLUIDO_DEVUELTO->setText(tarea_a_actualizar.value(TIPOFLUIDO).toString());
-    ui->le_TIPO_DEVUELTO->setText(tarea_a_actualizar.value(TIPO).toString());
+    ui->le_TIPO_FLUIDO_DEVUELTO->setText(tipo_fluido);
+    ui->le_TIPO_DEVUELTO->setText(clase);
     ui->le_tipoRadio->setText(tarea_a_actualizar.value(tipoRadio).toString());
 }
 
@@ -4930,4 +4946,24 @@ void other_task_screen::on_le_MENSAJE_LIBRE_textChanged(const QString &arg1)
         ui->le_intervencion_devuelta->setText(anomaly);
         tarea_a_actualizar.insert(intervencion_devuelta, anomaly);
     }
+}
+
+void other_task_screen::on_pb_set_counter_as_installed_clicked()
+{
+    show_loading("Cambiando estado de contador...");
+    QString counter_string = ui->le_numero_serie_contador_devuelto->text();
+    GlobalFunctions gf(nullptr, empresa);
+    QStringList list = gf.getContadoresList(true, counter_string);
+    if(!list.isEmpty() && list.at(0) == counter_string){
+        Screen_tabla_contadores counters(this, empresa);
+        QJsonObject campos;
+        campos.insert(status_contadores, "INSTALLED");
+        counters.updateContadores(list, campos);
+
+        hide_loading();
+        GlobalFunctions::showMessage(this,"Éxito","El contador ha sido seteado como instalado.");
+        return;
+    }
+    hide_loading();
+    GlobalFunctions::showWarning(this,"Advertencia","El contador no existe o ya está en estado de instalado");
 }

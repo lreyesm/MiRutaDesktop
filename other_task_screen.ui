@@ -1865,8 +1865,8 @@ color:rgb(50, 50, 50);</string>
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>-188</y>
-           <width>1418</width>
+           <y>0</y>
+           <width>1469</width>
            <height>1664</height>
           </rect>
          </property>
@@ -4049,9 +4049,71 @@ color:rgb(50, 50, 50);</string>
                           </spacer>
                          </item>
                          <item>
+                          <widget class="QPushButton" name="pb_set_counter_as_installed">
+                           <property name="minimumSize">
+                            <size>
+                             <width>0</width>
+                             <height>50</height>
+                            </size>
+                           </property>
+                           <property name="font">
+                            <font>
+                             <family>Segoe UI</family>
+                             <pointsize>10</pointsize>
+                             <weight>50</weight>
+                             <italic>false</italic>
+                             <bold>false</bold>
+                            </font>
+                           </property>
+                           <property name="toolTip">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Asignar contador como instalado&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QPushButton{
+	border-radius: 6px;
+	color:rgb(120, 120, 120);
+}
+QPushButton:hover:!pressed{
+	  background-color: #EEEEEE; 
+}</string>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="icon">
+                            <iconset resource="assets.qrc">
+                             <normaloff>:/icons/accept.png</normaloff>:/icons/accept.png</iconset>
+                           </property>
+                           <property name="iconSize">
+                            <size>
+                             <width>50</width>
+                             <height>25</height>
+                            </size>
+                           </property>
+                           <property name="flat">
+                            <bool>true</bool>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
                           <widget class="QPushButton" name="pb_duplicate_info">
+                           <property name="minimumSize">
+                            <size>
+                             <width>0</width>
+                             <height>50</height>
+                            </size>
+                           </property>
                            <property name="toolTip">
                             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copiar información de contador antiguo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QPushButton{
+	border-radius: 6px;
+	color:rgb(120, 120, 120);
+}
+QPushButton:hover:!pressed{
+	  background-color: #EEEEEE; 
+}</string>
                            </property>
                            <property name="text">
                             <string/>

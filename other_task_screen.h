@@ -294,6 +294,8 @@ private slots:
     void on_le_MENSAJE_LIBRE_textChanged(const QString &arg1);
     void autocompleteModule(const QString &arg1);
 
+    void on_pb_set_counter_as_installed_clicked();
+
 private:
     Ui::other_task_screen *ui;
     QTimer timerChangingGeoCode;

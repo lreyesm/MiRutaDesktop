@@ -6,7 +6,7 @@
 #include <QColor>
 
 
-static QString versionMiRuta = "V3.2.6";
+static QString versionMiRuta = "V3.2.9";
 static QColor color_blue_app = QColor(54,141,206);
 static QString limite_archivos_en_servidor = "256Mb";
 static QString formato_fecha_hora = "yyyy-MM-dd HH:mm:ss";
@@ -49,7 +49,6 @@ static QString itacs_descargadas = "BD/itacs_descargadas.dat";
 static QString operarios_descargadas = "BD/operarios_descargadas.dat";
 static QString clientes_descargados = "BD/clientes_descargados.dat";
 static QString info_pagination = "BD/info_pagination.dat";
-
 static QString informacion_local = "BD/informacion_local.dat";
 static QString credentials = "BD/credentials.dat";
 static QString url_server = "https://lreyesm.000webhostapp.com/Mi_Ruta/";
@@ -59,7 +58,6 @@ static QString ultimo_respaldo = QDir::currentPath()+"/Respaldos/ultimo_trabajo_
 enum {ABRIR, ENVIAR_MENSAJE, MOSTRAR_EN_MAPA,DESCARGAR_FOTOS, ASIGNAR_ID_ORDEN, RESUMEN_TAREAS,ASIGNAR_COMUNES, ASIGNAR_A_EQUIPO, ASIGNAR_A_OPERARIO, ELIMINAR};
 
 enum {TODAS,ABIERTAS,AUSENTE,CITA,EJECUTADA,CERRADA,INFORMADA,REQUERIDA, NINGUNO};
-
 
 
 #endif // GLOBAL_VARIABLES_H
