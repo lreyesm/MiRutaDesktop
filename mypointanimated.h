@@ -5,7 +5,9 @@
 #include <QMouseEvent>
 #include <QPropertyAnimation>
 
+#ifndef ANIM_TIME
 #define ANIM_TIME 150
+#endif
 #define ANIM_SCALE 10
 
 class MyPointAnimated : public QLabel

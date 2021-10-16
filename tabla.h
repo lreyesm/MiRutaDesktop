@@ -17,6 +17,8 @@
 #include <QtXlsx>
 #include <QtXlsx/xlsxformat.h>
 
+#include "mylineeditshine.h"
+
 #define MAX_JSONARRAY_HISTORY_SIZE 5
 
 
@@ -421,6 +423,7 @@ private slots:
     bool getTareasValuesFieldServer(QString empresa, QString column);
     void fillValuesInLineEditToFilter();
     bool getTareasValuesFieldCustomQueryServer(QString empresa, QString column, QString query);
+    bool getTareasValuesFieldCustomQueryServer(QString empresa, QString column, QString query, QString limit);
     void get_all_column_values_custom_query_request();
     void on_le_poblacion_editingFinished();
 
@@ -441,6 +444,13 @@ private slots:
     void on_actionAsignOrderID_triggered();
     void updateIDOrdenes(QString id_orden);
     void on_actionN_SerieDevuelto_triggered();
+
+
+    void on_le_a_filtrar_textEdited(const QString &arg1);
+
+    void triggerGetColumns();
+    void addCheckBoxes(QStringList values);
+    void updateCheckBoxes(QString value);
 private:
     Ui::Tabla *ui;
     QThread thread;
@@ -572,7 +582,7 @@ private:
     bool get_tareas_informadas();
     QJsonArray fillFilterPorEquipo(QJsonArray jsonArray, QString equipoSelected);
     void scalePhoto(QPixmap pixmap);
-    QStringList getFieldValues(QString field);
+    QStringList getFieldValues(QString field, QString searchValue);
     void showFilterWidgetOptions(bool offset = true);//offset - desplazar ubicacion o no
     QStringList filterColumnList;
     QPoint lastCursorPos;
@@ -610,6 +620,11 @@ private:
     void export_jsonArray_to_excel(QJsonArray jsonArray, QMap<QString, QString> mapa_exportacion, QStringList listHeaders);
     void fixPortals();
     void updateTask(QJsonObject jsonObject);
+    QTimer timerAutocomplete;
+    QString searchString = "";
+    QWidget *widgetValues;
+    QCheckBox *cb_todos = nullptr;
+    MyLineEditShine *lineEdit = nullptr;
 };
 
 #endif // TABLA_H

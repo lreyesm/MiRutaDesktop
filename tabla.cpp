@@ -34,7 +34,6 @@
 #include "rightclickmenu.h"
 #include "rightclickedsection.h"
 #include "mycheckbox.h"
-#include "mylineeditshine.h"
 #include "daterangeselection.h"
 #include <QScrollArea>
 #include <QCheckBox>
@@ -1611,7 +1610,7 @@ void Tabla::on_sectionClicked(int logicalIndex)
     rightClickedSection->show();
 }
 
-QStringList Tabla::getFieldValues(QString field){
+QStringList Tabla::getFieldValues(QString field, QString searchValue = ""){
 
     QStringList values;
     if(solo_tabla_actual){
@@ -1624,7 +1623,8 @@ QStringList Tabla::getFieldValues(QString field){
                 if(campos_de_fechas.contains(field)){
                     value = value.trimmed().split(" ").at(0).trimmed();
                 }
-                if(!values.contains(value)){
+                if(!values.contains(value)
+                        && (value.contains(searchValue) || searchValue.isEmpty())){
                     values << value;
                 }
             }
@@ -1632,9 +1632,9 @@ QStringList Tabla::getFieldValues(QString field){
     }else{
         show_loading("Cargando valores...");
         QString queryStatus = getQueyStatus();
-        QString query = " (" + queryStatus + ") ";
+        QString query = " (" + queryStatus + ((!searchValue.isEmpty())?" AND ("+ field + " LIKE '%" + searchValue + "%') ":"") + ") ";
         bool res = getTareasValuesFieldCustomQueryServer(
-                    empresa, field, query);
+                    empresa, field, query, "50");
         if(res){
             QStringList keys = jsonObjectValues.keys();
             for (int i= 0; i < keys.size(); i++) {
@@ -1760,13 +1760,13 @@ void Tabla::showFilterWidgetOptions(bool offset){
     vlayout->setObjectName("v_layout");
     vlayout->setAlignment(Qt::AlignCenter);
 
-    QWidget *widgetValues = new QWidget;
+    widgetValues = new QWidget;
     widgetValues->setStyleSheet("background-color: rgb(77, 77, 77);"
                                 "border-radius: 5px;");
     widgetValues->setLayout(vlayout);
 
-    MyLineEditShine *lineEdit = new MyLineEditShine();
-    QCheckBox *cb_todos = new QCheckBox();
+    lineEdit = new MyLineEditShine();
+    cb_todos = new QCheckBox();
     cb_todos->setStyleSheet("color: rgb(255, 255, 255);"
                             "background-color: rgba(77, 77, 77);");
     QFont f = ui->tableView->font();
@@ -1785,30 +1785,11 @@ void Tabla::showFilterWidgetOptions(bool offset){
     int itemHeight = 35;
     QStringList values = getFieldValues(lastSectionField);
     QString value;
-    int width = 100;
-    foreach(value, values){
-        MyCheckBox *cb = new MyCheckBox();
-        cb->setText(value);
-        cb->setObjectName("cb_"+value);
-        cb->setFixedHeight(itemHeight-5);
-        cb->setStyleSheet("color: rgb(255, 255, 255);"
-                          "background-color: rgba(77, 77, 77);");
-        connect(cb, &MyCheckBox::toggleCheckBox, this, &Tabla::addRemoveFilterList);
-        connect(lineEdit, &MyLineEditShine::textChanged, cb, &MyCheckBox::onTextSelectedChanged);
-        connect(cb_todos, &QCheckBox::toggled, cb, &MyCheckBox::set_Checked);
+    int width = 120;
+    addCheckBoxes(values);
 
-        QFont font = ui->tableView->font();
-        font.setPointSize(9);
+    connect(lineEdit, &MyLineEditShine::textChanged, this, &Tabla::updateCheckBoxes);
 
-        cb->setFont(font);
-
-        widgetValues->layout()->addWidget(cb);
-        if((value.size() + 1) * 10  > width){
-            if((value.size() + 1) * 10 < 500){
-                width = (value.size() + 1) * 10;
-            }
-        }
-    }
     QPushButton *button_filter = new QPushButton("FILTRAR  ");
     button_filter->setStyleSheet("color: rgb(255, 255, 255);"
                                  "background-color: rgba(77, 77, 77);");
@@ -1877,6 +1858,38 @@ void Tabla::showFilterWidgetOptions(bool offset){
     connect(this, &Tabla::sectionPressed, widget, &QWidget::deleteLater);
     connect(this, &Tabla::closing, widget, &QWidget::deleteLater);
     connect(this, &Tabla::tablePressed, widget, &QWidget::deleteLater);
+}
+
+void Tabla::updateCheckBoxes(QString value){
+    QStringList values = getFieldValues(lastSectionField, value);
+    addCheckBoxes(values);
+}
+void Tabla::addCheckBoxes(QStringList values){
+    QString value;
+    int width = 120;
+    int itemHeight = 35;
+    foreach(value, values){
+        MyCheckBox *cb = new MyCheckBox();
+        cb->setText(value);
+        cb->setObjectName("cb_"+value);
+        cb->setFixedHeight(itemHeight-5);
+        cb->setStyleSheet("color: rgb(255, 255, 255);"
+                          "background-color: rgba(77, 77, 77);");
+        connect(cb, &MyCheckBox::toggleCheckBox, this, &Tabla::addRemoveFilterList);
+        connect(cb_todos, &QCheckBox::toggled, cb, &MyCheckBox::set_Checked);
+
+        QFont font = ui->tableView->font();
+        font.setPointSize(9);
+
+        cb->setFont(font);
+
+        widgetValues->layout()->addWidget(cb);
+        if((value.size() + 1) * 10  > width){
+            if((value.size() + 1) * 10 < 500){
+                width = (value.size() + 1) * 10;
+            }
+        }
+    }
 }
 
 void Tabla::addRemoveFilterList(QString value){
@@ -2488,20 +2501,6 @@ void Tabla::on_actionC_Geolocalizaci_n_triggered()
 
     filter_column_field_selected = codigo_de_geolocalizacion;
 
-    QString queryStatus = getQueyStatus();
-    QString query = " (" + queryStatus +  ") ";
-    if(currentGestor != "Todos"){
-        QString gestorQuery = " AND (" + GESTOR + " LIKE '" + currentGestor +"')";
-        if(!query.contains(gestorQuery)){
-            query += gestorQuery;
-        }
-    }
-    bool res = getTareasValuesFieldCustomQueryServer(
-                empresa, filter_column_field_selected, query);
-    if(res){
-        fillValuesInLineEditToFilter();
-    }
-
     ui->widget_filtro_lineEdit->show();
     ui->widget_filtros->show();
     hide_loading();
@@ -2515,20 +2514,6 @@ void Tabla::on_actionTitular_triggered()
     ui->l_tipo_filtro->setText("Nombre:");
 
     filter_column_field_selected = nombre_cliente;
-
-    QString queryStatus = getQueyStatus();
-    QString query = " (" + queryStatus +  ") ";
-    if(currentGestor != "Todos"){
-        QString gestorQuery = " AND (" + GESTOR + " LIKE '" + currentGestor +"')";
-        if(!query.contains(gestorQuery)){
-            query += gestorQuery;
-        }
-    }
-    bool res = getTareasValuesFieldCustomQueryServer(
-                empresa, filter_column_field_selected, query);
-    if(res){
-        fillValuesInLineEditToFilter();
-    }
 
     ui->widget_filtro_lineEdit->show();
     ui->widget_filtros->show();
@@ -2544,20 +2529,6 @@ void Tabla::on_actionN_Abonado_triggered()
     ui->l_tipo_filtro->setText("Nº Abonado:");
     filter_column_field_selected = numero_abonado;
 
-    QString queryStatus = getQueyStatus();
-    QString query = " (" + queryStatus +  ") ";
-    if(currentGestor != "Todos"){
-        QString gestorQuery = " AND (" + GESTOR + " LIKE '" + currentGestor +"')";
-        if(!query.contains(gestorQuery)){
-            query += gestorQuery;
-        }
-    }
-    bool res = getTareasValuesFieldCustomQueryServer(
-                empresa, filter_column_field_selected, query);
-    if(res){
-        fillValuesInLineEditToFilter();
-    }
-
     ui->widget_filtro_lineEdit->show();
     ui->widget_filtros->show();
     hide_loading();
@@ -2572,19 +2543,6 @@ void Tabla::on_actionZona_triggered()
     ui->l_tipo_filtro->setText("Sector P:");
 
     filter_column_field_selected = zona;
-    QString queryStatus = getQueyStatus();
-    QString query = " (" + queryStatus +  ") ";
-    if(currentGestor != "Todos"){
-        QString gestorQuery = " AND (" + GESTOR + " LIKE '" + currentGestor +"')";
-        if(!query.contains(gestorQuery)){
-            query += gestorQuery;
-        }
-    }
-    bool res = getTareasValuesFieldCustomQueryServer(
-                empresa, filter_column_field_selected, query);
-    if(res){
-        fillValuesInLineEditToFilter();
-    }
 
     ui->widget_filtro_lineEdit->show();
     ui->widget_filtros->show();
@@ -2600,19 +2558,6 @@ void Tabla::on_actionN_Serie_triggered()
     ui->l_tipo_filtro->setText("Nº Serie:");
 
     filter_column_field_selected = numero_serie_contador;
-    QString queryStatus = getQueyStatus();
-    QString query = " (" + queryStatus +  ") ";
-    if(currentGestor != "Todos"){
-        QString gestorQuery = " AND (" + GESTOR + " LIKE '" + currentGestor +"')";
-        if(!query.contains(gestorQuery)){
-            query += gestorQuery;
-        }
-    }
-    bool res = getTareasValuesFieldCustomQueryServer(
-                empresa, filter_column_field_selected, query);
-    if(res){
-        fillValuesInLineEditToFilter();
-    }
 
     ui->widget_filtro_lineEdit->show();
     ui->widget_filtros->show();
@@ -2628,19 +2573,6 @@ void Tabla::on_actionN_SerieDevuelto_triggered()
     ui->l_tipo_filtro->setText("Nº Serie Devuelto:");
 
     filter_column_field_selected = numero_serie_contador_devuelto;
-    QString queryStatus = getQueyStatus();
-    QString query = " (" + queryStatus +  ") ";
-    if(currentGestor != "Todos"){
-        QString gestorQuery = " AND (" + GESTOR + " LIKE '" + currentGestor +"')";
-        if(!query.contains(gestorQuery)){
-            query += gestorQuery;
-        }
-    }
-    bool res = getTareasValuesFieldCustomQueryServer(
-                empresa, filter_column_field_selected, query);
-    if(res){
-        fillValuesInLineEditToFilter();
-    }
 
     ui->widget_filtro_lineEdit->show();
     ui->widget_filtros->show();
@@ -2656,19 +2588,6 @@ void Tabla::on_actionPor_Resultado_triggered(){
     ui->l_tipo_filtro->setText("Resultado:");
 
     filter_column_field_selected = resultado;
-    QString queryStatus = getQueyStatus();
-    QString query = " (" + queryStatus +  ") ";
-    if(currentGestor != "Todos"){
-        QString gestorQuery = " AND (" + GESTOR + " LIKE '" + currentGestor +"')";
-        if(!query.contains(gestorQuery)){
-            query += gestorQuery;
-        }
-    }
-    bool res = getTareasValuesFieldCustomQueryServer(
-                empresa, filter_column_field_selected, query);
-    if(res){
-        fillValuesInLineEditToFilter();
-    }
 
     ui->widget_filtro_lineEdit->show();
     ui->widget_filtros->show();
@@ -8253,6 +8172,35 @@ bool Tabla::getTareasValuesFieldCustomQueryServer(QString empresa, QString colum
     return res;
 }
 
+bool Tabla::getTareasValuesFieldCustomQueryServer(QString empresa, QString column, QString query, QString limit)
+{
+    bool res = false;
+    QStringList keys, values;
+
+    keys << "empresa" << "columna" << "tabla" << "query" << "limit";
+    values << empresa << column << "tareas" << query << limit;
+
+    this->keys = keys;
+    this->values = values;
+
+    QEventLoop *q = new QEventLoop();
+    connect(this, &Tabla::script_excecution_result,q,&QEventLoop::exit);
+
+    QTimer::singleShot(DELAY, this, SLOT(get_all_column_values_custom_query_request()));
+
+    switch(q->exec())
+    {
+    case database_comunication::script_result::timeout:
+        break;
+
+    case database_comunication::script_result::ok:
+        res = true;
+        break;
+    }
+    delete q;
+    return res;
+}
+
 void Tabla::fillValuesInLineEditToFilter(){
     QStringList values;
     QStringList keys = jsonObjectValues.keys();
@@ -8269,6 +8217,12 @@ void Tabla::fillValuesInLineEditToFilter(){
     completer->setCaseSensitivity(Qt::CaseInsensitive);
     completer->setFilterMode(Qt::MatchContains);
     ui->le_a_filtrar->setCompleter(completer);
+    QPoint pos = ui->le_a_filtrar->mapToGlobal(QPoint(0,0));
+    completer->popup()->setGeometry(
+                pos.x(),
+                pos.y() + ui->le_a_filtrar->size().height(),
+                ui->le_a_filtrar->width(), completer->popup()->size().height());
+    completer->popup()->show();
 }
 
 
@@ -8681,4 +8635,33 @@ void Tabla::setTareasPorPagina(int cant){
 }
 
 
+void Tabla::on_le_a_filtrar_textEdited(const QString &arg1)
+{
+    searchString = arg1;
+    timerAutocomplete.stop();
+    disconnect(&timerAutocomplete, &QTimer::timeout, this, &Tabla::triggerGetColumns);
+    timerAutocomplete.setInterval(1500);
+    connect(&timerAutocomplete, &QTimer::timeout, this, &Tabla::triggerGetColumns);
+    timerAutocomplete.setSingleShot(true);
+    timerAutocomplete.start();
+}
+
+void Tabla::triggerGetColumns(){
+    if(!searchString.isEmpty()){
+        qDebug()<<"****************************** Triggering request ******************************";
+        QString queryStatus = getQueyStatus();
+        QString query = " ( (" + queryStatus +  ") AND (" + filter_column_field_selected + " LIKE '"+ searchString+"%'))";
+        if(currentGestor != "Todos"){
+            QString gestorQuery = " AND (" + GESTOR + " LIKE '" + currentGestor +"')";
+            if(!query.contains(gestorQuery)){
+                query += gestorQuery;
+            }
+        }
+        bool res = getTareasValuesFieldCustomQueryServer(
+                    empresa, filter_column_field_selected, query, "50");
+        if(res){
+            fillValuesInLineEditToFilter();
+        }
+    }
+}
 
