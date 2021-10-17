@@ -729,7 +729,7 @@ void Screen_tabla_contadores::filtrarEnTabla(bool checked){
 
     showFilterWidgetOptions(false);
 }
-QStringList Screen_tabla_contadores::getFieldValues(QString field){
+QStringList Screen_tabla_contadores::getFieldValues(QString field, QString searchValue = ""){
 
     QStringList values;
     QJsonArray jsonArray;
@@ -742,7 +742,8 @@ QStringList Screen_tabla_contadores::getFieldValues(QString field){
                 if(campos_de_fechas.contains(field)){
                     value = value.trimmed().split(" ").at(0).trimmed();
                 }
-                if(!values.contains(value)){
+                if(!values.contains(value)
+                        && (value.contains(searchValue) || searchValue.isEmpty())){
                     values << value;
                 }
             }else if(field == status_contadores){
@@ -754,7 +755,7 @@ QStringList Screen_tabla_contadores::getFieldValues(QString field){
     }else{
         show_loading("Cargando valores...");
         QString queryStatus = getQueyStatus();
-        QString query = " (" + queryStatus + ") ";
+        QString query = " (" + queryStatus + ((!searchValue.isEmpty())?" AND ("+ field + " LIKE '" + searchValue + "%') ":"") + ") ";
         bool res = getContadoresValuesFieldCustomQueryServer(
                     empresa, field, query);
         if(res){
@@ -880,13 +881,13 @@ void Screen_tabla_contadores::showFilterWidgetOptions(bool offset){
     vlayout->setObjectName("v_layout");
     vlayout->setAlignment(Qt::AlignCenter);
 
-    QWidget *widgetValues = new QWidget;
+    widgetValues = new QWidget;
     widgetValues->setStyleSheet("background-color: rgb(77, 77, 77);"
                                 "border-radius: 5px;");
     widgetValues->setLayout(vlayout);
 
-    MyLineEditShine *lineEdit = new MyLineEditShine();
-    QCheckBox *cb_todos = new QCheckBox();
+    lineEdit = new MyLineEditShine();
+    cb_todos = new QCheckBox();
     cb_todos->setStyleSheet("color: rgb(255, 255, 255);"
                             "background-color: rgba(77, 77, 77);");
     QFont f =  ui->tableView->font();
@@ -905,30 +906,11 @@ void Screen_tabla_contadores::showFilterWidgetOptions(bool offset){
     int itemHeight = 35;
     QStringList values = getFieldValues(lastSectionField);
     QString value;
-    int width = 100;
-    foreach(value, values){
-        MyCheckBox *cb = new MyCheckBox();
-        cb->setText(value);
-        cb->setObjectName("cb_"+value);
-        cb->setFixedHeight(itemHeight-5);
-        cb->setStyleSheet("color: rgb(255, 255, 255);"
-                          "background-color: rgba(77, 77, 77);");
-        connect(cb, &MyCheckBox::toggleCheckBox, this, &Screen_tabla_contadores::addRemoveFilterList);
-        connect(lineEdit, &MyLineEditShine::textChanged, cb, &MyCheckBox::onTextSelectedChanged);
-        connect(cb_todos, &QCheckBox::toggled, cb, &MyCheckBox::set_Checked);
+    int width = 120;
+    addCheckBoxes(values);
 
-        QFont font =  ui->tableView->font();
-        font.setPointSize(9);
+    connect(lineEdit, &MyLineEditShine::textChanged, this, &Screen_tabla_contadores::updateCheckBoxes);
 
-        cb->setFont(font);
-
-        widgetValues->layout()->addWidget(cb);
-        if((value.size() + 1) * 10  > width){
-            if((value.size() + 1) * 10 < 500){
-                width = (value.size() + 1) * 10;
-            }
-        }
-    }
     QPushButton *button_filter = new QPushButton("FILTRAR  ");
     button_filter->setStyleSheet("color: rgb(255, 255, 255);"
                                  "background-color: rgba(77, 77, 77);");
@@ -1003,6 +985,49 @@ void Screen_tabla_contadores::addRemoveFilterList(QString value){
         filterColumnList.removeOne(value);
     }else{
         filterColumnList << value;
+    }
+}
+
+void Screen_tabla_contadores::updateCheckBoxes(QString value){
+    Q_UNUSED(value);
+    timerAutocompleteCheckBoxes.stop();
+    disconnect(&timerAutocompleteCheckBoxes, &QTimer::timeout, this, &Screen_tabla_contadores::triggerGetCheckBoxesValues);
+    timerAutocompleteCheckBoxes.setInterval(1500);
+    connect(&timerAutocompleteCheckBoxes, &QTimer::timeout, this, &Screen_tabla_contadores::triggerGetCheckBoxesValues);
+    timerAutocompleteCheckBoxes.setSingleShot(true);
+    timerAutocompleteCheckBoxes.start();
+}
+void Screen_tabla_contadores::triggerGetCheckBoxesValues(){
+    QString value = lineEdit->text();
+    GlobalFunctions::clearWidgets(widgetValues->layout());
+    QStringList values = getFieldValues(lastSectionField, value);
+    addCheckBoxes(values);
+}
+void Screen_tabla_contadores::addCheckBoxes(QStringList values){
+    QString value;
+    int width = 120;
+    int itemHeight = 35;
+    foreach(value, values){
+        MyCheckBox *cb = new MyCheckBox();
+        cb->setText(value);
+        cb->setObjectName("cb_"+value);
+        cb->setFixedHeight(itemHeight-5);
+        cb->setStyleSheet("color: rgb(255, 255, 255);"
+                          "background-color: rgba(77, 77, 77);");
+        connect(cb, &MyCheckBox::toggleCheckBox, this, &Screen_tabla_contadores::addRemoveFilterList);
+        connect(cb_todos, &QCheckBox::toggled, cb, &MyCheckBox::set_Checked);
+
+        QFont font = ui->tableView->font();
+        font.setPointSize(9);
+
+        cb->setFont(font);
+
+        widgetValues->layout()->addWidget(cb);
+        if((value.size() + 1) * 10  > width){
+            if((value.size() + 1) * 10 < 500){
+                width = (value.size() + 1) * 10;
+            }
+        }
     }
 }
 

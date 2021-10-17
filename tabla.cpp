@@ -1632,7 +1632,13 @@ QStringList Tabla::getFieldValues(QString field, QString searchValue = ""){
     }else{
         show_loading("Cargando valores...");
         QString queryStatus = getQueyStatus();
-        QString query = " (" + queryStatus + ((!searchValue.isEmpty())?" AND ("+ field + " LIKE '%" + searchValue + "%') ":"") + ") ";
+        QString query = " (" + queryStatus + ((!searchValue.isEmpty())?" AND ("+ field + " LIKE '" + searchValue + "%') ":"") + ") ";
+        if(currentGestor != "Todos"){
+            QString gestorQuery = " AND (" + GESTOR + " LIKE '" + currentGestor +"')";
+            if(!query.contains(gestorQuery)){
+                query += gestorQuery;
+            }
+        }
         bool res = getTareasValuesFieldCustomQueryServer(
                     empresa, field, query, "50");
         if(res){
@@ -1861,6 +1867,18 @@ void Tabla::showFilterWidgetOptions(bool offset){
 }
 
 void Tabla::updateCheckBoxes(QString value){
+    Q_UNUSED(value);
+    timerAutocompleteCheckBoxes.stop();
+    disconnect(&timerAutocompleteCheckBoxes, &QTimer::timeout, this, &Tabla::triggerGetCheckBoxesValues);
+    timerAutocompleteCheckBoxes.setInterval(1500);
+    connect(&timerAutocompleteCheckBoxes, &QTimer::timeout, this, &Tabla::triggerGetCheckBoxesValues);
+    timerAutocompleteCheckBoxes.setSingleShot(true);
+    timerAutocompleteCheckBoxes.start();
+}
+
+void Tabla::triggerGetCheckBoxesValues(){
+    QString value = lineEdit->text();
+    GlobalFunctions::clearWidgets(widgetValues->layout());
     QStringList values = getFieldValues(lastSectionField, value);
     addCheckBoxes(values);
 }
@@ -1921,9 +1939,7 @@ void Tabla::getMenuSectionClickedItem(int selection){
         }
     }
 }
-void Tabla::showTodas(){
 
-}
 void Tabla::updateTareasInTable(){
     if(this->isHidden()){
         return;
@@ -8639,14 +8655,14 @@ void Tabla::on_le_a_filtrar_textEdited(const QString &arg1)
 {
     searchString = arg1;
     timerAutocomplete.stop();
-    disconnect(&timerAutocomplete, &QTimer::timeout, this, &Tabla::triggerGetColumns);
+    disconnect(&timerAutocomplete, &QTimer::timeout, this, &Tabla::triggerGetColumnValues);
     timerAutocomplete.setInterval(1500);
-    connect(&timerAutocomplete, &QTimer::timeout, this, &Tabla::triggerGetColumns);
+    connect(&timerAutocomplete, &QTimer::timeout, this, &Tabla::triggerGetColumnValues);
     timerAutocomplete.setSingleShot(true);
     timerAutocomplete.start();
 }
 
-void Tabla::triggerGetColumns(){
+void Tabla::triggerGetColumnValues(){
     if(!searchString.isEmpty()){
         qDebug()<<"****************************** Triggering request ******************************";
         QString queryStatus = getQueyStatus();

@@ -409,7 +409,6 @@ private slots:
     void filtrarEnTabla(bool checked);
     void on_pb_idOrdenFix_clicked();
 
-    void showTodas();
     void get_tareas_amount_request();
     void get_tareas_request();
     void moveToPage(QString page);
@@ -448,9 +447,10 @@ private slots:
 
     void on_le_a_filtrar_textEdited(const QString &arg1);
 
-    void triggerGetColumns();
+    void triggerGetColumnValues();
     void addCheckBoxes(QStringList values);
     void updateCheckBoxes(QString value);
+    void triggerGetCheckBoxesValues();
 private:
     Ui::Tabla *ui;
     QThread thread;
@@ -621,6 +621,7 @@ private:
     void fixPortals();
     void updateTask(QJsonObject jsonObject);
     QTimer timerAutocomplete;
+    QTimer timerAutocompleteCheckBoxes;
     QString searchString = "";
     QWidget *widgetValues;
     QCheckBox *cb_todos = nullptr;

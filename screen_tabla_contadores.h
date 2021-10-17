@@ -9,6 +9,8 @@
 #include <QDesktopWidget>
 #include "database_comunication.h"
 
+#include "mylineeditshine.h"
+
 namespace Ui {
 class Screen_tabla_contadores;
 }
@@ -124,6 +126,9 @@ private slots:
 
     void on_pb_export_contadores_to_excel_clicked();
 
+    void addCheckBoxes(QStringList values);
+    void triggerGetCheckBoxesValues();
+    void updateCheckBoxes(QString value);
 private:
     Ui::Screen_tabla_contadores *ui;
 //    Counter *contador = nullptr;
@@ -157,7 +162,7 @@ private:
     void openContadorX(QJsonObject o);
     QJsonArray getCurrentJsonArrayInTable();
     QMap<QString, QString> fillMapForFixModel(QStringList &listHeaders);
-    QStringList getFieldValues(QString field);
+    QStringList getFieldValues(QString field, QString searchValue);
     bool filtering= false;
     QString lastSectionField= "", lastSectionCliked= "";
     QStringList filterColumnList;
@@ -180,6 +185,13 @@ private:
     QJsonArray fixJsonToLastModel(QJsonArray jsonArray);
     QString getQueyStatus();
     void export_jsonArray_to_excel(QJsonArray jsonArray, QMap<QString, QString> mapa_exportacion, QStringList listHeaders);
+
+    QTimer timerAutocomplete;
+    QTimer timerAutocompleteCheckBoxes;
+    QString searchString = "";
+    QWidget *widgetValues;
+    QCheckBox *cb_todos = nullptr;
+    MyLineEditShine *lineEdit = nullptr;
 };
 
 #endif // SCREEN_TABLA_CONTADORES_H
