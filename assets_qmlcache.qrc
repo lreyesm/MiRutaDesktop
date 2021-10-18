@@ -220,7 +220,6 @@
         <file alias="icons/ventana_dialogo.png">icons/ventana_dialogo.png</file>
         <file alias="icons/background_gray.png">icons/background_gray.png</file>
         <file alias="icons/fondo_transparente.png">icons/fondo_transparente.png</file>
-        <file alias="icons/icono.ico">icons/icono.ico</file>
         <file alias="icons/circle.png">icons/circle.png</file>
         <file alias="icons/recycle.png">icons/recycle.png</file>
         <file alias="icons/add_image_black.png">icons/add_image_black.png</file>
@@ -305,5 +304,8 @@
         <file alias="icons/whatsapp.png">icons/whatsapp.png</file>
         <file alias="icons/send.png">icons/send.png</file>
         <file alias="files/country_code.txt">files/country_code.txt</file>
+        <file alias="icons/copy.png">icons/copy.png</file>
+        <file alias="icons/icono.ico">icons/icono.ico</file>
+        <file alias="icons/numero_serie_devuelto.png">icons/numero_serie_devuelto.png</file>
     </qresource>
 </RCC>

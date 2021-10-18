@@ -519,6 +519,9 @@ void database_comunication::serverRequest(serverRequestType type, QStringList ke
             query.addQueryItem(keys[1],values[1]); //tabla
             query.addQueryItem(keys[2],values[2]); //empresa
             query.addQueryItem(keys[3],values[3]); //query
+            if(keys.size() > 4 && values.size() > 4){
+                query.addQueryItem(keys[4],values[4]); //limit
+            }
             postData = query.toString(QUrl::FullyDecoded).toUtf8();
         }
         else if(keys.size() > 2 && values.size() > 2){
