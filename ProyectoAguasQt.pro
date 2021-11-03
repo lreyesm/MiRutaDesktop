@@ -42,6 +42,7 @@ SOURCES += \
     counter.cpp \
     databaseoptions.cpp \
     daterangeselection.cpp \
+    datesschedule.cpp \
     datetimewidget.cpp \
     dbtareascontroller.cpp \
     delegate.cpp \
@@ -171,6 +172,7 @@ HEADERS += \
     counter.h \
     databaseoptions.h \
     daterangeselection.h \
+    datesschedule.h \
     datetimewidget.h \
     dbtareascontroller.h \
     delegate.h \
@@ -319,6 +321,7 @@ FORMS += \
     counter.ui \
     databaseoptions.ui \
     daterangeselection.ui \
+    datesschedule.ui \
     datetimewidget.ui \
     emplazamiento.ui \
     empresa.ui \

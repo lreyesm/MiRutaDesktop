@@ -451,6 +451,8 @@ private slots:
     void addCheckBoxes(QStringList values);
     void updateCheckBoxes(QString value);
     void triggerGetCheckBoxesValues();
+    void on_pb_dates_availability_clicked();
+
 private:
     Ui::Tabla *ui;
     QThread thread;

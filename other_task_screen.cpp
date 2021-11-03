@@ -4869,10 +4869,19 @@ void other_task_screen::on_pb_duplicate_info_clicked()
     QString largo = tarea_a_actualizar.value(LARGO).toString();
     QString tipo_fluido =  tarea_a_actualizar.value(TIPOFLUIDO).toString();
     QString clase = tarea_a_actualizar.value(TIPO).toString();
+    if(largo.isEmpty()){
+        largo = "115";
+    }
+    if(tipo_fluido.isEmpty()){
+        tipo_fluido = "FRIA";
+    }
+    if(clase.isEmpty()){
+        clase = "U - Chorro Único";
+    }
     if(mark.isEmpty()){
         largo = "115";
         tipo_fluido = "FRIA";
-        clase = "R";
+        clase = "U - Chorro Único";
     }
     else if (mark.contains("-")){
         QStringList split = mark.split("-");

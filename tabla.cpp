@@ -45,6 +45,7 @@
 #include "databaseoptions.h"
 #include "sendwhatsappmessage.h"
 #include "idordenassign.h"
+#include "datesschedule.h"
 
 using namespace QXlsx;
 // https://www3.cs.stonybrook.edu/~alee/g++/g++.html
@@ -8681,3 +8682,10 @@ void Tabla::triggerGetColumnValues(){
     }
 }
 
+
+void Tabla::on_pb_dates_availability_clicked()
+{
+    DatesSchedule *schedules = new DatesSchedule(
+                nullptr, empresa);
+    schedules->show();
+}

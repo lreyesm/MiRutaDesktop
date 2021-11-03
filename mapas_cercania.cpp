@@ -652,8 +652,11 @@ void Mapas_Cercania::printCoordenates(const QString &coordenada)
     setPerimeterButtons();
 }
 void Mapas_Cercania::setPerimeterButtons(QPoint pos_center){
+
     tooltip_enable = false;
+
     clearPerimeterButtons_enable = false;
+
     if(pos_center == QPoint(-1,-1)){
         pos_center = this->mapFromGlobal(QCursor::pos());
     }
